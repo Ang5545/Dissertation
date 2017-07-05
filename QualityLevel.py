@@ -5,8 +5,6 @@ import numpy as np
 img = loader.getImages('imgdirpath')[0]
 sampleMask = loader.getImages('segmentsdirpath')[0]
 
-
-
 ret, th = cv2.threshold(img, 50, 255, 0)
 
 # key = 0
