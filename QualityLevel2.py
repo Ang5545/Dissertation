@@ -28,46 +28,63 @@ def getThreshold(th):
     return thres
 
 
+def resizeImage(image, winHeight):
+    size = tuple(image.shape[1::-1])
+    ratio = size[0] / winHeight
+    height = int(size[0] // ratio)
+    width = int(size[1] // ratio)
+    result = cv2.resize(image, (height, width), interpolation = cv2.INTER_CUBIC)
+    return result
 
-imgPath = '/home/ange/Python/workplace/Dissertation/resources/simple/2.JPG'
-samplePath = '/home/ange/Python/workplace/Dissertation/resources/simple/etalon.bmp'
+imgPath = '/home/ange/Python/workplace/Dissertation/resources/img2/img.JPG'
+samplePath = '/home/ange/Python/workplace/Dissertation/resources/img2/sampleMask.bmp'
+saveDirPath = '/home/ange/Python/workplace/Dissertation/resources/img2/'
 
-img = cv2.imread(imgPath, 3)
-sampleMask = cv2.imread(samplePath, 0)
+origin = cv2.imread(imgPath, 3)
+originSampleMask = cv2.imread(samplePath, 0)
 
 
+img = resizeImage(origin, 800)
+sampleMask = resizeImage(originSampleMask, 800)
+cv2.imshow("Original image", img)
+cv2.imshow("Sample mask", sampleMask)
+
+# etalon segmentation
 segmentImg = createSegmentingImg(img, sampleMask)
-cv2.imshow("segmentImg", segmentImg)
+cv2.imshow("Segmentation by sample mask", segmentImg)
 
-cv2.imshow("img", img)
-
+# find best parameters
 minPrc = 100
-bestThres = img.copy
+bestTh = 0
 step = 0
-greath = 0
 
 while (step != 255):
     thres = getThreshold(step)
-    segmentThres = createSegmentingImg(img, thres)
-    diff = cv2.absdiff(mask, thres)
+    diff = cv2.absdiff(sampleMask, thres)
     allPtCount = img.shape[0] * img.shape[1]
     errPtCount = cv2.countNonZero(diff)
     prc = errPtCount / allPtCount * 100
 
     if minPrc > prc:
         minPrc = prc
-        bestThres = thres
-        greath = step
+        bestTh = step
 
     step = step +1
 
-print('minPrc %s' % minPrc)
-print('greath %s' % greath)
-cv2.imshow("bestThres", bestThres)
+print('-------------------------------')
+print('-- best Threshold -------------')
+print('-------------------------------')
+print('bestTh = %s' % bestTh)
+print('minPrc = %s' % minPrc)
+print('-------------------------------')
+print('-------------------------------')
 
+
+# show and tunig parametrs
 key = 0
-th = 0
-step = 5
+th = bestTh
+step = 1
+
 
 while (key != 27):
     key = cv2.waitKey()
@@ -81,18 +98,33 @@ while (key != 27):
         th = th - step
         neddProcess = True
 
-    if (neddProcess) :
-        thres = getThreshold(th)
-        segmentThres = createSegmentingImg(img, thres)
+    elif (key == ord('r')):
+        mask = getThreshold(th)
+        segm = createSegmentingImg(img, mask)
+        diff = cv2.absdiff(sampleMask, mask)
 
-        diff = cv2.absdiff(mask, thres)
+
+
+        cv2.imwrite(saveDirPath + 'sampleSegment.bmp', segmentImg)
+        cv2.imwrite(saveDirPath + 'mask.bmp', mask)
+        cv2.imwrite(saveDirPath +'segm.bmp', segm)
+        cv2.imwrite(saveDirPath +'diff.bmp', diff)
+
+    if (neddProcess):
+        mask = getThreshold(th)
+        segm = createSegmentingImg(img, mask)
+        diff = cv2.absdiff(sampleMask, mask)
+
         allPtCount = img.shape[0] * img.shape[1]
         errPtCount = cv2.countNonZero(diff)
         prc = errPtCount / allPtCount * 100
 
-        print("allPtCount %s" %allPtCount)
-        print("errPtCount %s" %errPtCount)
-        print("prc %s" %prc)
-        print("----------------------")
+        cv2.imshow("Mask", mask)
+        cv2.imshow("Segmentation", segm)
+        cv2.imshow("difference image", diff)
+
+        print("th  = %s" %th)
+        print("prc  = %s" %prc)
+        print('-------------------------------')
         neddProcess = False
 
