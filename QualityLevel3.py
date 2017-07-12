@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-
+import ImgLoader as ld
 
 def getThreshold(th):
     grayimg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -24,14 +24,29 @@ def printTable(data, names):
         print(row_format.format(team, *row))
 
 
-imgPath = '/home/ange/Python/workplace/Dissertation/resources/img4/resizeImg.bmp'
-patternPath = '/home/ange/Python/workplace/Dissertation/resources/img4/sampleMask.bmp'
+def resizeImage(image, winHeight):
+    size = tuple(image.shape[1::-1])
+    ratio = size[0] / winHeight
+    height = int(size[0] // ratio)
+    width = int(size[1] // ratio)
+    result = cv2.resize(image, (height, width), interpolation = cv2.INTER_CUBIC)
+    return result
+
+projectDir = ld.getParamFromConfig('projectdir')
+imgPath = '%s/resources/img6/img.bmp' %projectDir
+patternPath = '%s/resources/img6/pattern.bmp' %projectDir
 
 pattern = cv2.imread(patternPath, 0)
 img = cv2.imread(imgPath, 3)
 
+# img = resizeImage(bigImg, 800)
+# resizePattern = resizeImage(pattern, 800)
+# cv2.imwrite('%s/resources/img6/img.JPG' %projectDir, resizeImage)
+# cv2.imwrite('%s/resources/img6/img.bmp' %projectDir, img)
+
 cv2.imshow("pattern", pattern)
 cv2.imshow("img", img)
+
 
 #  -- count sample pixels for all objects --
 edges = cv2.Canny(pattern, 100, 200)
@@ -60,15 +75,16 @@ cv2.imshow("thres", thres)
 
 
 
-while (key != 10):
+while (key != 13 | key != 10):
+
     key = cv2.waitKey()
     neddProcess = False
 
-    if (key == 82):
+    if (key == 82) | (key == 0):
         th = th + 1
         neddProcess = True
 
-    elif (key == 84):
+    elif (key == 84) | (key == 1):
         th = th - 1
         neddProcess = True
 
