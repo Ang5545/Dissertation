@@ -24,32 +24,30 @@ def printTable(data, names):
         print(row_format.format(team, *row))
 
 
-imgPath    = '/home/ange/Python/workplace/Dissertation/resources/img4/img.JPG'
-samplePath = '/home/ange/Python/workplace/Dissertation/resources/img4/sampleMask.bmp'
+imgPath = '/home/ange/Python/workplace/Dissertation/resources/img4/resizeImg.bmp'
+patternPath = '/home/ange/Python/workplace/Dissertation/resources/img4/sampleMask.bmp'
 
-originSample = cv2.imread(samplePath, 0)
-sample = resizeImage(originSample, 800)
+pattern = cv2.imread(patternPath, 0)
+img = cv2.imread(imgPath, 3)
 
-origin = cv2.imread(imgPath, 3)
-img = resizeImage(origin, 800)
-
+cv2.imshow("pattern", pattern)
+cv2.imshow("img", img)
 
 #  -- count sample pixels for all objects --
-edges = cv2.Canny(sample, 100, 200)
-im2, contours, hierarchy = cv2.findContours(sample, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-sampleObjects = []
-objects = []
+edges = cv2.Canny(pattern, 100, 200)
+patternBack = np.zeros(pattern.shape, np.uint8)
+patternBack[::] = 255
+
+im2, contours, hierarchy = cv2.findContours(pattern, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+patternObjects = []
+
 for cnt in contours :
-    cntImg = np.zeros(sample.shape, np.uint8)
+    cntImg = np.zeros(pattern.shape, np.uint8)
     cv2.drawContours(cntImg, [cnt], -1, (255, 255, 255), -1)
-    allPt = cv2.countNonZero(cntImg)
-    sampleObjects.append(allPt)
-    objects.append(cntImg)
-print(sampleObjects)
+    cv2.drawContours(patternBack, [cnt], -1, (0, 0, 0), -1)
+    patternObjects.append(cntImg)
 
 
-# искомый объект - 2
-testObject = objects[2]
 
 
 # -- segmentation --
@@ -59,6 +57,8 @@ th = 200
 grayimg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 ret, thres = cv2.threshold(grayimg, th, 255, 0)
 cv2.imshow("thres", thres)
+
+
 
 while (key != 10):
     key = cv2.waitKey()
@@ -78,68 +78,81 @@ while (key != 10):
         cv2.imshow("thres", thres)
 
 
+
 # -- count progress --
 im2, thresContours, hierarchy = cv2.findContours(thres, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-minErr = 10000000
-minDiff = np.zeros(img.shape, np.uint8)
-searchTestImg = np.zeros(img.shape, np.uint8)
+searchObjects = []
+objects = []
 
-print('thresContours len %s' %len(thresContours))
+objectBack = np.zeros(pattern.shape, np.uint8)
+objectBack[::] = 255
+usesIndex = []
+
+
+for pattern in patternObjects:
+
+    minErr = img.shape[0] * img.shape[1]
+    searchObj = np.zeros(img.shape, np.uint8)
+    minIndex = 0
+    i = 0
+
+    for cnt in thresContours :
+        area = cv2.contourArea(cnt)
+        if area > 500:
+            cntImg = np.zeros(pattern.shape, np.uint8)
+            cv2.drawContours(objectBack, [cnt], -1, (0, 0, 0), -1)
+            cv2.drawContours(cntImg, [cnt], -1, (255, 255, 255), -1)
+            objects.append(cntImg)
+            diff = cv2.absdiff(pattern, cntImg)
+            errPtCount = cv2.countNonZero(diff)
+            if errPtCount < minErr :
+                minErr = errPtCount
+                searchObj = cntImg
+                minIndex = i
+
+            i = i + 1
+
+    searchObjects.append(searchObj)
+    usesIndex.append(minIndex)
+
+# -- create confMatrix --
+confMatrix = np.zeros((len(objects), len(objects)))
+
+# add search data
+objNames = []
 i = 0
-for cnt in thresContours :
-    cntImg = np.zeros(sample.shape, np.uint8)
-    cv2.drawContours(cntImg, [thresContours[i]], -1, (255, 255, 255), -1)
-    diff = cv2.absdiff(testObject, cntImg)
-    errPtCount = cv2.countNonZero(diff)
-    print(errPtCount)
-    if errPtCount < minErr :
-        minDiff = diff
-        minErr = errPtCount
-        searchTestImg = cntImg
+for pattern in patternObjects:
+    diff = cv2.absdiff(pattern, searchObjects[i])
+
+    j = 0
+    for object in searchObjects:
+        if i == j:
+            confMatrix[i][i] = cv2.countNonZero(pattern)
+        else:
+            intersec = cv2.bitwise_and(diff, object)
+            ptCount = cv2.countNonZero(intersec)
+            confMatrix[i][j] = ptCount
+
+        j = j + 1
+
     i = i + 1
-#     cntImg = np.zeros(sample.shape, np.uint8)
-#     cv2.drawContours(cntImg, [cnt], -1, (255, 255, 255), -1)
-#     i = i + 1
-#     # cv2.imshow("cntImg %s" %i, cntImg)
-#
-print(minErr)
-cv2.imshow("minDiff", minDiff)
-cv2.imshow("searchTestImg", searchTestImg)
-cv2.waitKey()
+
+
+# add not search data
+i = 0
+for obj in objects:
+    objNames.append('Object %s' % i)
+
+    j = 0
+    for obj in objects:
+        intersec = cv2.bitwise_and(diff, object)
+        ptCount = cv2.countNonZero(intersec)
+        confMatrix[i][j] = ptCount
+        j = j + 1
+
+    i = i + 1
+
+printTable(confMatrix, objNames)
 
 
 
-
-
-
-
-
-# cv2.imshow("Edges", edges)
-#
-#
-# confMatrix = np.zeros((len(contours), len(contours)))
-# objNames = []
-#
-# i=0
-#
-#
-#
-#
-#
-#     confMatrix[i][i] = allPt
-#
-#     objNames.append('Object %s' %i)
-#     objName = 'Object %s' % i
-#     cv2.imshow(objNames[i], img)
-#     i = i + 1
-#
-#     print("allPt %s" % allPt)
-#     print("objName %s" %objName)
-#
-#
-# printTable(confMatrix, objNames)
-#
-# cv2.imshow("Sample mask", sample)
-# cv2.waitKey()
-#
-#
