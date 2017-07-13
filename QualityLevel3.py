@@ -149,10 +149,6 @@ for obji in objects:
 
     for objj in objects:
 
-        if i in usesIndex:
-
-
-
         if i == j:
             if i in usesIndex:
                 confMatrix[i][i] = cv2.countNonZero(patternObjects[0])
