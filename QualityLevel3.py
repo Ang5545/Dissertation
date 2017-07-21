@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-
+import ImgLoader as ld
 
 def getThreshold(th):
     grayimg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -24,14 +24,29 @@ def printTable(data, names):
         print(row_format.format(team, *row))
 
 
-imgPath = '/home/ange/Python/workplace/Dissertation/resources/img4/resizeImg.bmp'
-patternPath = '/home/ange/Python/workplace/Dissertation/resources/img4/sampleMask.bmp'
+def resizeImage(image, winHeight):
+    size = tuple(image.shape[1::-1])
+    ratio = size[0] / winHeight
+    height = int(size[0] // ratio)
+    width = int(size[1] // ratio)
+    result = cv2.resize(image, (height, width), interpolation = cv2.INTER_CUBIC)
+    return result
+
+projectDir = ld.getParamFromConfig('projectdir')
+imgPath = '%s/resources/img6/img.bmp' %projectDir
+patternPath = '%s/resources/img6/pattern.bmp' %projectDir
 
 pattern = cv2.imread(patternPath, 0)
 img = cv2.imread(imgPath, 3)
 
+# img = resizeImage(bigImg, 800)
+# resizePattern = resizeImage(pattern, 800)
+# cv2.imwrite('%s/resources/img6/img.JPG' %projectDir, resizeImage)
+# cv2.imwrite('%s/resources/img6/img.bmp' %projectDir, img)
+
 cv2.imshow("pattern", pattern)
 cv2.imshow("img", img)
+
 
 #  -- count sample pixels for all objects --
 edges = cv2.Canny(pattern, 100, 200)
@@ -48,27 +63,26 @@ for cnt in contours :
     patternObjects.append(cntImg)
 
 
-
-
 # -- segmentation --
 key = 0
 step = 1
-th = 200
+th = 105
 grayimg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 ret, thres = cv2.threshold(grayimg, th, 255, 0)
 cv2.imshow("thres", thres)
 
 
 
-while (key != 10):
+while (key != 13 | key != 10):
+
     key = cv2.waitKey()
     neddProcess = False
 
-    if (key == 82):
+    if (key == 82) | (key == 0):
         th = th + 1
         neddProcess = True
 
-    elif (key == 84):
+    elif (key == 84) | (key == 1):
         th = th - 1
         neddProcess = True
 
@@ -76,8 +90,6 @@ while (key != 10):
         grayimg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         ret, thres = cv2.threshold(grayimg, th, 255, 0)
         cv2.imshow("thres", thres)
-
-
 
 # -- count progress --
 im2, thresContours, hierarchy = cv2.findContours(thres, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -90,7 +102,6 @@ usesIndex = []
 
 
 for pattern in patternObjects:
-
     minErr = img.shape[0] * img.shape[1]
     searchObj = np.zeros(img.shape, np.uint8)
     minIndex = 0
@@ -98,10 +109,11 @@ for pattern in patternObjects:
 
     for cnt in thresContours :
         area = cv2.contourArea(cnt)
-        if area > 500:
+        if area > 700:
             cntImg = np.zeros(pattern.shape, np.uint8)
             cv2.drawContours(objectBack, [cnt], -1, (0, 0, 0), -1)
             cv2.drawContours(cntImg, [cnt], -1, (255, 255, 255), -1)
+
             objects.append(cntImg)
             diff = cv2.absdiff(pattern, cntImg)
             errPtCount = cv2.countNonZero(diff)
@@ -115,44 +127,107 @@ for pattern in patternObjects:
     searchObjects.append(searchObj)
     usesIndex.append(minIndex)
 
+
+objects.append(objectBack)
+patternObjects.append(patternBack)
+
+usesIndex.append(len(objects)-1)
+
+# patternObjects.append(patternBack)
+# searchObjects.append(objectBack)
+# usesIndex.append(len(patternObjects))
+
+
 # -- create confMatrix --
 confMatrix = np.zeros((len(objects), len(objects)))
-
-# add search data
 objNames = []
-i = 0
-for pattern in patternObjects:
-    diff = cv2.absdiff(pattern, searchObjects[i])
 
+i = 0
+for obji in objects:
+    objNames.append('Object %s' % i)
     j = 0
-    for object in searchObjects:
+
+    for objj in objects:
+
         if i == j:
-            confMatrix[i][i] = cv2.countNonZero(pattern)
+            if i in usesIndex:
+                confMatrix[i][i] = cv2.countNonZero(patternObjects[0])
+                del patternObjects[0]
+            else:
+                confMatrix[i][i] = 0
         else:
-            intersec = cv2.bitwise_and(diff, object)
-            ptCount = cv2.countNonZero(intersec)
-            confMatrix[i][j] = ptCount
+            if i in usesIndex:
+                print()
+            intersec = cv2.bitwise_and(obji, objj)
+            cv2.imshow("obji", obji)
+            cv2.imshow("objj", objj)
+            cv2.imshow("intersec", intersec)
+            print("i = %s" % i)
+            print("j = %s" % j)
+            print("-----------")
+
+
+            cv2.waitKey()
+
+
 
         j = j + 1
 
     i = i + 1
+
+
+
+# cv2.imshow("obj 1", objects[0])
+# cv2.imshow("obj 1", objects[1])
+# cv2.imshow("obj 1", objects[2])
+# cv2.waitKey()
+#
+#
+
+printTable(confMatrix, objNames)
+
+
+
+
+
+
+# # add search data
+# objNames = []
+# i = 0
+# for pattern in patternObjects:
+#     objNames.append('Object %s' % i)
+#     diff = cv2.absdiff(pattern, searchObjects[i])
+#
+#     j = 0
+#     for object in searchObjects:
+#         if i == j:
+#             confMatrix[i][i] = cv2.countNonZero(pattern)
+#         else:
+#             intersec = cv2.bitwise_and(diff, object)
+#             ptCount = cv2.countNonZero(intersec)
+#             confMatrix[i][j] = ptCount
+#
+#         j = j + 1
+#
+#     i = i + 1
 
 
 # add not search data
-i = 0
-for obj in objects:
-    objNames.append('Object %s' % i)
-
-    j = 0
-    for obj in objects:
-        intersec = cv2.bitwise_and(diff, object)
-        ptCount = cv2.countNonZero(intersec)
-        confMatrix[i][j] = ptCount
-        j = j + 1
-
-    i = i + 1
-
-printTable(confMatrix, objNames)
+# i = len(patternObjects)
+# for obj in objects:
+#     objNames.append('Object %s' % i)
+#
+#     j = len(patternObjects)
+#     for obj in objects:
+#         intersec = cv2.bitwise_and(diff, object)
+#         ptCount = cv2.countNonZero(intersec)
+#         confMatrix[i][j] = ptCount
+#         j = j + 1
+#
+#     i = i + 1
+#
+# print( len(objects) )
+# printTable(confMatrix, objNames)
 
 
 

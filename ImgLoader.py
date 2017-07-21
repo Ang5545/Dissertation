@@ -56,3 +56,11 @@ def getImages(parName):
         print("Images not found")
         exit()
     return imgs
+
+
+
+def getParamFromConfig(parName):
+    imageDirPath = __getImgPath__('config.ini', parName)
+    return imageDirPath
+
+
