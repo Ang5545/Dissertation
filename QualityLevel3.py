@@ -44,8 +44,8 @@ img = cv2.imread(imgPath, 3)
 # cv2.imwrite('%s/resources/img6/img.JPG' %projectDir, resizeImage)
 # cv2.imwrite('%s/resources/img6/img.bmp' %projectDir, img)
 
-cv2.imshow("pattern", pattern)
-cv2.imshow("img", img)
+# cv2.imshow("pattern", pattern)
+# cv2.imshow("img", img)
 
 
 #  -- count sample pixels for all objects --
@@ -73,16 +73,17 @@ cv2.imshow("thres", thres)
 
 
 
-while (key != 13 | key != 10):
+# while ( (key != 13) or (key != 10)):
+while key != 13 and  key != 10:
 
     key = cv2.waitKey()
     neddProcess = False
 
-    if (key == 82) | (key == 0):
+    if (key == 82) or (key == 0):
         th = th + 1
         neddProcess = True
 
-    elif (key == 84) | (key == 1):
+    elif (key == 84) or (key == 1):
         th = th - 1
         neddProcess = True
 
@@ -90,6 +91,7 @@ while (key != 13 | key != 10):
         grayimg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         ret, thres = cv2.threshold(grayimg, th, 255, 0)
         cv2.imshow("thres", thres)
+
 
 # -- count progress --
 im2, thresContours, hierarchy = cv2.findContours(thres, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -101,133 +103,240 @@ objectBack[::] = 255
 usesIndex = []
 
 
+# draw find contours and add to object collection
+for cnt in thresContours:
+    area = cv2.contourArea(cnt)
+    if area > 700:
+        cntImg = np.zeros(pattern.shape, np.uint8)
+        cv2.drawContours(objectBack, [cnt], -1, (0, 0, 0), -1)
+        cv2.drawContours(cntImg, [cnt], -1, (255, 255, 255), -1)
+        objects.append(cntImg)
+
+
+
+
+
+# associate object with patterns
 for pattern in patternObjects:
     minErr = img.shape[0] * img.shape[1]
     searchObj = np.zeros(img.shape, np.uint8)
     minIndex = 0
-    i = 0
+    index = 0
 
-    for cnt in thresContours :
-        area = cv2.contourArea(cnt)
-        if area > 700:
-            cntImg = np.zeros(pattern.shape, np.uint8)
-            cv2.drawContours(objectBack, [cnt], -1, (0, 0, 0), -1)
-            cv2.drawContours(cntImg, [cnt], -1, (255, 255, 255), -1)
+    for obj in objects:
+        diff = cv2.absdiff(pattern, obj)
+        errPtCount = cv2.countNonZero(diff)
+        if errPtCount < minErr:
+            minErr = errPtCount
+            searchObj = obj
+            minIndex = index
 
-            objects.append(cntImg)
-            diff = cv2.absdiff(pattern, cntImg)
-            errPtCount = cv2.countNonZero(diff)
-            if errPtCount < minErr :
-                minErr = errPtCount
-                searchObj = cntImg
-                minIndex = i
-
-            i = i + 1
+        index = index + 1
 
     searchObjects.append(searchObj)
     usesIndex.append(minIndex)
 
 
-objects.append(objectBack)
-patternObjects.append(patternBack)
 
+
+# add bacground images
+objects.append(objectBack)
+searchObjects.append(objectBack)
+
+patternObjects.append(patternBack)
 usesIndex.append(len(objects)-1)
 
-# patternObjects.append(patternBack)
-# searchObjects.append(objectBack)
-# usesIndex.append(len(patternObjects))
-
-
-# -- create confMatrix --
-confMatrix = np.zeros((len(objects), len(objects)))
-objNames = []
-
-i = 0
-for obji in objects:
-    objNames.append('Object %s' % i)
-    j = 0
-
-    for objj in objects:
-
-        if i == j:
-            if i in usesIndex:
-                confMatrix[i][i] = cv2.countNonZero(patternObjects[0])
-                del patternObjects[0]
-            else:
-                confMatrix[i][i] = 0
-        else:
-            if i in usesIndex:
-                print()
-            intersec = cv2.bitwise_and(obji, objj)
-            cv2.imshow("obji", obji)
-            cv2.imshow("objj", objj)
-            cv2.imshow("intersec", intersec)
-            print("i = %s" % i)
-            print("j = %s" % j)
-            print("-----------")
-
-
-            cv2.waitKey()
-
-
-
-        j = j + 1
-
-    i = i + 1
-
-
-
-# cv2.imshow("obj 1", objects[0])
-# cv2.imshow("obj 1", objects[1])
-# cv2.imshow("obj 1", objects[2])
-# cv2.waitKey()
-#
-#
-
-printTable(confMatrix, objNames)
 
 
 
 
 
 
-# # add search data
-# objNames = []
-# i = 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+cc = 0
+for obj in searchObjects:
+    cv2.imshow("searchObjects %s" % cc, obj)
+    cc = cc + 1
+
+cc = 0
+for obj in objects:
+    cv2.imshow("objects %s" % cc, obj)
+    cc = cc + 1
+
+
+print(usesIndex)
+
+
+
+    # for obj in objects:
+    #     diff = cv2.absdiff(pattern, obj)
+    #     errPtCount = cv2.countNonZero(diff)
+        # if errPtCount < minErr :
+        #     minErr = errPtCount
+        #     searchObj = cntImg
+        #     minIndex = i
+
+    #     i = i + 1
+    # searchObjects.append(searchObj)
+    # usesIndex.append(minIndex)
+    #
+
+# objects.append(objectBack)
+
+
+
+
+
+
+cv2.waitKey()
+
+
+
+
+
+
+
+
 # for pattern in patternObjects:
-#     objNames.append('Object %s' % i)
-#     diff = cv2.absdiff(pattern, searchObjects[i])
+#     minErr = img.shape[0] * img.shape[1]
+#     searchObj = np.zeros(img.shape, np.uint8)
+#     minIndex = 0
+#     i = 0
 #
-#     j = 0
-#     for object in searchObjects:
-#         if i == j:
-#             confMatrix[i][i] = cv2.countNonZero(pattern)
-#         else:
-#             intersec = cv2.bitwise_and(diff, object)
-#             ptCount = cv2.countNonZero(intersec)
-#             confMatrix[i][j] = ptCount
 #
-#         j = j + 1
 #
-#     i = i + 1
+#
+# objects.append(objectBack)
+# patternObjects.append(patternBack)
+#
+# usesIndex.append(len(objects)-1)
+#
+# # patternObjects.append(patternBack)
+# # searchObjects.append(objectBack)
+# # usesIndex.append(len(patternObjects))
+#
+#
+# # -- create confMatrix --
+# confMatrix = np.zeros((len(objects), len(objects)))
+# objNames = []
+#
 
-
-# add not search data
-# i = len(patternObjects)
-# for obj in objects:
-#     objNames.append('Object %s' % i)
 #
-#     j = len(patternObjects)
-#     for obj in objects:
-#         intersec = cv2.bitwise_and(diff, object)
-#         ptCount = cv2.countNonZero(intersec)
-#         confMatrix[i][j] = ptCount
-#         j = j + 1
+# #
+# # row = 0
+# # for obji in objects:
+# #     objNames.append('Object %s' % row)
+# #
+# #     cell = 0
+# #     for objj in objects:
+# #
+# #         if row == cell:
+# #             if row in usesIndex:
+# #                 confMatrix[cell][row] = cv2.countNonZero(patternObjects[0])
+# #                 del patternObjects[0]
+# #             else:
+# #                 confMatrix[cell][row] = 0
+# #         else:
+# #             print('row  %s'  %row)
+# #             print('cell %s' %cell)
+# #             print("-----------")
+# #
+# #             # cv2.imshow("obji", obji)
+# #             # cv2.imshow("objj", objj)
+# #             # cv2.waitKey()
+# #
+# #
+# #
+# #             confMatrix[cell][row] = cell
 #
-#     i = i + 1
 #
-# print( len(objects) )
-# printTable(confMatrix, objNames)
-
-
-
+#         #     if i in usesIndex:
+#         #         print()
+#         #     intersec = cv2.bitwise_and(obji, objj)
+#         #     cv2.imshow("obji", obji)
+#         #     cv2.imshow("objj", objj)
+#         #     cv2.imshow("intersec", intersec)
+#         #     print("i = %s" % i)
+#         #     print("j = %s" % j)
+#         #     print("-----------")
+#         #
+#         #
+#         #     cv2.waitKey()
+#
+#
+#
+#
+#
+# #         cell = cell + 1
+# #
+# #     row = row + 1
+# #
+# # cv2.waitKey()
+#
+# # cv2.imshow("obj 1", objects[0])
+# # cv2.imshow("obj 1", objects[1])
+# # cv2.imshow("obj 1", objects[2])
+# # cv2.waitKey()
+# #
+# #
+#
+# # printTable(confMatrix, objNames)
+#
+#
+#
+#
+#
+#
+# # # add search data
+# # objNames = []
+# # i = 0
+# # for pattern in patternObjects:
+# #     objNames.append('Object %s' % i)
+# #     diff = cv2.absdiff(pattern, searchObjects[i])
+# #
+# #     j = 0
+# #     for object in searchObjects:
+# #         if i == j:
+# #             confMatrix[i][i] = cv2.countNonZero(pattern)
+# #         else:
+# #             intersec = cv2.bitwise_and(diff, object)
+# #             ptCount = cv2.countNonZero(intersec)
+# #             confMatrix[i][j] = ptCount
+# #
+# #         j = j + 1
+# #
+# #     i = i + 1
+#
+#
+# # add not search data
+# # i = len(patternObjects)
+# # for obj in objects:
+# #     objNames.append('Object %s' % i)
+# #
+# #     j = len(patternObjects)
+# #     for obj in objects:
+# #         intersec = cv2.bitwise_and(diff, object)
+# #         ptCount = cv2.countNonZero(intersec)
+# #         confMatrix[i][j] = ptCount
+# #         j = j + 1
+# #
+# #     i = i + 1
+# #
+# # print( len(objects) )
+# # printTable(confMatrix, objNames)
+#
+#
+#
