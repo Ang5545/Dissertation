@@ -147,35 +147,129 @@ patternObjects.append(patternBack)
 usesIndex.append(len(objects)-1)
 
 
+# -- create confMatrix --
+confMatrix = np.zeros((len(objects), len(objects)))
+objNames = []
+pttrnCnt = 0
+pttrnCnt2 = 0
+pttrnCnt3 = 0
+
+row = 0
+for rowObj in objects:
+    objNames.append('Object %s' % row)
+
+    diff = np.zeros(img.shape, np.uint8)
+    if row in usesIndex:
+        diff = cv2.absdiff(rowObj, patternObjects[pttrnCnt2])
+        pttrnCnt2 = pttrnCnt2 + 1
+    else:
+        diff = rowObj
+
+    cv2.imshow("diff", diff)
+
+    cell = 0
+    for cellObj in objects:
+        print('row %s' %row)
+        print('cell %s' % cell)
+
+        if row == cell:
+            if row in usesIndex:
+                confMatrix[cell][row] = cv2.countNonZero(patternObjects[pttrnCnt])
+                pttrnCnt = pttrnCnt + 1
+            else :
+                confMatrix[cell][row] = 0
+        else:
+            intersec = cv2.bitwise_and(diff, cellObj)
+            ptCount = cv2.countNonZero(intersec)
+            confMatrix[cell][row] = ptCount
+
+        cv2.waitKey()
+        print('--------------')
+
+        cell = cell + 1
+    # else:
+    #     diff = cv2.absdiff(rowObj, patternObjects[pttrnCnt3])
+    #     pttrnCnt3 = pttrnCnt3 + 1
+    #
+    #     cv2.imshow("diff", diff)
+    #
+    #     cell = 0
+    #     for cellObj in objects:
+    #         if row == cell:
+    #             confMatrix[cell][row] = 0
+    #         else:
+    #             intersec = cv2.bitwise_and(rowObj, cellObj)
+    #             ptCount = cv2.countNonZero(intersec)
+    #             confMatrix[cell][row] = ptCount
+    #
+    #             print('row %s' %row)
+    #             print('cell %s' %cell)
+    #
+    #             cv2.imshow("rowObj", rowObj)
+    #             cv2.imshow("cellObj", cellObj)
+    #             cv2.imshow("intersec", intersec)
+    #             cv2.waitKey()
+    #
+    #         cell = cell + 1
+
+    row = row + 1
 
 
 
 
 
+    # cell = 0
+    # pttrnCnt2 = 0
+    # for cellObj in objects:
+    #
+    #     if row == cell:
+    #         if row in usesIndex:
+    #             confMatrix[cell][row] = cv2.countNonZero(patternObjects[pttrnCnt])
+    #             pttrnCnt = pttrnCnt + 1
+    #         else:
+    #             confMatrix[cell][row] = 0
+    #     else :
+    #         print('row %s' % row)
+    #         print('cell %s' % cell)
+    #
+    #         if row in usesIndex:
+    #             # not corect segmentation pixeld
+    #             diff = cv2.absdiff(rowObj, patternObjects[pttrnCnt2])
+    #
+    #             cv2.imshow("diff", diff)
+    #             cv2.imshow("pattern ", patternObjects[pttrnCnt2])
+    #             pttrnCnt2 = pttrnCnt2 + 1
+    #
+    #         cv2.imshow("objects row ", rowObj)
+    #         cv2.imshow("objects cell ", cellObj)
+    #         cv2.waitKey()
+    #         print('----------------')
+    #
+    #     cell = cell + 1
+    #
+    # row = row + 1
+
+
+printTable(confMatrix, objNames)
 
 
 
 
 
-
-
-
-
-
-
-
-
+# cc = 0
+# for obj in searchObjects:
+#     cv2.imshow("searchObjects %s" % cc, obj)
+#     cc = cc + 1
+#
+# cc = 0
+# for obj in objects:
+#     cv2.imshow("objects %s" % cc, obj)
+#     cc = cc + 1
 
 cc = 0
-for obj in searchObjects:
-    cv2.imshow("searchObjects %s" % cc, obj)
+for obj in patternObjects:
+    cv2.imshow("patternObjects %s" % cc, obj)
     cc = cc + 1
-
-cc = 0
-for obj in objects:
-    cv2.imshow("objects %s" % cc, obj)
-    cc = cc + 1
-
 
 print(usesIndex)
 
