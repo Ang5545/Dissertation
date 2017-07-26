@@ -90,7 +90,7 @@ while key != 13 and  key != 10:
     if (neddProcess) :
         grayimg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         ret, thres = cv2.threshold(grayimg, th, 255, 0)
-        cv2.imshow("thres", thres)
+        # cv2.imshow("thres", thres)
 
 
 # -- count progress --
@@ -147,6 +147,15 @@ patternObjects.append(patternBack)
 usesIndex.append(len(objects)-1)
 
 
+
+cc = 0
+for obj in objects:
+    cv2.imshow("Object %s" % cc, obj)
+    cc = cc + 1
+
+
+
+
 # -- create confMatrix --
 confMatrix = np.zeros((len(objects), len(objects)))
 objNames = []
@@ -165,52 +174,38 @@ for rowObj in objects:
     else:
         diff = rowObj
 
-    cv2.imshow("diff", diff)
+    # cv2.imshow("diff", diff)
 
     cell = 0
     for cellObj in objects:
-        print('row %s' %row)
-        print('cell %s' % cell)
+        print('row  %s' %row)
+        print('cell %s' %cell)
 
         if row == cell:
             if row in usesIndex:
-                confMatrix[cell][row] = cv2.countNonZero(patternObjects[pttrnCnt])
+                confMatrix[row][cell] = cv2.countNonZero(patternObjects[pttrnCnt])
+                cv2.imshow("pttrnCnt", patternObjects[pttrnCnt])
+                print('pattern count')
+                print('ptCount %s' %cv2.countNonZero(patternObjects[pttrnCnt]))
                 pttrnCnt = pttrnCnt + 1
             else :
-                confMatrix[cell][row] = 0
+                confMatrix[row][cell] = 0
+                cv2.imshow("pttrnCnt", np.zeros(img.shape, np.uint8))
+                print('its null')
+                print('ptCount %s' %0)
+
         else:
             intersec = cv2.bitwise_and(diff, cellObj)
             ptCount = cv2.countNonZero(intersec)
-            confMatrix[cell][row] = ptCount
+            confMatrix[row][cell] = ptCount
+            cv2.imshow("pttrnCnt", intersec)
+            print('intersec')
+            print('ptCount %s' %ptCount)
 
-        cv2.waitKey()
         print('--------------')
+        cv2.waitKey()
 
         cell = cell + 1
-    # else:
-    #     diff = cv2.absdiff(rowObj, patternObjects[pttrnCnt3])
-    #     pttrnCnt3 = pttrnCnt3 + 1
-    #
-    #     cv2.imshow("diff", diff)
-    #
-    #     cell = 0
-    #     for cellObj in objects:
-    #         if row == cell:
-    #             confMatrix[cell][row] = 0
-    #         else:
-    #             intersec = cv2.bitwise_and(rowObj, cellObj)
-    #             ptCount = cv2.countNonZero(intersec)
-    #             confMatrix[cell][row] = ptCount
-    #
-    #             print('row %s' %row)
-    #             print('cell %s' %cell)
-    #
-    #             cv2.imshow("rowObj", rowObj)
-    #             cv2.imshow("cellObj", cellObj)
-    #             cv2.imshow("intersec", intersec)
-    #             cv2.waitKey()
-    #
-    #         cell = cell + 1
 
     row = row + 1
 
@@ -218,37 +213,8 @@ for rowObj in objects:
 
 
 
-    # cell = 0
-    # pttrnCnt2 = 0
-    # for cellObj in objects:
-    #
-    #     if row == cell:
-    #         if row in usesIndex:
-    #             confMatrix[cell][row] = cv2.countNonZero(patternObjects[pttrnCnt])
-    #             pttrnCnt = pttrnCnt + 1
-    #         else:
-    #             confMatrix[cell][row] = 0
-    #     else :
-    #         print('row %s' % row)
-    #         print('cell %s' % cell)
-    #
-    #         if row in usesIndex:
-    #             # not corect segmentation pixeld
-    #             diff = cv2.absdiff(rowObj, patternObjects[pttrnCnt2])
-    #
-    #             cv2.imshow("diff", diff)
-    #             cv2.imshow("pattern ", patternObjects[pttrnCnt2])
-    #             pttrnCnt2 = pttrnCnt2 + 1
-    #
-    #         cv2.imshow("objects row ", rowObj)
-    #         cv2.imshow("objects cell ", cellObj)
-    #         cv2.waitKey()
-    #         print('----------------')
-    #
-    #     cell = cell + 1
-    #
-    # row = row + 1
-
+cv2.waitKey()
+print("end")
 
 printTable(confMatrix, objNames)
 
@@ -266,12 +232,10 @@ printTable(confMatrix, objNames)
 #     cv2.imshow("objects %s" % cc, obj)
 #     cc = cc + 1
 
-cc = 0
-for obj in patternObjects:
-    cv2.imshow("patternObjects %s" % cc, obj)
-    cc = cc + 1
-
-print(usesIndex)
+# cc = 0
+# for obj in patternObjects:
+#     # cv2.imshow("patternObjects %s" % cc, obj)
+#     cc = cc + 1
 
 
 
@@ -295,7 +259,7 @@ print(usesIndex)
 
 
 
-cv2.waitKey()
+
 
 
 
