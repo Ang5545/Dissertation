@@ -189,12 +189,6 @@ def createConfMatrix(img, pattern):
 
 
 
-
-
-
-
-
-
 # ===================================================================================================
 
 
@@ -208,6 +202,22 @@ pattern = cv2.imread(patternPath, 0)
 confMatrix = createConfMatrix(img, pattern)
 printTable(confMatrix)
 
+print('--------------------------------------')
+
+# расчет критериев сигментации
+size = confMatrix.shape[0]
+i = 0
+while i < size :
+    j = 0
+    Cik = 0
+
+    while j < size :
+        if i == j:
+            Cik = confMatrix[i][j]
+        j = j + 1
+    print('Cik = %s' %Cik)
+
+    i = i + 1
 
 
 
