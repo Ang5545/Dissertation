@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 
+
 def createSegmentingImg(img, mask):
     maskInv = cv2.bitwise_not(mask)
 
