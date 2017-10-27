@@ -6,7 +6,9 @@ import sys
 from matplotlib import pyplot
 from SRM import SRM
 
-from UnionFind import UnionFind
+from scipy.misc import imread
+from matplotlib import pyplot
+
 
 def repaint(img, thres):
     ret, result = cv2.threshold(img, thres, 255, cv2.THRESH_BINARY_INV)
@@ -17,6 +19,16 @@ def repaint(img, thres):
 
 print('----------------------------------------------------------------------')
 
+
+im = imread("/home/ange/Desktop/images/original.jpg")
+
+srm = SRM(im, 256)
+segmented = srm.run()
+
+pyplot.imshow(segmented/256)
+pyplot.show()
+
+'''
 # -- load image -
 imgPath = '/home/ange/Desktop/images/original.jpg'
 img = cv2.imread(imgPath, 0)
@@ -64,3 +76,4 @@ while key != 13 and key != 10:
 
 
 # cv2.waitKey()
+'''
