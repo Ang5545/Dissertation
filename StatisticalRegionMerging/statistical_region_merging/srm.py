@@ -1,10 +1,14 @@
 import numpy
 
-from UnionFind import UnionFind
+from StatisticalRegionMerging.statistical_region_merging.unionfind import UnionFind
+
+# TEST
 
 
 class SRM:
     def __init__(self, image, Q=32.0):
+
+
         self._height = image.shape[0]
         self._width = image.shape[1]
         if image.ndim == 3:
@@ -38,8 +42,8 @@ class SRM:
         self._data = numpy.empty([n, depth + 2])
         self._sizes = numpy.ones(n)
 
-        for i in xrange(height):
-            for j in xrange(width):
+        for i in range(height):
+            for j in range(width):
                 idx = i * width + j
                 uf[idx]
                 self._data[idx, 0:depth] = img[idx]
@@ -66,8 +70,8 @@ class SRM:
         width = self._width
 
         # using a C4-connectivity
-        for i in xrange(height - 1):
-            for j in xrange(width - 1):
+        for i in range(height - 1):
+            for j in range(width - 1):
                 idx = i * width + j
                 # left
                 pairs.append((idx, i * width + j + 1))
@@ -125,8 +129,8 @@ class SRM:
         width = self._width
         smallregion = self._smallregion
 
-        for i in xrange(self._height):
-            for j in xrange(1, self._width):
+        for i in range(self._height):
+            for j in range(1, self._width):
                 idx = i * width + j
                 r1 = self._uf[idx]
                 r2 = self._uf[idx - 1]
@@ -144,8 +148,8 @@ class SRM:
         uf = self._uf
         data = self._data[:, 0:depth]
         out = numpy.empty([self._n, depth])
-        for i in xrange(height):
-            for j in xrange(1, width):
+        for i in range(height):
+            for j in range(1, width):
                 idx = i * width + j
                 r1 = uf[idx]
                 out[idx] = data[r1]
@@ -165,8 +169,8 @@ class SRM:
         uf = self._uf
         data = self._data[:, 0:depth]
         out = numpy.empty(self._n)
-        for i in xrange(height):
-            for j in xrange(1, width):
+        for i in range(height):
+            for j in range(1, width):
                 idx = i * width + j
                 r1 = uf[idx]
                 if r1 in classes:
@@ -177,21 +181,21 @@ class SRM:
 
         return classes, out.reshape(height, width)
 
-    def exploded(self):
-        print("exploded")
-
-        out0 = numpy.empty([n, depth])
-        out = self._data
-        expl = numpy.zeros([2 * self._height, 2 * self._width, self._depth])
-
-        for i in xrange(self._height):
-            for j in xrange(1, self._width):
-                r1 = self._uf[r]
-                x = int(self._more[r1, 0])
-                y = int(self._more[r1, 1])
-                expl[i + x, j + y] = out[r]
-
-        return expl
+    # def exploded(self):
+    #     print("exploded")
+    #
+    #     out0 = numpy.empty([n, depth])
+    #     out = self._data
+    #     expl = numpy.zeros([2 * self._height, 2 * self._width, self._depth])
+    #
+    #     for i in range(self._height):
+    #         for j in range(1, self._width):
+    #             r1 = self._uf[r]
+    #             x = int(self._more[r1, 0])
+    #             y = int(self._more[r1, 1])
+    #             expl[i + x, j + y] = out[r]
+    #
+    #     return expl
 
 
 if __name__ == "__main__":

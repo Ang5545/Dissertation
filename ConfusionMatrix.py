@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
-import ImgLoader as ld
+
+from utils import ImgLoader as ld
+
 
 def getThreshold(th):
     grayimg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
