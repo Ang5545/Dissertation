@@ -10,7 +10,7 @@ img = cv2.imread(imgPath, 3)
 
 srm = SRM(img, 32)
 segmented = srm.run()
-cv2.imshow("segmented", segmented / 256)
+# cv2.imshow("segmented", segmented / 256)
 
 
 # i = 1

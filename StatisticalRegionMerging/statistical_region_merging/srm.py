@@ -45,6 +45,7 @@ class SRM:
         for i in range(height):
             for j in range(width):
                 idx = i * width + j
+
                 uf[idx]
                 self._data[idx, 0:depth] = img[idx]
                 self._data[idx, depth] = i
@@ -169,8 +170,14 @@ class SRM:
         uf = self._uf
         data = self._data[:, 0:depth]
         out = numpy.empty(self._n)
+
+
+
+
         for i in range(height):
-            for j in range(1, width):
+            for j in range(0, width):
+
+
                 idx = i * width + j
                 r1 = uf[idx]
                 if r1 in classes:
