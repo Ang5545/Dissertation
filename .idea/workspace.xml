@@ -2,15 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15cf1479-77e5-4e36-8c81-7f1a8b97fae3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SrmNew/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SrmNew/srm.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SrmNew/test.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SrmNew/unionfind.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SrmNew/srm2.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/resources/applePears/1/segmented/4_0_2.png" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SrmNew/srm.py" afterPath="$PROJECT_DIR$/SrmNew/srm.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SrmNew/test.py" afterPath="$PROJECT_DIR$/SrmNew/test.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SrmNew/unionfind.py" afterPath="$PROJECT_DIR$/SrmNew/unionfind.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StatisticalRegionMerging/run.py" afterPath="$PROJECT_DIR$/StatisticalRegionMerging/run.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StatisticalRegionMerging/statistical_region_merging/srm.py" afterPath="$PROJECT_DIR$/StatisticalRegionMerging/statistical_region_merging/srm.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/segmentation/CheckStoredData.py" afterPath="$PROJECT_DIR$/segmentation/CheckStoredData.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -25,20 +24,44 @@
       <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SrmNew/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" column="5" lean-forward="false" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
+            <state relative-caret-position="75">
+              <caret line="5" column="68" lean-forward="false" selection-start-line="5" selection-start-column="45" selection-end-line="5" selection-end-column="68" />
               <folding>
-                <element signature="e#0#26#0" expanded="true" />
+                <element signature="e#29#56#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="srm.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="srm.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SrmNew/srm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="106" column="0" lean-forward="true" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
+            <state relative-caret-position="-1229">
+              <caret line="34" column="20" lean-forward="true" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="20" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="srm2.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/SrmNew/srm2.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="465">
+              <caret line="73" column="50" lean-forward="false" selection-start-line="73" selection-start-column="50" selection-end-line="73" selection-end-column="50" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="unionfind.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SrmNew/unionfind.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="450">
+              <caret line="30" column="0" lean-forward="true" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -47,8 +70,8 @@
       <file leaf-file-name="run.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/StatisticalRegionMerging/run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="11" column="16" lean-forward="true" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -59,8 +82,8 @@
       <file leaf-file-name="srm.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/StatisticalRegionMerging/statistical_region_merging/srm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2492">
-              <caret line="210" column="33" lean-forward="true" selection-start-line="210" selection-start-column="33" selection-end-line="210" selection-end-column="33" />
+            <state relative-caret-position="405">
+              <caret line="27" column="27" lean-forward="false" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="27" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -79,22 +102,9 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>__getImgPath__</find>
-      <find>patter</find>
-      <find>wri</find>
-      <find>back</find>
-      <find>drawContours</find>
-      <find>confMatrix</find>
-      <find>intersec</find>
-      <find>its null</find>
-      <find>obj</find>
-      <find>objNames</find>
-      <find>wa</find>
-      <find>cann</find>
       <find>edges</find>
       <find>pri</find>
       <find>while</find>
-      <find>print</find>
       <find>canny</find>
       <find>findContours</find>
       <find>bitw</find>
@@ -107,6 +117,21 @@
       <find>(254, 0, 177)</find>
       <find>max</find>
       <find>diff</find>
+      <find>uf.</find>
+      <find>uf</find>
+      <find>bucketSort</find>
+      <find>mer</find>
+      <find>merge</find>
+      <find>_mergePredicate</find>
+      <find>uint</find>
+      <find>np.</find>
+      <find>_mergeRegions</find>
+      <find>predica</find>
+      <find>out</find>
+      <find>pairs</find>
+      <find>Rmpair</find>
+      <find>* n</find>
+      <find>print</find>
     </findStrings>
     <replaceStrings>
       <replace>range</replace>
@@ -145,10 +170,12 @@
         <option value="$PROJECT_DIR$/segmentation/Yasnoff.py" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/segmentation/CheckStoredData.py" />
-        <option value="$PROJECT_DIR$/StatisticalRegionMerging/statistical_region_merging/srm.py" />
+        <option value="$PROJECT_DIR$/SrmNew/unionfind.py" />
         <option value="$PROJECT_DIR$/SrmNew/test.py" />
-        <option value="$PROJECT_DIR$/StatisticalRegionMerging/run.py" />
         <option value="$PROJECT_DIR$/SrmNew/srm.py" />
+        <option value="$PROJECT_DIR$/StatisticalRegionMerging/run.py" />
+        <option value="$PROJECT_DIR$/StatisticalRegionMerging/statistical_region_merging/srm.py" />
+        <option value="$PROJECT_DIR$/SrmNew/srm2.py" />
       </list>
     </option>
   </component>
@@ -175,8 +202,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -186,6 +211,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Dissertation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dissertation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dissertation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="utils" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -251,6 +290,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -640,7 +681,14 @@
       <option name="project" value="LOCAL" />
       <updated>1510043386497</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="work commit">
+      <created>1510073935068</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1510073935068</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -682,13 +730,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/QualityLevel2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/TestTable.py" />
     <entry file="file://$PROJECT_DIR$/QualityLevel2.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -810,13 +851,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ConfusionMatrix.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3075">
-          <caret line="208" column="0" lean-forward="false" selection-start-line="208" selection-start-column="0" selection-end-line="221" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/applePears/1/template.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -870,17 +904,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SrmNew/unionfind.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-433">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/SrmNew/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -895,7 +923,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -903,7 +930,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="243">
           <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -911,7 +937,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="243">
           <caret line="2268" column="0" lean-forward="false" selection-start-line="2268" selection-start-column="0" selection-end-line="2268" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -919,9 +944,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="21" lean-forward="false" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -929,7 +951,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="287">
           <caret line="42" column="32" lean-forward="false" selection-start-line="42" selection-start-column="11" selection-end-line="42" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -938,16 +959,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/StatisticalRegionMerging/run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="16" lean-forward="true" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -961,37 +972,75 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/StatisticalRegionMerging/statistical_region_merging/unionfind.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="15" lean-forward="false" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="15" />
+        <state relative-caret-position="735">
+          <caret line="49" column="23" lean-forward="false" selection-start-line="49" selection-start-column="17" selection-end-line="49" selection-end-column="23" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ConfusionMatrix.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="163" column="46" lean-forward="false" selection-start-line="163" selection-start-column="34" selection-end-line="163" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StatisticalRegionMerging/run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/StatisticalRegionMerging/statistical_region_merging/srm.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2492">
-          <caret line="210" column="33" lean-forward="true" selection-start-line="210" selection-start-column="33" selection-end-line="210" selection-end-column="33" />
+        <state relative-caret-position="405">
+          <caret line="27" column="27" lean-forward="false" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="27" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/SrmNew/unionfind.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="30" column="0" lean-forward="true" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/SrmNew/test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="5" lean-forward="false" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
+        <state relative-caret-position="75">
+          <caret line="5" column="68" lean-forward="false" selection-start-line="5" selection-start-column="45" selection-end-line="5" selection-end-column="68" />
           <folding>
-            <element signature="e#0#26#0" expanded="true" />
+            <element signature="e#29#56#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/SrmNew/srm.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="106" column="0" lean-forward="true" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="-1229">
+          <caret line="34" column="20" lean-forward="true" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SrmNew/srm2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="73" column="50" lean-forward="false" selection-start-line="73" selection-start-column="50" selection-end-line="73" selection-end-column="50" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

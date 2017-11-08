@@ -4,7 +4,7 @@ import cv2
 
 from StatisticalRegionMerging.statistical_region_merging.srm import SRM
 
-imgPath = "/home/ange/Dropbox/Учеба/Опыты/Примеры сегментации/original.png"
+imgPath = '/home/ange/Desktop/cv_experiments/segmentation_test_50x50.png'
 img = cv2.imread(imgPath, 3)
 
 

@@ -51,6 +51,9 @@ class SRM:
                 self._data[idx, depth] = i
                 self._data[idx, depth] = j
 
+        print(self._data)
+
+
     def segmentation(self):
         pairs = self.pairs()
         print("segmentation")
