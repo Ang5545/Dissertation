@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15cf1479-77e5-4e36-8c81-7f1a8b97fae3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SrmNew/srm2.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/resources/applePears/1/segmented/4_0_2.png" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SrmNew/srm.py" afterPath="$PROJECT_DIR$/SrmNew/srm.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SrmNew/test.py" afterPath="$PROJECT_DIR$/SrmNew/test.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SrmNew/unionfind.py" afterPath="$PROJECT_DIR$/SrmNew/unionfind.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StatisticalRegionMerging/run.py" afterPath="$PROJECT_DIR$/StatisticalRegionMerging/run.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StatisticalRegionMerging/statistical_region_merging/srm.py" afterPath="$PROJECT_DIR$/StatisticalRegionMerging/statistical_region_merging/srm.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -688,7 +681,14 @@
       <option name="project" value="LOCAL" />
       <updated>1510073935068</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="work commit">
+      <created>1510155166521</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1510155166521</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="ToolWindowManager">
