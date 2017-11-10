@@ -2,9 +2,13 @@ class UnionFind:
 
 
     def __init__(self, n):
+        parent = [0] * n
 
+        for k in range(0, n):
+           parent[k] = k
+
+        self._parent = parent
         self._rank = [0] * n
-        self._parent = [0] * n
 
 
     def find(self, k):

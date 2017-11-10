@@ -1,5 +1,9 @@
 import numpy as np
 import math
+
+from jinja2.nodes import UnaryExpr
+from sympy.ntheory.factor_ import primenu
+
 from SrmNew.unionfind import UnionFind
 
 import cv2
@@ -27,21 +31,25 @@ class SRM:
         self._smallregion = (int)(0.001 * n) # small regions are less than 0.1 % of image pixels
 
 
-        self._logdelta =  2.0 * math.log(6.0 * n)
+        self._logdelta =  2 * math.log(6 * n)
         self._uf = UnionFind(n)
+
+        self._pixels = image.reshape((n, image.shape[2])).astype('int16')
+
+        self._g = 256 #color chanels count
 
 
     def run(self):
 
         rmpairs = self._getRmPairs()
         sortRmPairs = self.__bucketSort(rmpairs)
-        segmentedPixels = self._segmentation(sortRmPairs)
 
-        # for i in range(0, 60):
-        #     rmpair = rmpairs[i]
-        #     print('rmpair {0}'.format(rmpair))
+        result = self._segmentation(sortRmPairs)
 
-        return np.zeros((self._height, self._width, 3), np.uint8)
+
+        # result = self._getImage(segmentedPixels)
+
+        return result
 
     def _getRmPairs(self):
         rmPairs = []
@@ -50,8 +58,8 @@ class SRM:
         width = self._width
         img = self._img
         n = self._n
+        pixels = self._pixels
 
-        pixels = img.reshape((n, img.shape[2])).astype('int16')
         i = 0
 
         # -- using a C4-connectivity --
@@ -59,7 +67,7 @@ class SRM:
         # for all pixels except max height and max width border lines
         for i in range(height - 1):
             for j in range(width - 1):
-                idx = i + j
+                idx = i * width + j
                 pt = pixels[idx]
 
                 pt_left = pixels[idx + 1]
@@ -71,28 +79,24 @@ class SRM:
                 diff_bellow = self._getMaxColorDiff(pt, pt_bellow)
                 rmPairs.append(Rmpair(idx, idx + width, diff_bellow))
 
-                if ((i == 2 and j == 0) or (i == 2 and j == 1)):
-                    print('origin = {0}'.format(pt))
-                    print('left = {0}'.format(pt_left))
-                    print('bellow = {0}'.format(pt_bellow))
-
-
         # for max height border line
         for i in range(width - 1):
-            idx = ((height-1) * width)  + i
+            idx = ((height-1) * width) + i
             pt = pixels[idx]
+
             pt_left = pixels[idx + 1]
             diff_left = self._getMaxColorDiff(pt, pt_left)
             rmPairs.append(Rmpair(idx, idx + 1, diff_left))
 
+
         # for max width border line
-        for i in range(height - 1):
-            idx = width * i - 1
+        for i in range(height - 2):
+            idx = (width - 1) + (i * width)
             pt = pixels[idx]
+
             pt_bellow = pixels[idx + width]
             diff_bellow = self._getMaxColorDiff(pt, pt_bellow)
             rmPairs.append(Rmpair(idx, idx + width, diff_bellow))
-
 
         return rmPairs
 
@@ -110,18 +114,48 @@ class SRM:
 
 
     def _segmentation(self, rmpairs):
+        pixels = self._pixels
+        n = self._n
+        height = self._height
+        width = self._width
+
+        uf = UnionFind(len(rmpairs))
+        nn = [1] * n
 
         for rmpair in rmpairs:
             reg_1 = rmpair.get_r1()
             reg_2 = rmpair.get_r2()
-            diff =  rmpair.get_diff()
 
-            # print('reg_1 = {0}; reg_2 = {1}; diff = {2}'.format(reg_1, reg_2, diff))
+            c_1 = uf.find(reg_1)
+            c_2 = uf.find(reg_2)
 
-            # print('reg_1 = {0}; reg_2 = {1}'.format(reg_1, reg_2))
+            if (c_1 != c_2) and self._mergePredicate(c_1, c_2, nn[c_1], nn[c_2]):
+                reg = uf.unionRoot(c_1, c_2)
+                nreg = nn[c_1] + nn[c_2]
 
-            # c_1 = UF.Find(reg1);
-            # c_1 = UF.Find(reg2);
+                pt_1 = pixels[c_1]
+                pt_2 = pixels[c_2]
+
+                b_avg = (nn[c_1] * pt_1[0] + nn[c_2] * pt_2[0]) / nreg
+                g_avg = (nn[c_1] * pt_1[1] + nn[c_2] * pt_2[1]) / nreg
+                r_avg = (nn[c_1] * pt_1[2] + nn[c_2] * pt_2[2]) / nreg
+
+                nn[reg] = nreg
+                pixels[reg] = [b_avg, g_avg, r_avg]
+
+
+        # output result
+        img = np.zeros((height, width, 3), np.uint8)
+
+        for i in range(height):
+            for j in range(width):
+                idx = i * width + j
+                indexb = uf.find(idx) # Get the root index
+
+                pt = pixels[indexb]
+                img[i, j] = pt
+
+        return img
 
 
     def __bucketSort(self, rmpairs, bucketSize=256):
@@ -190,6 +224,44 @@ class SRM:
 
         return array
 
+
+    def _mergePredicate(self, c_1, c_2, nn_c_1, nn_c_2):
+        pixels = self._pixels
+        logdelta = self._logdelta
+        g = self._g
+        n = self._n
+        q = self._q
+
+        pt_1 = pixels[c_1]
+        pt_2 = pixels[c_2]
+
+        dB = (pt_1[0] - pt_2[0]) ** 2
+        dG = (pt_1[1] - pt_2[1]) ** 2
+        dR = (pt_1[2] - pt_2[2]) ** 2
+
+        logreg_1 = min(g, nn_c_1) * math.log(1 + nn_c_1)
+        logreg_2 = min(g, nn_c_2) * math.log(1 + nn_c_2)
+
+        dev_1 = ((g * g) / (2 * q * nn_c_1)) * (logreg_1 + logdelta)
+        dev_2 = ((g * g) / (2 * q * nn_c_2)) * (logreg_2 + logdelta)
+
+        dev = dev_1 + dev_2
+        result = ((dB < dev) and (dG < dev) and (dR < dev))
+
+        return result
+
+
+    def _getImage(self, pixels):
+        height = self._height
+        width = self._width
+        img = np.zeros((height, width, 3), np.uint8)
+
+        for i in range(height):
+            for j in range(width):
+             idx = i * width + j
+             img[i, j] = pixels[idx]
+
+        return img
 
 
 class Rmpair:
