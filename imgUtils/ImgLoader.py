@@ -35,8 +35,7 @@ def __getImgPath__(configFile, parName):
         return input('Input image dir path: ')
 
 
-def getImages(parName):
-    imageDirPath = __getImgPath__('config.ini', parName)
+def getImages(imageDirPath):
     print('imageDirPath = ' + imageDirPath)
 
     types = ('*.jpeg', '*.JPG', '*.gif', '*.png', '*.jpg', '*.bmp')

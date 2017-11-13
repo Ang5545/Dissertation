@@ -1,6 +1,9 @@
-import numpy as np
 import math
-from SrmNew.unionfind import UnionFind
+
+import numpy as np
+
+from segmentation.srm import UnionFind
+
 
 class SRM:
 
@@ -256,8 +259,8 @@ class SRM:
 
         self._nn[reg] = nreg
         self._red_avg[reg] = ravg
-        self.green_avg[reg] = gavg
-        self.blue_avg[reg] = bavg
+        self._green_avg[reg] = gavg
+        self._blue_avg[reg] = bavg
 
 
     def _outPutSegmentation(self):

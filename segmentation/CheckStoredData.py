@@ -1,5 +1,6 @@
 import cv2
-from segmentation import Yasnoff as yasn
+
+from segmentationQuality import Yasnoff as yasn
 
 templatePath = '/home/ange/Python/workplace/Dissertation/resources/applePears/1/template.png'
 segmPath = '/home/ange/Python/workplace/Dissertation/resources/applePears/1/segmented/4_0_2.png'

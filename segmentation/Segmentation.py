@@ -1,13 +1,7 @@
 import cv2
-import segmentation.Yasnoff as ql
-import numpy as np
-
-import sys
-from matplotlib import pyplot
 from SRM import SRM
-
-from scipy.misc import imread
 from matplotlib import pyplot
+from scipy.misc import imread
 
 
 def repaint(img, thres):

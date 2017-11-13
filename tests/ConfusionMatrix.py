@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from utils import ImgLoader as ld
+from imgUtils import ImgLoader as ld
 
 
 def getThreshold(th):

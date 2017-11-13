@@ -1,9 +1,11 @@
-# from SrmNew.srm import SRM
-from SrmNew.srm2 import SRM
-import cv2
 import datetime
 
-imgPath = '/home/ange/Dropbox/Изображения/c3po.jpg'
+# from SrmNew.srm2 import SRM
+import cv2
+
+from segmentation.srm import SRM
+
+imgPath = '/home/ange/Python/workplace/Dissertation/resources/applePears/1/original.png'
 img = cv2.imread(imgPath, 3)
 
 # cv2.imshow("Test", img)
@@ -29,6 +31,6 @@ cv2.imshow("Origin", img)
 cv2.imshow("Result", segmented)
 cv2.waitKey()
 
-cv2.imwrite('/home/ange/Desktop/cv_experiments/Python/c3po.png', segmented)
+cv2.imwrite('/home/ange/Desktop/cv_experiments/Python/test.png', segmented)
 
 

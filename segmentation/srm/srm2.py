@@ -1,12 +1,9 @@
-import numpy as np
 import math
 
-from jinja2.nodes import UnaryExpr
-from sympy.ntheory.factor_ import primenu
+import numpy as np
 
-from SrmNew.unionfind import UnionFind
+from segmentation.srm import UnionFind
 
-import cv2
 
 class SRM:
 
@@ -250,18 +247,6 @@ class SRM:
 
         return result
 
-
-    def _getImage(self, pixels):
-        height = self._height
-        width = self._width
-        img = np.zeros((height, width, 3), np.uint8)
-
-        for i in range(height):
-            for j in range(width):
-             idx = i * width + j
-             img[i, j] = pixels[idx]
-
-        return img
 
 
 class Rmpair:

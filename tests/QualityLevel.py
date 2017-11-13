@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from utils import ImgLoader as loader
+from imgUtils import ImgLoader as loader
 
 img = loader.getImages('imgdirpath')[0]
 sampleMask = loader.getImages('segmentsdirpath')[0]
