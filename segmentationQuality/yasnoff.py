@@ -1,5 +1,9 @@
 import cv2
 import numpy as np
+import math
+
+from pexpect.ANSI import term
+
 from imgUtils import ColorMask as colMaks
 
 
@@ -10,8 +14,18 @@ class Yasnoff:
         self._template = template
         self._img = img
 
+        self._height = img.shape[0]
+        self._width = img.shape[1]
+
         # calculation
-        associateObjs = self._getAssociateObjs()
+        templateObjs = colMaks.getMaskFromColors(template)
+        segmObjsObjs = colMaks.getMaskFromColors(img)
+
+
+        self._templ_len = len(templateObjs)
+        self._segm_len = len(segmObjsObjs)
+
+        associateObjs = self._getAssociateObjs(templateObjs, segmObjsObjs)
         self._confMatrix = self.__createConfMatrix__(associateObjs)
 
 
@@ -23,14 +37,20 @@ class Yasnoff:
         return assObj
 
 
+
     def __createConfMatrix__(self, associateObjs):
 
         confMatrix = np.zeros((len(associateObjs), len(associateObjs)))
 
-        # проходим по всем строкам объектов
+        # проходим по всем
+        #  объектов
         rowIndex = 0
         for row in associateObjs:
             segmObj = row[2]
+
+            # если изображение не одноканальное - преобразуем в оттенки серого
+            if segmObj.ndim == 3:
+                segmObj = cv2.cvtColor(segmObj, cv2.COLOR_BGR2GRAY)
 
             # проходим по всем столбцам объектов
             cellIndex = 0
@@ -48,10 +68,11 @@ class Yasnoff:
         return confMatrix
 
 
-    def __getIncorrectlyClassifiedPixels__(self, confMatrix):
+    def _getIncorrectlyClassifiedPixels(self, confMatrix):
         result = [0] * len(confMatrix)
         c_kk = [0] * len(confMatrix)
         c_ik = [0] * len(confMatrix)
+
 
         rowIndex = 0
         for row in confMatrix:
@@ -67,6 +88,7 @@ class Yasnoff:
 
             rowIndex = rowIndex + 1
 
+
         index = 0
         while index < len(confMatrix) :
 
@@ -75,14 +97,21 @@ class Yasnoff:
 
             if c_ik[index] != 0 :
                 res_val = ((c_ik_val - c_kk_val) / c_ik_val) * 100
+                # res_val = ((sum(c_ik) - c_kk_val) / sum(c_ik)) * 100
+
+
                 result[index] = res_val
 
             index = index + 1
 
+        # test
+
+
+
         return result
 
 
-    def __getWronglyAssignedToClass__(self, confMatrix):
+    def _getWronglyAssignedToClass(self, confMatrix):
         result = [0] * len(confMatrix)
         c_kk = [0] * len(confMatrix)
         c_ik = [0] * len(confMatrix)
@@ -94,7 +123,7 @@ class Yasnoff:
 
             cellIndex = 0
             for cell in row:
-                c_ki[rowIndex] = c_ik[rowIndex] + cell
+                c_ki[rowIndex] = c_ki[rowIndex] + cell
                 c_ik[cellIndex] = c_ik[cellIndex] + cell
                 total = total + cell
                 if rowIndex == cellIndex:
@@ -119,21 +148,25 @@ class Yasnoff:
 
         return result
 
-    def _getAssociateObjs(self):
+    def _getAssociateObjs(self, templateObjs, segmObjsObjs):
         template = self._template
-        segm = self._img
+        height = self._height
+        width = self._width
 
-        templateObjs = colMaks.getMaskFromColors(template)
-        segmObjsObjs = colMaks.getMaskFromColors(segm)
 
         # -- ассоцияция объектов с их шаблонными масками --
         associateObjs = []  # выходной массив
 
+        print(' ** tempaltes **')
+
         i = 0
         for templ in templateObjs:  # проходимся по всем шаблонам
 
-            minErr = template.shape[0] * template.shape[
-                1]  # минимальная ошибка изначально равна количеству всех пикселей
+            # test
+            templPtCount = cv2.countNonZero(templ)
+            print('index = {0}; c_ik = {1}'.format(i, templPtCount))
+
+            minErr = template.shape[0] * template.shape[1]  # минимальная ошибка изначально равна количеству всех пикселей
             searchObj = np.zeros(template.shape, np.uint8)  # по умолчанию искомый объект = пустое поле
             searchIndex = -1  # индекс найденого объекта
 
@@ -159,6 +192,14 @@ class Yasnoff:
             associateObjs.append(self.__creatAssociateObj__(name, templ, searchObj))  # объект с шаблоном в резуьтат
 
             i = i + 1
+
+        for segmObj in segmObjsObjs: # если остались не ассоциированны объекты - проходимся по ним
+            name = 'Object {0}'.format(len(associateObjs))  # имя объекта в ассоцированном списке
+            blank_image = np.zeros((height, width, 1), np.uint8)
+
+            associateObjs.append(self.__creatAssociateObj__(name, blank_image, segmObj))  # объект с пустым шаблоном в резуьтат
+
+        print(' **--**')
 
         return associateObjs
 
@@ -227,14 +268,43 @@ class Yasnoff:
             print(row_format.format(team, *row))
 
 
-
-
-    def getQuality(self):
+    def getIncorrecClassPixels(self):
         confMatrix = self._confMatrix
-
-        m1 = self.__getIncorrectlyClassifiedPixels__(confMatrix)
-        m2 = self.__getWronglyAssignedToClass__(confMatrix)
-
-        result = sum(m1) / len(m2)
+        m1 = self._getIncorrectlyClassifiedPixels(confMatrix)
+        result = sum(m1) / len(m1)
         return result
+
+    def getWronglyAssigneToClass(self):
+        confMatrix = self._confMatrix
+        m2 = self._getWronglyAssignedToClass(confMatrix)
+        result = sum(m2) / len(m2)
+        return result
+
+
+    def getFrags(self, a = 0.16, b = 2):
+        templ_len = self._templ_len
+        segm_len = self._segm_len
+
+        frag = 1 / 1 + (a * math.fabs((segm_len - templ_len)) ** b)
+        return frag
+
+
+
+# ------------------------------
+# --------- test method --------
+# ------------------------------
+
+
+# project_dir = '/home/ange/Python/workplace/Dissertation'
+# print('project_dir = {0}'.format(project_dir))
+#
+# template = cv2.imread(project_dir + "/resources/applePears/1/template.png", 3)
+# segm = cv2.imread(project_dir + "/resources/applePears/1/segmented/java/val_12_0.png", 3)
+#
+# print('start qual calc')
+# yasn = Yasnoff(template, segm)
+# yasn.printConfMatrix()
+#
+# print('qual = {0}'.format(yasn.getQuality()))
+
 
