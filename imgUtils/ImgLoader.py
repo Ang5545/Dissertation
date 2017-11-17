@@ -56,7 +56,28 @@ def getImages(imageDirPath):
         exit()
     return imgs
 
+def getNamedImages(imageDirPath):
+    result = []
 
+    types = ('*.jpeg', '*.JPG', '*.gif', '*.png', '*.jpg', '*.bmp')
+    filesPaths = []
+
+    for extension in types:
+        filesPaths.extend(glob(join(imageDirPath, extension)))
+
+
+    for path in filesPaths:
+        # img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+        img = cv2.imread(path, 3)
+        name = path[(path.rfind('/')+1):path.rfind('.')]
+        val = [name, img]
+        result.append(val)
+
+    # -- show images --
+    if (len(result) == 0):
+        print("Images not found")
+        exit()
+    return result
 
 def getParamFromConfig(parName):
     imageDirPath = __getImgPath__('config.ini', parName)

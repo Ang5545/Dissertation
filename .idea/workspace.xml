@@ -2,17 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15cf1479-77e5-4e36-8c81-7f1a8b97fae3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/heart/img.JPG" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/heart/sampleMask.bmp" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/segmentation/threshold/threshold.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/tests/ConfusionMatrix.py" afterPath="$PROJECT_DIR$/old/ConfusionMatrix.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/tests/QualityLevel.py" afterPath="$PROJECT_DIR$/old/QualityLevel.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/tests/QualityLevel2.py" afterPath="$PROJECT_DIR$/old/QualityLevel2.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/original.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/template.bmp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/best_segm_quality.py" afterPath="$PROJECT_DIR$/best_segm_quality.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imgUtils/ColorMask.py" afterPath="$PROJECT_DIR$/imgUtils/ColorMask.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/segmentation/CheckStoredData.py" afterPath="$PROJECT_DIR$/segmentation/CheckStoredData.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/segmentation/Segmentation.py" afterPath="$PROJECT_DIR$/segmentation/Segmentation.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imgUtils/ImgLoader.py" afterPath="$PROJECT_DIR$/imgUtils/ImgLoader.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/segmentationQuality/yasnoff.py" afterPath="$PROJECT_DIR$/segmentationQuality/yasnoff.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -25,15 +19,39 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="best_segm_quality.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="best_segm_quality.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/best_segm_quality.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="36" column="0" lean-forward="true" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+            <state relative-caret-position="465">
+              <caret line="61" column="7" lean-forward="false" selection-start-line="61" selection-start-column="4" selection-end-line="61" selection-end-column="7" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
-                <marker date="1510764534284" expanded="true" signature="1035:1627" ph="..." />
+                <marker date="1510927387713" expanded="true" signature="1597:1633" ph="..." />
+                <marker date="1510927387713" expanded="true" signature="3252:3844" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="yasnoff.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/segmentationQuality/yasnoff.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1111">
+              <caret line="266" column="51" lean-forward="false" selection-start-line="266" selection-start-column="51" selection-end-line="266" selection-end-column="51" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+                <marker date="1510936825166" expanded="true" signature="651:897" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ImgLoader.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/imgUtils/ImgLoader.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1005">
+              <caret line="71" column="56" lean-forward="false" selection-start-line="71" selection-start-column="15" selection-end-line="71" selection-end-column="56" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -49,8 +67,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>xrange</find>
-      <find>Q</find>
       <find>wait</find>
       <find>non</find>
       <find>(254, 0, 177)</find>
@@ -75,10 +91,12 @@
       <find>q</find>
       <find>$PROJECT_DIR$/resources/applePears/1/original.png</find>
       <find>green_avg</find>
-      <find>print</find>
       <find>start qual calc</find>
       <find>cv2.im</find>
       <find>67</find>
+      <find>is no</find>
+      <find>print</find>
+      <find>nu03</find>
     </findStrings>
     <replaceStrings>
       <replace>range</replace>
@@ -122,14 +140,14 @@
         <option value="$PROJECT_DIR$/SrmNew/test.py" />
         <option value="$PROJECT_DIR$/SrmNew/srm.py" />
         <option value="$PROJECT_DIR$/FindBestSgmentationQuality.py" />
-        <option value="$PROJECT_DIR$/imgUtils/ImgLoader.py" />
         <option value="$PROJECT_DIR$/segmentationQuality/Yasnoff.py" />
         <option value="$PROJECT_DIR$/segmentation/Segmentation.py" />
         <option value="$PROJECT_DIR$/segmentation/CheckStoredData.py" />
         <option value="$PROJECT_DIR$/segmentation/threshold/threshold.py" />
         <option value="$PROJECT_DIR$/imgUtils/ColorMask.py" />
-        <option value="$PROJECT_DIR$/segmentationQuality/yasnoff.py" />
+        <option value="$PROJECT_DIR$/imgUtils/ImgLoader.py" />
         <option value="$PROJECT_DIR$/best_segm_quality.py" />
+        <option value="$PROJECT_DIR$/segmentationQuality/yasnoff.py" />
       </list>
     </option>
   </component>
@@ -156,8 +174,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -170,104 +186,10 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Dissertation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Dissertation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="segmentation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Dissertation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Dissertation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="segmentation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="threshold" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Dissertation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Dissertation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="segmentation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="srm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Dissertation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Dissertation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Dissertation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Dissertation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heart" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Dissertation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Dissertation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="old" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -277,19 +199,19 @@
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/resources/heart" />
-      <recent name="$PROJECT_DIR$/SrmNew" />
-      <recent name="$PROJECT_DIR$/resources/applePears/1/segmented" />
-      <recent name="$PROJECT_DIR$/resources/applePears/1" />
-      <recent name="$PROJECT_DIR$/resources/manualSegmented" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/tests" />
       <recent name="$PROJECT_DIR$/segmentation/srm" />
       <recent name="$PROJECT_DIR$/segmentationQuality" />
       <recent name="$PROJECT_DIR$/resources/applePears/1" />
       <recent name="$PROJECT_DIR$/utils" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/resources/pears" />
+      <recent name="$PROJECT_DIR$/resources/heart" />
+      <recent name="$PROJECT_DIR$/SrmNew" />
+      <recent name="$PROJECT_DIR$/resources/applePears/1/segmented" />
+      <recent name="$PROJECT_DIR$/resources/applePears/1" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -578,7 +500,14 @@
       <option name="project" value="LOCAL" />
       <updated>1510590508195</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="work commit">
+      <created>1510764706377</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1510764706377</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -587,7 +516,7 @@
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28471684" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28504235" sideWeight="0.51396227" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28504235" sideWeight="0.48603773" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3847601" sideWeight="0.48603773" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38519925" sideWeight="0.4874235" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299363" sideWeight="0.49426112" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -623,15 +552,9 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/examples/Peppers.jpg" />
     <entry file="file://$PROJECT_DIR$/examples/RAG Merging.py" />
     <entry file="file://$PROJECT_DIR$/examples/recusrive-region-merging.py" />
     <entry file="file://$PROJECT_DIR$/create_masks/run.py" />
-    <entry file="file://$PROJECT_DIR$/resources/applePears/1/segmented/32.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/segmentation/srm/unionfind.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -791,19 +714,10 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/imgUtils/ImgLoader.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="840">
-          <caret line="60" column="4" lean-forward="false" selection-start-line="60" selection-start-column="4" selection-end-line="60" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/segmentation/Segmentation.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
           <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -811,7 +725,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
           <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -819,7 +732,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="755">
           <caret line="163" column="46" lean-forward="false" selection-start-line="163" selection-start-column="34" selection-end-line="163" selection-end-column="46" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -827,9 +739,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1245">
           <caret line="83" column="18" lean-forward="false" selection-start-line="83" selection-start-column="4" selection-end-line="83" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#10#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -842,9 +751,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="235">
           <caret line="25" column="4" lean-forward="false" selection-start-line="25" selection-start-column="4" selection-end-line="25" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#10#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -852,7 +758,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
           <caret line="14" column="34" lean-forward="false" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="34" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -868,7 +773,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="235">
           <caret line="988" column="0" lean-forward="false" selection-start-line="988" selection-start-column="0" selection-end-line="988" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -876,15 +780,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="243">
           <caret line="1792" column="0" lean-forward="false" selection-start-line="1792" selection-start-column="0" selection-end-line="1792" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.local/lib/python3.5/site-packages/matplotlib/pyplot.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="3316" column="0" lean-forward="false" selection-start-line="3316" selection-start-column="0" selection-end-line="3316" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -892,9 +787,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="21" column="27" lean-forward="true" selection-start-line="21" selection-start-column="8" selection-end-line="21" selection-end-column="27" />
-          <folding>
-            <marker date="1510329992926" expanded="true" signature="0:74" ph="import ..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -906,23 +798,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/segmentationQuality/yasnoff.py">
+    <entry file="file://$PROJECT_DIR$/resources/applePears/1/segmented/32.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/imgUtils/ImgLoader.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="332">
-          <caret line="141" column="0" lean-forward="true" selection-start-line="141" selection-start-column="0" selection-end-line="141" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="1005">
+          <caret line="71" column="56" lean-forward="false" selection-start-line="71" selection-start-column="15" selection-end-line="71" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/pears/original.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.local/lib/python3.5/site-packages/matplotlib/pyplot.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="3304" column="8" lean-forward="false" selection-start-line="3304" selection-start-column="4" selection-end-line="3304" selection-end-column="8" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/best_segm_quality.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="36" column="0" lean-forward="true" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+        <state relative-caret-position="465">
+          <caret line="61" column="7" lean-forward="false" selection-start-line="61" selection-start-column="4" selection-end-line="61" selection-end-column="7" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
-            <marker date="1510764534284" expanded="true" signature="1035:1627" ph="..." />
+            <marker date="1510927387713" expanded="true" signature="1597:1633" ph="..." />
+            <marker date="1510927387713" expanded="true" signature="3252:3844" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/segmentationQuality/yasnoff.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1111">
+          <caret line="266" column="51" lean-forward="false" selection-start-line="266" selection-start-column="51" selection-end-line="266" selection-end-column="51" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+            <marker date="1510936825166" expanded="true" signature="651:897" ph="..." />
           </folding>
         </state>
       </provider>
