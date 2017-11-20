@@ -200,11 +200,11 @@ class Yasnoff:
             temp_cnt_image = np.zeros((height, width, 3), np.uint8)
             cv2.drawContours(temp_cnt_image, [temp_cnt], -1, (0, 255, 0), 1)
 
-            cv2.imshow("Template", templ)
+            # cv2.imshow("Template", templ)
             cv2.imshow("Template contours", temp_cnt_image)
-            cv2.waitKey()
+            # cv2.waitKey()
             errPtCounts = []
-            diff_moments = []
+
             min_moment = 500;
             best_obj = segmObjsObjs[0]
 
@@ -223,22 +223,32 @@ class Yasnoff:
                 obj_cnt_image = np.zeros((height, width, 3), np.uint8)
                 cv2.drawContours(obj_cnt_image, [obj_cnt], -1, (0, 255, 0), 1)
 
-                cv2.imshow("Object", templ)
-                cv2.imshow("Object contours", obj_cnt_image)
-                cv2.waitKey()
 
-                used_m_keys = ['m00', 'm10', 'm01', 'm20', 'm11', 'm02', 'm30', 'm21', 'm12', 'm03',
-                               'mu20', 'mu11', 'mu02', 'mu30', 'mu21', 'mu12', 'mu03']
+                # используются только пространствунный моменты
+                used_m_keys = ['m00', 'm10', 'm01', 'm20', 'm11', 'm02', 'm30', 'm21', 'm12', 'm03']
 
-                diff_moment = 0
-                for m_key in obj_moment.keys():
+                diff_moments = []
+                for m_key in used_m_keys:
                     obj_m = obj_moment[m_key]
                     temp_m = temp_moment[m_key]
 
-                    print('obj_m = {0}; obj_m = {1}; temp_m = {1}'.format(m_key, obj_m, temp_m))
+                    diff = abs((temp_m - obj_m) / temp_m)
+                    diff_moments.append(diff)
+                    print('moment: {0}; obj_val = {1}; temp_val = {2}; diff = {3};'.format(m_key, obj_m, temp_m, diff))
 
-                    diff = abs((1 / obj_m) - (1 / temp_m))
-                    diff_moment = diff_moment + diff
+
+                contour_diff = sum(diff_moments) / len(diff_moments)
+                print('contour_diff = {0};'.format(contour_diff))
+                print('---------------------------------------------------------------------------')
+
+                # cv2.imshow("Object", templ)
+                cv2.imshow("Object contours", obj_cnt_image)
+                cv2.waitKey()
+
+                    # print('obj_m = {0}; obj_m = {1}; temp_m = {1}'.format(m_key, obj_m, temp_m))
+
+                    # diff = abs((1 / obj_m) - (1 / temp_m))
+                    # diff_moment = diff_moment + diff
 
                     # if (obj_m > 0 and obj_m <= 1) and (temp_m > 0 and temp_m <= 1):
                     #     m_a = np.sign(obj_m) * math.log(obj_m)
@@ -247,12 +257,12 @@ class Yasnoff:
                     #     diff_moment = diff_moment + diff
                     #     print('diff = {0};'.format(diff))
 
-                if diff_moment < min_moment:
-                    min_moment = diff_moment
-                    best_obj = obj
-
-                diff_moments.append(diff_moment)
-                errPtCounts.append(errPtCount)
+                # if diff_moment < min_moment:
+                #     min_moment = diff_moment
+                #     best_obj = obj
+                #
+                # diff_moments.append(diff_moment)
+                # errPtCounts.append(errPtCount)
 
                 if (errPtCount < minErr) and (
                     errPtCount < objPtCount):  # если ошибка минимальна и не весь объект ошибочный
@@ -272,17 +282,17 @@ class Yasnoff:
             # plt.plot(errPtCounts, label=name)
             # plt.plot(diff_moments, label='diff_moments')
 
-            cv2.imshow("best by moments", best_obj)
-            cv2.waitKey()
+            # cv2.imshow("best by moments", best_obj)
+            # cv2.waitKey()
 
 
-            plt.figure(1)
-            plt.subplot(211)
-            plt.plot(errPtCounts, label=name)
-
-            plt.subplot(212)
-            plt.plot(diff_moments, label='diff_moments')
-            plt.show()
+            # plt.figure(1)
+            # plt.subplot(211)
+            # plt.plot(errPtCounts, label=name)
+            #
+            # plt.subplot(212)
+            # plt.plot(diff_moments, label='diff_moments')
+            # plt.show()
 
             plt.show()
 

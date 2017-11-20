@@ -118,7 +118,7 @@ project_dir = iml.getParamFromConfig('projectdir')
 # testSrm(tempPath, imgPath)
 
 
-imgPath = project_dir + "/resources/pears/segmented/java/val_65_0.png"
+imgPath = project_dir + "/resources/pears/segmented/java/val_13_0.png"
 tempPath = project_dir + '/resources/pears/template.bmp'
 
 testSrmOneImage(imgPath, tempPath)

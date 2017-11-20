@@ -2,11 +2,210 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15cf1479-77e5-4e36-8c81-7f1a8b97fae3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/original.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/template.bmp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/32.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_0_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_10_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_11_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_12_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_13_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_14_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_15_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_16_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_17_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_18_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_19_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_1_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_20_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_21_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_22_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_23_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_24_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_25_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_26_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_27_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_28_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_29_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_2_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_30_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_31_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_32_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_33_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_34_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_35_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_36_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_37_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_38_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_39_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_3_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_40_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_41_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_42_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_43_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_44_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_45_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_46_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_47_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_48_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_49_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_4_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_50_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_51_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_52_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_53_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_54_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_55_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_56_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_57_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_58_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_59_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_5_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_60_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_61_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_62_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_63_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_64_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_65_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_66_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_67_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_68_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_69_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_6_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_70_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_71_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_72_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_73_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_74_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_75_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_76_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_77_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_78_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_79_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_7_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_80_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_81_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_82_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_83_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_84_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_85_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_86_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_87_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_88_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_89_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_8_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_90_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_91_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_92_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_93_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_94_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_95_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_96_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_97_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_98_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_99_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/segmented/java/val_9_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/applePears/1/template.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_0_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_10_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_11_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_12_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_13_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_14_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_15_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_16_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_17_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_18_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_19_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_1_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_20_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_21_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_22_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_23_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_24_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_25_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_26_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_27_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_28_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_29_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_2_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_30_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_31_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_32_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_33_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_34_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_35_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_36_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_37_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_38_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_39_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_3_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_40_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_41_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_42_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_43_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_44_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_45_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_46_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_47_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_48_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_49_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_4_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_50_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_51_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_52_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_53_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_54_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_55_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_56_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_57_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_58_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_59_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_5_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_60_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_61_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_62_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_63_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_64_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_65_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_66_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_67_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_68_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_69_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_6_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_70_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_71_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_72_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_73_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_74_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_75_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_76_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_77_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_78_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_79_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_7_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_80_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_81_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_82_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_83_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_84_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_85_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_86_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_87_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_88_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_89_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_8_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_90_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_91_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_92_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_93_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_94_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_95_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_96_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_97_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_98_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_99_0.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/pears/segmented/java/val_9_0.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/best_segm_quality.py" afterPath="$PROJECT_DIR$/best_segm_quality.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imgUtils/ImgLoader.py" afterPath="$PROJECT_DIR$/imgUtils/ImgLoader.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/segmentationQuality/yasnoff.py" afterPath="$PROJECT_DIR$/segmentationQuality/yasnoff.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,12 +221,12 @@
       <file leaf-file-name="best_segm_quality.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/best_segm_quality.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="61" column="7" lean-forward="false" selection-start-line="61" selection-start-column="4" selection-end-line="61" selection-end-column="7" />
+            <state relative-caret-position="390">
+              <caret line="128" column="0" lean-forward="true" selection-start-line="128" selection-start-column="0" selection-end-line="128" selection-end-column="0" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
-                <marker date="1510927387713" expanded="true" signature="1597:1633" ph="..." />
-                <marker date="1510927387713" expanded="true" signature="3252:3844" ph="..." />
+                <marker date="1511193991358" expanded="true" signature="1597:1633" ph="..." />
+                <marker date="1511193991358" expanded="true" signature="3252:3844" ph="..." />
               </folding>
             </state>
           </provider>
@@ -36,11 +235,11 @@
       <file leaf-file-name="yasnoff.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/segmentationQuality/yasnoff.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1111">
-              <caret line="266" column="51" lean-forward="false" selection-start-line="266" selection-start-column="51" selection-end-line="266" selection-end-column="51" />
+            <state relative-caret-position="296">
+              <caret line="240" column="63" lean-forward="false" selection-start-line="240" selection-start-column="63" selection-end-line="240" selection-end-column="63" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
-                <marker date="1510936825166" expanded="true" signature="651:897" ph="..." />
+                <marker date="1511194528344" expanded="true" signature="651:897" ph="..." />
               </folding>
             </state>
           </provider>
@@ -67,7 +266,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>wait</find>
       <find>non</find>
       <find>(254, 0, 177)</find>
       <find>max</find>
@@ -97,6 +295,7 @@
       <find>is no</find>
       <find>print</find>
       <find>nu03</find>
+      <find>ims</find>
     </findStrings>
     <replaceStrings>
       <replace>range</replace>
@@ -183,6 +382,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Dissertation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dissertation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dissertation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -507,7 +720,14 @@
       <option name="project" value="LOCAL" />
       <updated>1510764706377</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="work commit">
+      <created>1510937117829</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1510937117829</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -552,8 +772,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/examples/RAG Merging.py" />
-    <entry file="file://$PROJECT_DIR$/examples/recusrive-region-merging.py" />
     <entry file="file://$PROJECT_DIR$/create_masks/run.py" />
     <entry file="file://$PROJECT_DIR$/segmentation/srm/unionfind.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -820,29 +1038,38 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
           <caret line="3304" column="8" lean-forward="false" selection-start-line="3304" selection-start-column="4" selection-end-line="3304" selection-end-column="8" />
-          <folding />
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/pears/segmented/java/val_14_0.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/pears/segmented/java/val_13_0.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/best_segm_quality.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="61" column="7" lean-forward="false" selection-start-line="61" selection-start-column="4" selection-end-line="61" selection-end-column="7" />
+        <state relative-caret-position="390">
+          <caret line="128" column="0" lean-forward="true" selection-start-line="128" selection-start-column="0" selection-end-line="128" selection-end-column="0" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
-            <marker date="1510927387713" expanded="true" signature="1597:1633" ph="..." />
-            <marker date="1510927387713" expanded="true" signature="3252:3844" ph="..." />
+            <marker date="1511193991358" expanded="true" signature="1597:1633" ph="..." />
+            <marker date="1511193991358" expanded="true" signature="3252:3844" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/segmentationQuality/yasnoff.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1111">
-          <caret line="266" column="51" lean-forward="false" selection-start-line="266" selection-start-column="51" selection-end-line="266" selection-end-column="51" />
+        <state relative-caret-position="296">
+          <caret line="240" column="63" lean-forward="false" selection-start-line="240" selection-start-column="63" selection-end-line="240" selection-end-column="63" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1510936825166" expanded="true" signature="651:897" ph="..." />
+            <marker date="1511194528344" expanded="true" signature="651:897" ph="..." />
           </folding>
         </state>
       </provider>
