@@ -1,5 +1,6 @@
 import imgUtils.ImgLoader as iml
 from segmentationQuality.yasnoff import Yasnoff
+from segmentationQuality.yasnoff_modification import Yasnoff_Modification as Yasnoff_Mod
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from segmentation.threshold.threshold import Threshold
@@ -87,7 +88,8 @@ def testSrmOneImage(img_path, template_path):
     img = cv2.imread(img_path, 3)
     template = cv2.imread(template_path, 3)
 
-    yasn = Yasnoff(template, img)
+    yasn = Yasnoff_Mod(template, img)
+    yasn.printMatrix()
 
     print(' -- getIncorrecClassPixels --')
     m1 = yasn.getIncorrecClassPixels()
@@ -96,7 +98,7 @@ def testSrmOneImage(img_path, template_path):
     m2 = yasn.getWronglyAssigneToClass()
     frag = yasn.getFrags()
 
-    yasn.printConfMatrix()
+
     print('m1 = {0}; m2 = {1}; frag = {2}'.format(m1, m2, frag))
 
     cv2.imshow('img', img)
