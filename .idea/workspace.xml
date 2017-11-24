@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15cf1479-77e5-4e36-8c81-7f1a8b97fae3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/segmentationQuality/yasnoff_mod_2.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/resources/pears/segmented/java/val_0_0.png" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/best_segm_quality.py" afterPath="$PROJECT_DIR$/best_segm_quality.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/segmentationQuality/yasnoff_mod_2.py" afterPath="$PROJECT_DIR$/segmentationQuality/yasnoff_mod_2.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -19,25 +20,24 @@
       <file leaf-file-name="best_segm_quality.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/best_segm_quality.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1335">
-              <caret line="96" column="0" lean-forward="false" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
+            <state relative-caret-position="1070">
+              <caret line="144" column="0" lean-forward="true" selection-start-line="144" selection-start-column="0" selection-end-line="144" selection-end-column="0" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
-                <marker date="1511456481215" expanded="true" signature="1729:1765" ph="..." />
-                <marker date="1511456481215" expanded="true" signature="3928:4096" ph="..." />
-                <marker date="1511456481215" expanded="true" signature="4098:4245" ph="..." />
-                <marker date="1511456481215" expanded="true" signature="4099:4245" ph="..." />
-                <marker date="1511456481215" expanded="true" signature="4481:5073" ph="..." />
+                <marker date="1511530549354" expanded="true" signature="1729:1765" ph="..." />
+                <marker date="1511530549354" expanded="true" signature="3954:4117" ph="..." />
+                <marker date="1511530549354" expanded="true" signature="4119:4273" ph="..." />
+                <marker date="1511530549354" expanded="true" signature="4509:5101" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="yasnoff.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="yasnoff.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/segmentationQuality/yasnoff.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2130">
-              <caret line="150" column="14" lean-forward="false" selection-start-line="150" selection-start-column="8" selection-end-line="150" selection-end-column="14" />
+            <state relative-caret-position="2595">
+              <caret line="182" column="59" lean-forward="false" selection-start-line="182" selection-start-column="38" selection-end-line="182" selection-end-column="59" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -55,11 +55,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="yasnoff_mod_2.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="yasnoff_mod_2.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/segmentationQuality/yasnoff_mod_2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="257" column="69" lean-forward="false" selection-start-line="257" selection-start-column="69" selection-end-line="257" selection-end-column="69" />
+            <state relative-caret-position="675">
+              <caret line="93" column="35" lean-forward="false" selection-start-line="93" selection-start-column="22" selection-end-line="93" selection-end-column="35" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -88,9 +88,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>uf</find>
-      <find>bucketSort</find>
-      <find>mer</find>
       <find>merge</find>
       <find>uint</find>
       <find>np.</find>
@@ -118,6 +115,9 @@
       <find>zip</find>
       <find>norm_array</find>
       <find>m2 c_kk</find>
+      <find>m2 c_kk</find>
+      <find>m2</find>
+      <find>cv2.wait</find>
     </findStrings>
     <replaceStrings>
       <replace>range</replace>
@@ -167,15 +167,15 @@
         <option value="$PROJECT_DIR$/segmentation/threshold/threshold.py" />
         <option value="$PROJECT_DIR$/imgUtils/ColorMask.py" />
         <option value="$PROJECT_DIR$/imgUtils/ImgLoader.py" />
-        <option value="$PROJECT_DIR$/segmentationQuality/yasnoff.py" />
         <option value="$PROJECT_DIR$/segmentationQuality/yasnoff_modification.py" />
-        <option value="$PROJECT_DIR$/best_segm_quality.py" />
         <option value="$PROJECT_DIR$/segmentationQuality/yasnoff_mod_2.py" />
+        <option value="$PROJECT_DIR$/best_segm_quality.py" />
+        <option value="$PROJECT_DIR$/segmentationQuality/yasnoff.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="31" />
+    <option name="y" value="30" />
     <option name="width" value="1479" />
     <option name="height" value="1168" />
   </component>
@@ -197,8 +197,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -222,6 +222,64 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="segmentationQuality" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dissertation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dissertation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="segmentation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dissertation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dissertation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pears" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dissertation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dissertation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pears" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="segmented" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -579,16 +637,23 @@
       <option name="project" value="LOCAL" />
       <updated>1511282437182</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="work commit">
+      <created>1511456778354</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1511456778354</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="31" width="1479" height="1168" extended-state="0" />
+    <frame x="0" y="30" width="1479" height="1168" extended-state="0" />
     <layout>
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24814063" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28504235" sideWeight="0.51396227" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3847601" sideWeight="0.48603773" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3847601" sideWeight="0.48603773" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3847601" sideWeight="0.4874235" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299363" sideWeight="0.49426112" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -624,27 +689,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/config.ini">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="10" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/segmentation/srm/srm.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1556">
-          <caret line="262" column="34" lean-forward="false" selection-start-line="262" selection-start-column="34" selection-end-line="262" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharmCE2017.1/system/python_stubs/-1247971764/cv2/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="2157" column="4" lean-forward="false" selection-start-line="2157" selection-start-column="4" selection-end-line="2157" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/img1/sampleMask.bmp">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -885,39 +929,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/segmentationQuality/yasnoff_modification.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="526" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/segmentationQuality/yasnoff.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2130">
-          <caret line="150" column="14" lean-forward="false" selection-start-line="150" selection-start-column="8" selection-end-line="150" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/best_segm_quality.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1335">
-          <caret line="96" column="0" lean-forward="false" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-            <marker date="1511456481215" expanded="true" signature="1729:1765" ph="..." />
-            <marker date="1511456481215" expanded="true" signature="3928:4096" ph="..." />
-            <marker date="1511456481215" expanded="true" signature="4098:4245" ph="..." />
-            <marker date="1511456481215" expanded="true" signature="4099:4245" ph="..." />
-            <marker date="1511456481215" expanded="true" signature="4481:5073" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/imgUtils/ColorMask.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
@@ -926,10 +937,57 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/pears/template.bmp">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/pears/segmented/java/val_0_0.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/pears/segmented/java/val_1_0.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/segmentationQuality/yasnoff_mod_2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="257" column="69" lean-forward="false" selection-start-line="257" selection-start-column="69" selection-end-line="257" selection-end-column="69" />
+        <state relative-caret-position="675">
+          <caret line="93" column="35" lean-forward="false" selection-start-line="93" selection-start-column="22" selection-end-line="93" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/segmentationQuality/yasnoff_modification.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="526" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/best_segm_quality.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1070">
+          <caret line="144" column="0" lean-forward="true" selection-start-line="144" selection-start-column="0" selection-end-line="144" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+            <marker date="1511530549354" expanded="true" signature="1729:1765" ph="..." />
+            <marker date="1511530549354" expanded="true" signature="3954:4117" ph="..." />
+            <marker date="1511530549354" expanded="true" signature="4119:4273" ph="..." />
+            <marker date="1511530549354" expanded="true" signature="4509:5101" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/segmentationQuality/yasnoff.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2595">
+          <caret line="182" column="59" lean-forward="false" selection-start-line="182" selection-start-column="38" selection-end-line="182" selection-end-column="59" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>

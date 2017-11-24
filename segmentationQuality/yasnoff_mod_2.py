@@ -90,7 +90,7 @@ class Yasnoff_Mod:
 
         # проходим по всем шаблонам и считаем моменты
         temp_moments = []
-        temp_cnt_imgs = []
+        # temp_cnt_imgs = []
         for assObj in associateObjs:
             template = assObj[1]
 
@@ -165,7 +165,10 @@ class Yasnoff_Mod:
             length = math.sqrt(sum(sqr))
             result = []
             for val in array:
-                result.append(val/length)
+                if length != 0:
+                    result.append(val/length)
+                else:
+                    result.append(val)
 
             return result
 
@@ -246,7 +249,7 @@ class Yasnoff_Mod:
 
             rowIndex = rowIndex + 1
 
-        print(' m2 c_kk = {0}'.format(c_kk))
+        # print(' m2 c_kk = {0}'.format(c_kk))
 
         index = 0
         while index < len(confMatrix):
@@ -263,6 +266,9 @@ class Yasnoff_Mod:
         return result
 
     def _getAssociateObjs(self, templateObjs, segmObjsObjs):
+
+        # TODO сделать алгоритм инвариатный к длиннам коллекций шаблонов и объектов
+
         template = self._template
         height = self._height
         width = self._width
@@ -279,6 +285,7 @@ class Yasnoff_Mod:
 
             index = 0
             for obj in segmObjsObjs:  # проходимся по всем найденым при сегментации объектам
+
                 diff = cv2.absdiff(templ, obj)  # кадровая разница между объектами
                 errPtCount = cv2.countNonZero(diff)  # количество точек в разнице
                 objPtCount = cv2.countNonZero(obj)  # количество точек в самом обхекте
@@ -381,8 +388,6 @@ class Yasnoff_Mod:
         confMatrix = self._confMatrix
         associateObjs = self._associateObjs
 
-        m2 = self._getWronglyAssignedToClass(confMatrix)
-
         # получаем количество шаблонов и объектов
         height = len(associateObjs)
         width = 0
@@ -391,10 +396,11 @@ class Yasnoff_Mod:
             if template is not None:
                 width = width + 1
 
-        i_kk = [0] * height
+        i_kk = [1] * height
         i_ik = [0] * height
         i_ki = [0] * height
         total = 0
+        print('def i_kk = {0};'.format(i_kk))
 
         for i in range(0, width):
             cell = []
@@ -409,59 +415,63 @@ class Yasnoff_Mod:
             i_ik[i] = sum(cell)
 
         result = []
-        for i_kk_val, i_ik_val, i_ki_val in zip(i_kk, i_ik, i_ki):
-            res_val = (1 - i_kk_val) / i_ki_val
-            result.append(res_val)
+        m2 = self._getWronglyAssignedToClass(confMatrix)
 
-        # print('result = {0};'.format(result))
-        # print('m2 = {0};'.format(m2))
+        for i_kk_val, i_ik_val, i_ki_val, m2_val in zip(i_kk, i_ik, i_ki, m2):
+            res_val = i_kk_val / i_ki_val
+            result.append(m2_val * res_val)
 
-        return (sum(result) / len(result))
-
-
-    def get_m4(self):
-        contMomentMatrix = self._contMomentMatrix
-        confMatrix = self._confMatrix
-        associateObjs = self._associateObjs
-
-        # получаем количество шаблонов и объектов
-        height = len(associateObjs)
-        width = 0
-        for ass in associateObjs:
-            template = ass[1]
-            if template is not None:
-                width = width + 1
-
-        c_kk = [0] * height
-        c_ik = [0] * height
-        c_ki = [0] * height
-        total = 0
-
-        for i in range(0, width):
-            cell = []
-            for j in range(0, height):
-                val = confMatrix[j][i]
-                mom = contMomentMatrix[j][i]
-                cell.append(val)
-                c_ki[j] = c_ki[j] + val
-                total = total + val
-                if i == j:
-                    kk = val * mom
-                    c_kk[i] = kk
-
-
-            c_ik[i] = sum(cell)
-
-        result = []
-        for i in range(0, height):
-            c_ik_val = c_ik[i]
-            c_kk_val = c_kk[i]
-            c_ki_val = c_ki[i]
-
-            res_val = ((c_ki_val - c_kk_val) / (total - c_ik_val)) * 100
-            result.append(res_val)
+        print('i_ki = {0};'.format(i_ki))
+        print('i_kk = {0};'.format(i_kk))
+        print('m2 = {0};'.format(m2))
+        print('m3 = {0};'.format(result))
 
         return sum(result)
+
+
+    # def get_m4(self):
+    #     contMomentMatrix = self._contMomentMatrix
+    #     confMatrix = self._confMatrix
+    #     associateObjs = self._associateObjs
+    #
+    #     # получаем количество шаблонов и объектов
+    #     height = len(associateObjs)
+    #     width = 0
+    #     for ass in associateObjs:
+    #         template = ass[1]
+    #         if template is not None:
+    #             width = width + 1
+    #
+    #     c_kk = [0] * height
+    #     c_ik = [0] * height
+    #     c_ki = [0] * height
+    #     total = 0
+    #
+    #     for i in range(0, width):
+    #         cell = []
+    #         for j in range(0, height):
+    #             val = confMatrix[j][i]
+    #             mom = contMomentMatrix[j][i]
+    #             cell.append(val)
+    #             c_ki[j] = c_ki[j] + val
+    #             total = total + val
+    #             if i == j:
+    #                 kk = val * mom
+    #                 c_kk[i] = kk
+    #
+    #
+    #         c_ik[i] = sum(cell)
+    #
+    #     result = []
+    #     for i in range(0, height):
+    #         c_ik_val = c_ik[i]
+    #         c_kk_val = c_kk[i]
+    #         c_ki_val = c_ki[i]
+    #
+    #         res_val = ((c_ki_val - c_kk_val) / (total - c_ik_val)) * 100
+    #         result.append(res_val)
+    #
+    #     return sum(result)
 
 
     def getTemplateComut(self):
@@ -469,6 +479,10 @@ class Yasnoff_Mod:
 
     def getSegmentsComut(self):
         return self._segm_len
+
+
+
+
 
 
 

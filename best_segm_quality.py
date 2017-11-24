@@ -95,6 +95,8 @@ def testSrmMod(templatePath, srmREsultDir):
         image = img[1]
 
         yasn = Yasnoff_Mod(template, image)
+        yasn.printMatrix()
+
         m3 = yasn.get_m3()
 
         print('m3 = {0};'.format(m3))
@@ -156,16 +158,16 @@ project_dir = iml.getParamFromConfig('projectdir')
 # testSrm(tempPath, imgPath)
 
 
-# imgPath = project_dir + "/resources/pears/segmented/java/val_13_0.png"
-# tempPath = project_dir + '/resources/pears/template.bmp'
-#
-# testSrmOneImage(imgPath, tempPath)
-
-
-imgPath = project_dir + "/resources/pears/segmented/java/"
+imgPath = project_dir + "/resources/pears/segmented/java/val_13_0.png"
 tempPath = project_dir + '/resources/pears/template.bmp'
 
-testSrmMod(tempPath, imgPath)
+testSrmOneImage(imgPath, tempPath)
+
+
+# imgPath = project_dir + "/resources/pears/segmented/java/"
+# tempPath = project_dir + '/resources/pears/template.bmp'
+#
+# testSrmMod(tempPath, imgPath)
 
 
 
