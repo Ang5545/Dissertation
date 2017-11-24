@@ -348,7 +348,7 @@ class Yasnoff_Mod:
 
         # Печать значений
         row_format = "{:>22}" * (width + 1)
-        print(row_format.format("", *cell_names, ''))
+        print(row_format.format("", *cell_names))
 
         for name, conf_row, mom_row in zip(row_names, confMatrix, contMomentMatrix):
             str_row = []

@@ -81,31 +81,52 @@ class Yasnoff_Modification:
 
         contMomentMatrix = np.zeros((len(associateObjs), len(associateObjs)))
 
-        # проходим по всем
-        #  объектов
-        rowIndex = 0
-        for row in associateObjs:
-            segmObj = row[2]
+        # проходим по всем шаблонам и считаем моменты (чтобы делать это один раз)
+        temp_moments = []
+        temp_cont_images = []
+        for assObj in associateObjs:
+            template = assObj[1]
 
-            # если изображение не одноканальное - преобразуем в оттенки серого
-            if segmObj.ndim == 3:
-                segmObj = cv2.cvtColor(segmObj, cv2.COLOR_BGR2GRAY)
+            if template is not None:
 
-            _, segm_contours, _ = cv2.findContours(segmObj, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-            segm_cnt = segm_contours[0]
-            segm_moment = cv2.moments(segm_cnt)
+                #получаем контуры шаблона
+                _, templ_contours, _ = cv2.findContours(template, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-
-            # проходим по всем столбцам объектов
-            cellIndex = 0
-            for cell in associateObjs:
-                template = cell[1]
-
-                if template is not None:
-
-                    _, templ_contours, _ = cv2.findContours(template, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+                if (len(templ_contours) != 0):
                     templ_cnt = templ_contours[0]
                     templ_moment = cv2.moments(templ_cnt)
+                    temp_moments.append(templ_moment)
+
+                    # # Показать контуры шаблона
+                    temp_cnt_image = np.zeros((height, width, 3), np.uint8)
+                    cv2.drawContours(temp_cnt_image, [templ_cnt], -1, (0, 255, 0), 1)
+                    temp_cont_images.append(temp_cnt_image)
+
+                    # cv2.imshow("temp_cnt_image", temp_cnt_image)
+                    # cv2.waitKey()
+
+                else:
+                    temp_moments.append(0)
+
+        # проходим полученным моментам
+        for i in range(0, len(temp_moments)):
+            temp_moment = temp_moments[i]
+            temp_cont_image = temp_cont_images[i]
+
+            # проходим по всем сегментам
+            for j in range(0, len(associateObjs)):
+                assObj = associateObjs[j]
+                segm = assObj[2]
+
+                # если изображение не одноканальное - преобразуем в оттенки серого
+                if segm.ndim == 3:
+                    segm = cv2.cvtColor(segm, cv2.COLOR_BGR2GRAY)
+
+                _, segm_contours, _ = cv2.findContours(segm, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+                if len(segm_contours) > 0:
+                    segm_cnt = segm_contours[0]
+                    segm_moment = cv2.moments(segm_cnt)
 
                     # используются только пространствунный моменты
                     used_m_keys = ['m00', 'm10', 'm01', 'm20', 'm11', 'm02', 'm30', 'm21', 'm12', 'm03']
@@ -113,42 +134,22 @@ class Yasnoff_Modification:
                     diff_moments = []
                     for m_key in used_m_keys:
                         obj_m = segm_moment[m_key]
-                        temp_m = templ_moment[m_key]
+                        temp_m = temp_moment[m_key]
 
                         diff = abs((temp_m - obj_m) / temp_m)
                         diff_moments.append(diff)
-                        # print('moment: {0}; obj_val = {1}; temp_val = {2}; diff = {3};'.format(m_key, obj_m, temp_m, diff))
 
                     contour_diff = sum(diff_moments) / len(diff_moments)
-                    contMomentMatrix[rowIndex][cellIndex] = contour_diff
+                    # print('contour_diff = {0}'.format(contour_diff))
+                    contMomentMatrix[j][i] = contour_diff
 
-                    # print('contour_diff = {0};'.format(contour_diff))
-
-                    '''
-                    # Показать сравниваемые контуры
-                    segm_cnt_image = np.zeros((height, width, 3), np.uint8)
-                    temp_cnt_image = np.zeros((height, width, 3), np.uint8)
-
-                    cv2.drawContours(segm_cnt_image, [segm_cnt], -1, (0, 255, 0), 1)
-                    cv2.drawContours(temp_cnt_image, [templ_cnt], -1, (0, 255, 0), 1)
-
-                    cv2.imshow("segm_cnt_image", segm_cnt_image)
-                    cv2.imshow("temp_cnt_image", temp_cnt_image)
-                    cv2.waitKey()
-                    '''
-
-                cellIndex = cellIndex + 1
-
-            rowIndex = rowIndex + 1
-
-        from sklearn.preprocessing import normalize
-
-        x = np.random.rand(1000) * 10
-        norm1 = x / np.linalg.norm(x)
-        norm2 = normalize(x[:, np.newaxis], axis=0).ravel()
-        # print(x)
-        # print(norm1)
-        print(norm2)
+                    # # # Показать контуры сегментирвоаного объекта
+                    # segm_cnt_image = np.zeros((height, width, 3), np.uint8)
+                    # cv2.drawContours(segm_cnt_image, [segm_cnt], -1, (0, 255, 0), 1)
+                    # cv2.imshow("segm_cnt_image", segm_cnt_image)
+                    # cv2.imshow("temp_cont_image", temp_cont_image)
+                    # cv2.waitKey()
+                    #
 
         return contMomentMatrix
 
@@ -257,79 +258,12 @@ class Yasnoff_Modification:
             searchObj = np.zeros(template.shape, np.uint8)  # по умолчанию искомый объект = пустое поле
             searchIndex = -1  # индекс найденого объекта
 
-            # # image, temp_contours, hierarchy = cv2.findContours(templ, 1, 2)
-            # _, temp_contours, _ = cv2.findContours(templ, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-            # temp_cnt = temp_contours[0]
-            #
-            # temp_moment = cv2.moments(temp_cnt)
-            # # print('temp_moment = {0};'.format(temp_moment))
-            #
-            # temp_cnt_image = np.zeros((height, width, 3), np.uint8)
-            # cv2.drawContours(temp_cnt_image, [temp_cnt], -1, (0, 255, 0), 1)
-            #
-            # # cv2.imshow("Template", templ)
-            # cv2.imshow("Template contours", temp_cnt_image)
-            # # cv2.waitKey()
-            # errPtCounts = []
-            #
-            # min_moment = 500;
-            # best_obj = segmObjsObjs[0]
-
             index = 0
             for obj in segmObjsObjs:  # проходимся по всем найденым при сегментации объектам
                 diff = cv2.absdiff(templ, obj)  # кадровая разница между объектами
                 errPtCount = cv2.countNonZero(diff)  # количество точек в разнице
                 objPtCount = cv2.countNonZero(obj)  # количество точек в самом обхекте
 
-                # _, obj_contours, _ = cv2.findContours(obj, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-                # obj_cnt = obj_contours[0]
-                #
-                # obj_moment = cv2.moments(obj_cnt)
-                # # print('obj_moment = {0};'.format(obj_moment))
-                #
-                # obj_cnt_image = np.zeros((height, width, 3), np.uint8)
-                # cv2.drawContours(obj_cnt_image, [obj_cnt], -1, (0, 255, 0), 1)
-
-
-                # # используются только пространствунный моменты
-                # used_m_keys = ['m00', 'm10', 'm01', 'm20', 'm11', 'm02', 'm30', 'm21', 'm12', 'm03']
-                #
-                # diff_moments = []
-                # for m_key in used_m_keys:
-                #     obj_m = obj_moment[m_key]
-                #     temp_m = temp_moment[m_key]
-                #
-                #     diff = abs((temp_m - obj_m) / temp_m)
-                #     diff_moments.append(diff)
-                #     print('moment: {0}; obj_val = {1}; temp_val = {2}; diff = {3};'.format(m_key, obj_m, temp_m, diff))
-                #
-                #
-                # contour_diff = sum(diff_moments) / len(diff_moments)
-                # print('contour_diff = {0};'.format(contour_diff))
-                # print('---------------------------------------------------------------------------')
-                #
-                # # cv2.imshow("Object", templ)
-                # cv2.imshow("Object contours", obj_cnt_image)
-                # cv2.waitKey()
-
-                    # print('obj_m = {0}; obj_m = {1}; temp_m = {1}'.format(m_key, obj_m, temp_m))
-
-                    # diff = abs((1 / obj_m) - (1 / temp_m))
-                    # diff_moment = diff_moment + diff
-
-                    # if (obj_m > 0 and obj_m <= 1) and (temp_m > 0 and temp_m <= 1):
-                    #     m_a = np.sign(obj_m) * math.log(obj_m)
-                    #     m_b = np.sign(temp_m) * math.log(temp_m)
-                    #     diff = abs((1/m_a) - (1/m_b))
-                    #     diff_moment = diff_moment + diff
-                    #     print('diff = {0};'.format(diff))
-
-                # if diff_moment < min_moment:
-                #     min_moment = diff_moment
-                #     best_obj = obj
-                #
-                # diff_moments.append(diff_moment)
-                # errPtCounts.append(errPtCount)
 
                 if (errPtCount < minErr) and (
                     errPtCount < objPtCount):  # если ошибка минимальна и не весь объект ошибочный
@@ -345,23 +279,6 @@ class Yasnoff_Modification:
 
             name = 'Object {0}'.format(i)  # имя объекта в ассоцированном списке
             associateObjs.append(self.__creatAssociateObj__(name, templ, searchObj))  # объект с шаблоном в резуьтат
-
-            # plt.plot(errPtCounts, label=name)
-            # plt.plot(diff_moments, label='diff_moments')
-
-            # cv2.imshow("best by moments", best_obj)
-            # cv2.waitKey()
-
-
-            # plt.figure(1)
-            # plt.subplot(211)
-            # plt.plot(errPtCounts, label=name)
-            #
-            # plt.subplot(212)
-            # plt.plot(diff_moments, label='diff_moments')
-            # plt.show()
-
-            plt.show()
 
             i = i + 1
 
@@ -386,6 +303,7 @@ class Yasnoff_Modification:
             if template is not None:
                 width = width + 1
 
+
         row_names = []
         for i in range (0, height):
             row_names.append('Object %s' %i)
@@ -394,22 +312,36 @@ class Yasnoff_Modification:
         for i in range (0, width):
             cell_names.append('Object %s' %i)
 
-        # создание новой матрицы с результатом
-        # resultMatrix =  [[''] * height for i in range(width)]
 
-        # # Наполнение значенями из сторой матрицы
-        # rowIndex = 0
+        # # Создаем архивы для хранения имен столбцов и колонок
+        # rows_names = []
         # for i in range(0, height):
-        #     conf_row = confMatrix[i]
-        #     moment_row = contMomentMatrix[i]
-        #     cellIndex = 0
+        #     rows_names.append('Object %s' % i)
+        #
+        # cell_names = []
+        # for i in range(0, width + 1):
+        #     cell_names.append('Temaple %s' % i)
+        #
+        #
+        # # Печать значений
+        # row_format = "{:>22}" * (height + 1)
+        # print(row_format.format("", *cell_names))
+        #
+        # for i in range(0, height):
+        #     name = row_names[i]
+        #     matrRow = confMatrix[i]
+        #     momRow = contMomentMatrix[i]
+        #
+        #     str_row = []
         #
         #     for j in range(0, width):
-        #         conf_cell = conf_row[j]
-        #         moment_cell = moment_row[j]
-        #         resultMatrix[rowIndex, cellIndex] = 'test'
-        #         cellIndex = cellIndex + 1
-        #     rowIndex = rowIndex +100
+        #         cell = matrRow[j]
+        #         moment = round(momRow[j], 4)
+        #         moment_str = '{:>8}'.format(moment)
+        #         val = '{0} : {1}'.format(cell, moment_str)
+        #         str_row.append(val)
+        #
+        #     print(row_format.format(name, *str_row))
 
 
         # Создаем архивы для хранения имен столбцов и колонок
@@ -421,23 +353,26 @@ class Yasnoff_Modification:
         for i in range(0, width):
             cell_names.append('Temaple %s' % i)
 
-        # row_names.append('Total')
-        # cell_names.append('Total')
 
         # Печать значений
         row_format = "{:>22}" * (width + 1)
-        print(row_format.format("", *cell_names, ''))
+        print(row_format.format("", *cell_names))
 
-        for name, conf_row, mom_row in zip(row_names, confMatrix, contMomentMatrix):
+        for i in range(0, height):
+            name = row_names[i]
+            matrRow = confMatrix[i]
+            momRow = contMomentMatrix[i]
             str_row = []
-            for idx in range (0, len(conf_row)):
-                cell = conf_row[idx]
-                moment = round(mom_row[idx], 4)
+
+            for j in range(0, width):
+                cell = matrRow[j]
+                moment = round(momRow[j], 4)
                 moment_str = '{:>8}'.format(moment)
                 val = '{0} : {1}'.format(cell, moment_str)
                 str_row.append(val)
-            print(row_format.format(name, *str_row))
 
+
+            print(row_format.format(name, *str_row))
 
     def getIncorrecClassPixels(self):
         confMatrix = self._confMatrix
@@ -461,42 +396,54 @@ class Yasnoff_Modification:
         frag = 1 / 1 + (a * math.fabs((segm_len - templ_len)) ** b)
         return frag
 
+
+
     def get_m3(self):
         confMatrix = self._confMatrix
+        contMomentMatrix = self._contMomentMatrix
+
+
+        # получаем критерии по йаснову
+        m2 = self._getWronglyAssignedToClass(confMatrix)
+
+        # получаем критерии по моментам
+        m_diffs = []
+        for i in range(0, len(contMomentMatrix)):
+            row = contMomentMatrix[i]
+            all = sum(row)
+            for j in range(0, len(row)):
+                cell = row[j]
+                if i == j:
+                    if cell != 0:
+                        m_diffs.append(all / cell)
+                    else:
+                        m_diffs.append(all)
+
+        # нормализуем
+        def normalize(vec):
+            sqr = []
+            for val in vec:
+                sqr.append(val ** 2)
+
+            length = math.sqrt(sum(sqr))
+
+            result = []
+            for val in vec:
+                result.append(val / length)
+
+            return result
+
+        m2_norm =  normalize(m2)
+        m_diffs_norm = normalize(m_diffs)
 
         result = []
-        c_kk = [0] * len(confMatrix)
-        c_ik = [0] * len(confMatrix)
-        c_ki = [0] * len(confMatrix)
-        total = 0
+        for i in range(0, len(m2_norm)):
+            val_1 = m2_norm[i]
+            val_2 = m_diffs_norm[i]
+            result.append((val_1 + val_2) / 2)
 
-        rowIndex = 0
-        for row in confMatrix:
+        return (sum(result) / len(result))
 
-            cellIndex = 0
-            for cell in row:
-                c_ki[rowIndex] = c_ki[rowIndex] + cell
-                c_ik[cellIndex] = c_ik[cellIndex] + cell
-                total = total + cell
-                if rowIndex == cellIndex:
-                    c_kk[rowIndex] = cell
-
-                cellIndex = cellIndex + 1
-
-            rowIndex = rowIndex + 1
-
-        index = 0
-        while index < len(confMatrix):
-            c_ik_val = c_ik[index]
-            c_kk_val = c_kk[index]
-            c_ki_val = c_ki[index]
-
-            res_val = (c_ki_val * (c_ik_val - c_kk_val)) / (c_ik_val + total) ** 2 * 1000
-            result.append(res_val)
-
-            index = index + 1
-
-        return sum(result)
 
     def getTemplateComut(self):
         return self._templ_len
@@ -504,23 +451,6 @@ class Yasnoff_Modification:
     def getSegmentsComut(self):
         return self._segm_len
 
-
-# ------------------------------
-# --------- test method --------
-# ------------------------------
-
-
-# project_dir = '/home/ange/Python/workplace/Dissertation'
-# print('project_dir = {0}'.format(project_dir))
-#
-# template = cv2.imread(project_dir + "/resources/applePears/1/template.png", 3)
-# segm = cv2.imread(project_dir + "/resources/applePears/1/segmented/java/val_12_0.png", 3)
-#
-# print('start qual calc')
-# yasn = Yasnoff(template, segm)
-# yasn.printConfMatrix()
-#
-# print('qual = {0}'.format(yasn.getQuality()))
 
 
 

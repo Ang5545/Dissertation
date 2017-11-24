@@ -274,7 +274,7 @@ class Yasnoff:
 
         # Печать значений
         row_format = "{:>15}" * (width + 2)
-        print(row_format.format("", *cell_names, ''))
+        print(row_format.format("", *cell_names))
 
         for name, row in zip(row_names, resultMatrix):
             print(row_format.format(name, *row))
