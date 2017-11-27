@@ -1,10 +1,6 @@
 import cv2
 import numpy as np
 import math
-import matplotlib.pyplot as plt
-
-
-
 
 from imgUtils import ColorMask as colMaks
 
@@ -12,205 +8,103 @@ from imgUtils import ColorMask as colMaks
 class Yasnoff:
 
     def __init__(self, template, img):
-        # init parameters
         self._template = template
         self._img = img
 
         self._height = img.shape[0]
         self._width = img.shape[1]
 
-        # calculation
-        templateObjs = colMaks.getMaskFromColors(template)
-        segmObjsObjs = colMaks.getMaskFromColors(img)
+        templObjs = colMaks.getMaskFromColors(template)
+        segmObjs = colMaks.getMaskFromColors(img)
 
+        self._templ_len = len(templObjs)
+        self._segm_len = len(segmObjs)
 
-        self._templ_len = len(templateObjs)
-        self._segm_len = len(segmObjsObjs)
+        sortTemplObjs = self._sortBySize(templObjs)
+        sortSegmObjs = self._sortByBitwise(sortTemplObjs, segmObjs)
 
-        self._associateObjs = self._getAssociateObjs(templateObjs, segmObjsObjs)
-
-        self._confMatrix = self.__createConfMatrix__()
-
-
-    def __creatAssociateObj__(self, name, template, obj):
-        assObj = []
-        assObj.append(name)
-        assObj.append(template)
-        assObj.append(obj)
-        return assObj
+        self._confMatrix = self._createDiffMatrix(sortTemplObjs, sortSegmObjs)
 
 
 
-    def __createConfMatrix__(self):
-        associateObjs = self._associateObjs
+    def _sortBySize(self, templObjs):
+        # сортируем массив с шаблонами по размеру найденных элементов
+        def sortBySize(img):
+            count = cv2.countNonZero(img)
+            return 0 - count  # для сортировки по убыванию
 
-        confMatrix = np.zeros((len(associateObjs), len(associateObjs)))
-
-        # проходим по всем
-        #  объектов
-        rowIndex = 0
-        for row in associateObjs:
-            segmObj = row[2]
-
-            # если изображение не одноканальное - преобразуем в оттенки серого
-            if segmObj.ndim == 3:
-                segmObj = cv2.cvtColor(segmObj, cv2.COLOR_BGR2GRAY)
-
-            # проходим по всем столбцам объектов
-            cellIndex = 0
-            for cell in associateObjs:
-                template = cell[1]
-
-                if template is not None:
-
-                    intersec = cv2.bitwise_and(template, segmObj)
-                    ptCount = cv2.countNonZero(intersec)
-                    confMatrix[rowIndex][cellIndex] = ptCount
-
-                cellIndex = cellIndex + 1
-
-            rowIndex = rowIndex + 1
-
-        return confMatrix
+        templObjs.sort(key=sortBySize)
+        return templObjs
 
 
-    def _getIncorrectlyClassifiedPixels(self, confMatrix):
-        result = [0] * len(confMatrix)
-        c_kk = [0] * len(confMatrix)
-        c_ik = [0] * len(confMatrix)
+    def _sortByBitwise(self, templObjs, segmObjs):
+        templ_len = self._templ_len
+        segm_len = self._segm_len
+
+        diff_matrix = self._createDiffMatrix(templObjs, segmObjs)
+
+        # получаем по порядку индексы элементов, имеющих минимальную разницу с шаблонами
+        row_indexes = []
+        for cell_idx in range(0, templ_len):  # переменная индекса столбца
+            max_row_val = -1
+            max_row_idx = -1
+
+            for j in range(0, segm_len):
+                row = diff_matrix[j]
+                val = row[cell_idx]
+
+                if val > max_row_val:
+                    max_row_val = val
+                    max_row_idx = j
+
+            if max_row_idx != -1:
+                row_indexes.append(max_row_idx)
+
+        # добавляем по порядку все найденные соотвесвующие объекты
+        sorted_segmObjs = []
+        for idx in row_indexes:
+            sorted_segmObjs.append(segmObjs[idx])
+
+        # добавляем все оставшиеся объекты
+        for i in range(0, len(segmObjs)):
+            if i not in row_indexes:
+                sorted_segmObjs.append(segmObjs[i])
+
+        return sorted_segmObjs
 
 
-        rowIndex = 0
-        for row in confMatrix:
+    def _createDiffMatrix(self, templObjs, segmObjs):
+        # заполняем двумерный массив пиксельной разницей
+        diff_matrix = []
+        for segm in segmObjs:
+            row = []
 
-            cellIndex = 0
-            for cell in row:
+            if segm.ndim == 3:  # если изображение не одноканальное
+                segm = cv2.cvtColor(segm, cv2.COLOR_BGR2GRAY)  # преобразуем в оттенки серого
 
-                c_ik[cellIndex] = c_ik[cellIndex] + cell
-                if rowIndex == cellIndex :
-                    c_kk[rowIndex] = cell
+            for templ in templObjs:
+                intersec = cv2.bitwise_and(templ, segm)
+                ptCount = cv2.countNonZero(intersec)
+                row.append(ptCount)
 
-                cellIndex = cellIndex + 1
-
-            rowIndex = rowIndex + 1
-
-
-        index = 0
-        while index < len(confMatrix):
-
-            c_ik_val = c_ik[index]
-            c_kk_val = c_kk[index]
-
-            if c_ik[index] != 0 :
-                res_val = ((c_ik_val - c_kk_val) / c_ik_val) * 100
-                result[index] = res_val
-
-            index = index + 1
-
-        return result
+            diff_matrix.append(row)
+        return diff_matrix
 
 
-    def _getWronglyAssignedToClass(self, confMatrix):
-        result = [0] * len(confMatrix)
-        c_kk = [0] * len(confMatrix)
-        c_ik = [0] * len(confMatrix)
-        c_ki = [0] * len(confMatrix)
-        total = 0
 
-        rowIndex = 0
-        for row in confMatrix:
-
-            cellIndex = 0
-            for cell in row:
-                c_ki[rowIndex] = c_ki[rowIndex] + cell
-                c_ik[cellIndex] = c_ik[cellIndex] + cell
-                total = total + cell
-                if rowIndex == cellIndex:
-                    c_kk[rowIndex] = cell
-
-                cellIndex = cellIndex + 1
-
-            rowIndex = rowIndex + 1
-
-        index = 0
-        while index < len(confMatrix):
-
-            c_ik_val = c_ik[index]
-            c_kk_val = c_kk[index]
-            c_ki_val = c_ki[index]
-
-            res_val = ((c_ki_val - c_kk_val ) / (total - c_ik_val)) * 100
-            result[index] = res_val
-
-            index = index + 1
-
-        return result
-
-    def _getAssociateObjs(self, templateObjs, segmObjsObjs):
-        template = self._template
-        height = self._height
-        width = self._width
-
-        # -- ассоцияция объектов с их шаблонными масками --
-        associateObjs = []  # выходной массив
-
-        i = 0
-        for templ in templateObjs:  # проходимся по всем шаблонам
-
-            minErr = template.shape[0] * template.shape[1]  # минимальная ошибка изначально равна количеству всех пикселей
-            searchObj = np.zeros(template.shape, np.uint8)  # по умолчанию искомый объект = пустое поле
-            searchIndex = -1  # индекс найденого объекта
-
-            index = 0
-            for obj in segmObjsObjs:  # проходимся по всем найденым при сегментации объектам
-                diff = cv2.absdiff(templ, obj)  # кадровая разница между объектами
-                errPtCount = cv2.countNonZero(diff)  # количество точек в разнице
-                objPtCount = cv2.countNonZero(obj)  # количество точек в самом обхекте
-
-                if (errPtCount < minErr) and (
-                    errPtCount < objPtCount):  # если ошибка минимальна и не весь объект ошибочный
-                    # приравниваем текущий объект исомому
-                    minErr = errPtCount
-                    searchObj = obj
-                    searchIndex = index
-
-                index = index + 1
-
-            if searchIndex != -1:  # если найден объект
-                segmObjsObjs.pop(searchIndex)  # удаляем его из коллекции
-
-            name = 'Object {0}'.format(i)  # имя объекта в ассоцированном списке
-            associateObjs.append(self.__creatAssociateObj__(name, templ, searchObj))  # объект с шаблоном в резуьтат
-
-            i = i + 1
-
-        for segmObj in segmObjsObjs: # если остались не ассоциированны объекты - проходимся по ним
-            name = 'Object {0}'.format(len(associateObjs))  # имя объекта в ассоцированном списке
-
-            associateObjs.append(self.__creatAssociateObj__(name, None, segmObj))  # объект с пустым шаблоном в резуьтат
-
-        return associateObjs
-
-
-    def printConfMatrix(self):
-
+    def printMatrix(self):
         confMatrix = self._confMatrix
-        associateObjs = self._associateObjs
 
         # получаем количество шаблонов и объектов
-        height = len(associateObjs)
-        width = 0
-        for ass in associateObjs:
-            template = ass[1]
-            if template is not None:
-                width = width + 1
+        height = self._segm_len
+        width = self._templ_len
 
         # создание и расчет массивов с суммами
         rowTotals = [0] * (height + 1)
         cellTotals = [0] * (width + 1)
 
         rowIndex = 0
-        for i in range (0, height):
+        for i in range(0, height):
             row = confMatrix[i]
             cellTotal = 0
             cellIndex = 0
@@ -224,20 +118,19 @@ class Yasnoff:
             rowTotals[rowIndex] = cellTotal
             rowIndex = rowIndex + 1
 
-
         row_names = []
-        for i in range (0, height):
-            row_names.append('Object %s' %i)
+        for i in range(0, height):
+            row_names.append('Object %s' % i)
 
         cell_names = []
-        for i in range (0, width):
-            cell_names.append('Object %s' %i)
+        for i in range(0, width):
+            cell_names.append('Object %s' % i)
 
         row_names.append('Total')
         cell_names.append('Total')
 
         # создание новой матрицы с Total
-        resultMatrix = np.zeros((height+1, width+1))
+        resultMatrix = np.zeros((height + 1, width + 1))
 
         # Наполнение значенями из сторой матрицы
         rowIndex = 0
@@ -249,7 +142,7 @@ class Yasnoff:
                 cell = row[j]
                 resultMatrix[rowIndex, cellIndex] = cell
                 cellIndex = cellIndex + 1
-            rowIndex = rowIndex +1
+            rowIndex = rowIndex + 1
 
         # Добавление сумм
         for j in range(0, height):
@@ -279,33 +172,41 @@ class Yasnoff:
         for name, row in zip(row_names, resultMatrix):
             print(row_format.format(name, *row))
 
+    def _getIncorrectlyClassifiedPixels(self, confMatrix):
+        result = [0] * len(confMatrix)
+        c_kk = [0] * len(confMatrix)
+        c_ik = [0] * len(confMatrix)
 
-    def getIncorrecClassPixels(self):
-        confMatrix = self._confMatrix
-        m1 = self._getIncorrectlyClassifiedPixels(confMatrix)
+        rowIndex = 0
+        for row in confMatrix:
 
-        result = sum(m1) / len(m1)
+            cellIndex = 0
+            for cell in row:
+
+                c_ik[cellIndex] = c_ik[cellIndex] + cell
+                if rowIndex == cellIndex:
+                    c_kk[rowIndex] = cell
+
+                cellIndex = cellIndex + 1
+
+            rowIndex = rowIndex + 1
+
+        index = 0
+        while index < len(confMatrix):
+
+            c_ik_val = c_ik[index]
+            c_kk_val = c_kk[index]
+
+            if c_ik[index] != 0:
+                res_val = ((c_ik_val - c_kk_val) / c_ik_val) * 100
+                result[index] = res_val
+
+            index = index + 1
+
         return result
 
-    def getWronglyAssigneToClass(self):
-        confMatrix = self._confMatrix
-        m2 = self._getWronglyAssignedToClass(confMatrix)
-
-        result = sum(m2)
-        return result
-
-
-    def getFrags(self, a = 0.16, b = 2):
-        templ_len = self._templ_len
-        segm_len = self._segm_len
-
-        frag = 1 / 1 + (a * math.fabs((segm_len - templ_len)) ** b)
-        return frag
-
-    def get_m3(self):
-        confMatrix = self._confMatrix
-
-        result = []
+    def _getWronglyAssignedToClass(self, confMatrix):
+        result = [0] * len(confMatrix)
         c_kk = [0] * len(confMatrix)
         c_ik = [0] * len(confMatrix)
         c_ki = [0] * len(confMatrix)
@@ -332,36 +233,31 @@ class Yasnoff:
             c_kk_val = c_kk[index]
             c_ki_val = c_ki[index]
 
-            res_val = (c_ki_val * (c_ik_val - c_kk_val)) / (c_ik_val + total) ** 2 * 1000
-            result.append(res_val)
+            res_val = ((c_ki_val - c_kk_val) / (total - c_ik_val)) * 100
+            result[index] = res_val
 
             index = index + 1
 
-        return sum(result)
-
-    def getTemplateComut(self):
-        return self._templ_len
-
-    def getSegmentsComut(self):
-        return self._segm_len
+        return result
 
 
-# ------------------------------
-# --------- test method --------
-# ------------------------------
+    def getIncorrecClassPixels(self):
+        confMatrix = self._confMatrix
+        m1 = self._getIncorrectlyClassifiedPixels(confMatrix)
 
+        result = sum(m1) / len(m1)
+        return result
 
-# project_dir = '/home/ange/Python/workplace/Dissertation'
-# print('project_dir = {0}'.format(project_dir))
-#
-# template = cv2.imread(project_dir + "/resources/applePears/1/template.png", 3)
-# segm = cv2.imread(project_dir + "/resources/applePears/1/segmented/java/val_12_0.png", 3)
-#
-# print('start qual calc')
-# yasn = Yasnoff(template, segm)
-# yasn.printConfMatrix()
-#
-# print('qual = {0}'.format(yasn.getQuality()))
+    def getWronglyAssigneToClass(self):
+        confMatrix = self._confMatrix
+        m2 = self._getWronglyAssignedToClass(confMatrix)
 
+        result = sum(m2)
+        return result
 
+    def getFrags(self, a=0.16, b=2):
+        templ_len = self._templ_len
+        segm_len = self._segm_len
 
+        frag = 1 / 1 + (a * math.fabs((segm_len - templ_len)) ** b)
+        return frag
