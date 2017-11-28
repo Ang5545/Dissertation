@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="15cf1479-77e5-4e36-8c81-7f1a8b97fae3" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/segmentationQuality/yasnoff.py" afterPath="$PROJECT_DIR$/segmentationQuality/yasnoff.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/segmentationQuality/yasnoff_moments.py" afterPath="$PROJECT_DIR$/segmentationQuality/yasnoff_moments.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -668,7 +666,14 @@
       <option name="project" value="LOCAL" />
       <updated>1511802263873</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="work commit">
+      <created>1511887529349</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1511887529349</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="ToolWindowManager">
