@@ -87,6 +87,8 @@ class Yasnoff:
                 ptCount = cv2.countNonZero(intersec)
                 row.append(ptCount)
 
+
+
             diff_matrix.append(row)
         return diff_matrix
 

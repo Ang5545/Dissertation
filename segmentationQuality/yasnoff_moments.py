@@ -23,11 +23,6 @@ class Yasnoff_Moments:
         sortTemplObjs = self._sortBySize(templObjs)
         sortSegmObjs = self._sortByBitwise(sortTemplObjs, segmObjs)
 
-        for segm in segmObjs:
-            cv2.imshow("segm", segm)
-            cv2.waitKey()
-
-
         # print('len sortTemplObjs = {0}'.format(len(sortTemplObjs)))
         # print('len sortSegmObjs = {0}'.format(len(sortSegmObjs)))
         #
@@ -74,17 +69,20 @@ class Yasnoff_Moments:
                 row = diff_matrix[j]
                 val = row[cell_idx]
 
-                if val > max_row_val:
+                if val > max_row_val and j not in row_indexes:
                     max_row_val = val
                     max_row_idx = j
 
             if max_row_idx != -1:
                 row_indexes.append(max_row_idx)
+            else:
+                print('not find max!!')
 
         # добавляем по порядку все найденные соотвесвующие объекты
         sorted_segmObjs = []
         for idx in row_indexes:
             sorted_segmObjs.append(segmObjs[idx])
+
 
         # добавляем все оставшиеся объекты
         for i in range(0, len(segmObjs)):
@@ -108,11 +106,6 @@ class Yasnoff_Moments:
                 intersec = cv2.bitwise_and(templ, segm)
                 ptCount = cv2.countNonZero(intersec)
                 row.append(ptCount)
-
-                cv2.imshow('Template !!', templ)
-                cv2.imshow('segm !!', segm)
-                cv2.imshow('intersec !!', intersec)
-                cv2.waitKey()
 
             diff_matrix.append(row)
         return diff_matrix
@@ -241,74 +234,79 @@ class Yasnoff_Moments:
 
 
     def _getIncorrectlyClassifiedPixels(self, confMatrix):
-        result = [0] * len(confMatrix)
-        c_kk = [0] * len(confMatrix)
-        c_ik = [0] * len(confMatrix)
+        height = self._segm_len
+        width = self._templ_len
 
-        rowIndex = 0
-        for row in confMatrix:
+        result = []
+        for i in range(0, height):
 
-            cellIndex = 0
-            for cell in row:
+            # правильно класифицированные пиксели
+            c_kk = 0
+            if i < width:
+                c_kk = confMatrix[i][i]
 
-                c_ik[cellIndex] = c_ik[cellIndex] + cell
-                if rowIndex == cellIndex:
-                    c_kk[rowIndex] = cell
+            # сумма всех пикселей полученого объекта
+            row = confMatrix[i]
+            c_ki = 0
+            for val in row:
+                c_ki = c_ki + val
 
-                cellIndex = cellIndex + 1
+            # сумма всех пикселей полученого шаблона
+            c_ik = 0
+            for row in confMatrix:
+                val = row[i]
+                c_ik = c_ik + val
 
-            rowIndex = rowIndex + 1
-
-        index = 0
-        while index < len(confMatrix):
-
-            c_ik_val = c_ik[index]
-            c_kk_val = c_kk[index]
-
-            if c_ik[index] != 0:
-                res_val = ((c_ik_val - c_kk_val) / c_ik_val) * 100
-                result[index] = res_val
-
-            index = index + 1
+            # расчет значения
+            if c_ik != 0:
+                res_val = ((c_ik - c_kk) / c_ik) * 100
+                result.append(res_val)
+            else:
+                result.append(0)
 
         return result
+
 
     def _getWronglyAssignedToClass(self, confMatrix):
-        result = [0] * len(confMatrix)
-        c_kk = [0] * len(confMatrix)
-        c_ik = [0] * len(confMatrix)
-        c_ki = [0] * len(confMatrix)
-        total = 0
+        height = self._segm_len
+        width = self._templ_len
 
-        rowIndex = 0
-        for row in confMatrix:
+        result = []
+        for i in range(0, height):
 
-            cellIndex = 0
-            for cell in row:
-                c_ki[rowIndex] = c_ki[rowIndex] + cell
-                c_ik[cellIndex] = c_ik[cellIndex] + cell
-                total = total + cell
-                if rowIndex == cellIndex:
-                    c_kk[rowIndex] = cell
+            # правильно класифицированные пиксели
+            c_kk = 0
+            if i < width:
+                c_kk = confMatrix[i][i]
 
-                cellIndex = cellIndex + 1
+            # сумма всех пикселей полученого объекта
+            row = confMatrix[i]
+            c_ki = 0
+            for val in row:
+                c_ki = c_ki + val
 
-            rowIndex = rowIndex + 1
+            # сумма всех пикселей полученых шаблонов
+            c_ik = 0
+            for row in confMatrix:
+                val = row[i]
+                c_ik = c_ik + val
 
-        index = 0
-        while index < len(confMatrix):
-            c_ik_val = c_ik[index]
-            c_kk_val = c_kk[index]
-            c_ki_val = c_ki[index]
+            # общая сумма
+            total = 0
+            for row in confMatrix:
+                for val in row:
+                    total = total + val
 
-            res_val = ((c_ki_val - c_kk_val) / (total - c_ik_val)) * 100
-            result[index] = res_val
+            print('total = {0}; c_ik = {1}'.format(total, c_ik))
 
-            index = index + 1
+            # расчет значения
+            if c_ik != 0:
+                res_val = ((c_ki - c_kk) / (total - c_ik)) * 100
+                result.append(res_val)
+            else:
+                result.append(0)
 
         return result
-
-
 
 
 
