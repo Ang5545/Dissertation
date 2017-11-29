@@ -23,22 +23,6 @@ class Yasnoff_Moments:
         sortTemplObjs = self._sortBySize(templObjs)
         sortSegmObjs = self._sortByBitwise(sortTemplObjs, segmObjs)
 
-        # print('len sortTemplObjs = {0}'.format(len(sortTemplObjs)))
-        # print('len sortSegmObjs = {0}'.format(len(sortSegmObjs)))
-        #
-        # for i in range(0, len(sortSegmObjs)):
-        #     if i > len(sortTemplObjs):
-        #         cv2.imshow("Template", sortTemplObjs[i])
-        #         cv2.imshow("Object", sortSegmObjs[i])
-        #         cv2.waitKey()
-        #     else:
-        #         cv2.imshow("Object", sortSegmObjs[i])
-        #         cv2.waitKey()
-
-        # cv2.imshow("Template 1", sortTemplObjs[1])
-        # cv2.imshow("Object 1", sortSegmObjs[1])
-        # cv2.waitKey()
-
         self._confMatrix = self._createDiffMatrix(sortTemplObjs, sortSegmObjs)
         self._contMomentMatrix = self._createMommentsMatrix(sortTemplObjs, sortSegmObjs)
 
@@ -75,8 +59,7 @@ class Yasnoff_Moments:
 
             if max_row_idx != -1:
                 row_indexes.append(max_row_idx)
-            else:
-                print('not find max!!')
+
 
         # добавляем по порядку все найденные соотвесвующие объекты
         sorted_segmObjs = []
@@ -120,24 +103,16 @@ class Yasnoff_Moments:
         # используются только пространствунный моменты
         used_m_keys = ['m00', 'm10', 'm01', 'm20', 'm11', 'm02', 'm30', 'm21', 'm12', 'm03']
 
-
         contMomentMatrix = np.zeros((len(segm_moments), len(temp_moments)))
-
 
         # расчитываем разницу моментов
         for i in range(0, len(temp_moments)):
             temp_moment = temp_moments[i]
+            temp_count = cv2.countNonZero(templObjs[i])
 
             for j in range(0, len(segm_moments)):
                 segm_moment = segm_moments[j]
-
-                if i == 4 and j == 4:
-                    for m_key in used_m_keys:
-                        obj_m = segm_moment[m_key]
-                        temp_m = temp_moment[m_key]
-                        diff = abs((temp_m - obj_m) / temp_m)
-
-                        print('m_key = {0}; obj_m = {1}; temp_m = {2}; diff = {3};'.format(m_key, obj_m, temp_m, diff) )
+                segm_count = cv2.countNonZero(segmObjs[j])
 
                 diff_moments = []
                 for m_key in used_m_keys:
@@ -155,7 +130,7 @@ class Yasnoff_Moments:
                 contMomentMatrix[j][i] = contour_diff
 
 
-        # # нормализация значений разницы моментов по объектам
+        # # нормализация значений разницы моментов по шаблонам
         # height = self._segm_len
         # width = self._templ_len
         #
@@ -174,16 +149,18 @@ class Yasnoff_Moments:
         #
         #     return result
         #
-        # for i in range(0, height):
+        # for cell_idx in range(0, width):
         #     array = []
-        #     for j in range(0, width):
-        #         array.append(contMomentMatrix[i][j])
+        #     for row in contMomentMatrix:
+        #         array.append(row[cell_idx])
         #
         #     norm_array = normalize(array)
         #
-        #     for j in range(0, width):
+        #     for j in range(0, height):
         #         val = norm_array[j]
-        #         contMomentMatrix[i][j] = val
+        #         contMomentMatrix[j][cell_idx] = (1 - val)
+        #
+        #     # print('norm_array = {0};'.format(norm_array))
 
         return contMomentMatrix
 
@@ -220,16 +197,6 @@ class Yasnoff_Moments:
                 cnt_img = np.zeros((img_height, img_width, 3), np.uint8)
                 cnt_imgs.append(cnt_img)
 
-        # for cnt_img in cnt_imgs:
-        #     cv2.imshow("cnt", cnt_img)
-        #     cv2.waitKey()
-
-        # cv2.imshow("cnt_img 1", cnt_imgs[1])
-        # cv2.waitKey()
-
-        # cv2.imshow("cnt_img 4", cnt_imgs[4])
-        # cv2.waitKey()
-
         return(moments)
 
 
@@ -254,8 +221,9 @@ class Yasnoff_Moments:
             # сумма всех пикселей полученого шаблона
             c_ik = 0
             for row in confMatrix:
-                val = row[i]
-                c_ik = c_ik + val
+                if i < len(row):
+                    val = row[i]
+                    c_ik = c_ik + val
 
             # расчет значения
             if c_ik != 0:
@@ -288,23 +256,20 @@ class Yasnoff_Moments:
             # сумма всех пикселей полученых шаблонов
             c_ik = 0
             for row in confMatrix:
-                val = row[i]
-                c_ik = c_ik + val
+                if i < len(row):
+                    val = row[i]
+                    c_ik = c_ik + val
 
             # общая сумма
             total = 0
             for row in confMatrix:
-                for val in row:
-                    total = total + val
-
-            print('total = {0}; c_ik = {1}'.format(total, c_ik))
+                total = total + sum(row)
+                # for val in row:
+                #     total = total + val
 
             # расчет значения
-            if c_ik != 0:
-                res_val = ((c_ki - c_kk) / (total - c_ik)) * 100
-                result.append(res_val)
-            else:
-                result.append(0)
+            res_val = ((c_ki - c_kk) / (total - c_ik)) * 100
+            result.append(res_val)
 
         return result
 
@@ -350,9 +315,91 @@ class Yasnoff_Moments:
             print(row_format.format(name, *str_row))
 
 
+    def printMatrixWithTotal(self):
+        confMatrix = self._confMatrix
+
+        # получаем количество шаблонов и объектов
+        height = self._segm_len
+        width = self._templ_len
+
+        # создание и расчет массивов с суммами
+        rowTotals = [0] * (height + 1)
+        cellTotals = [0] * (width + 1)
+
+        rowIndex = 0
+        for i in range(0, height):
+            row = confMatrix[i]
+            cellTotal = 0
+            cellIndex = 0
+
+            for j in range(0, width):
+                cell = row[j]
+                cellTotal = cellTotal + cell
+                cellTotals[cellIndex] = cellTotals[cellIndex] + cell
+                cellIndex = cellIndex + 1
+
+            rowTotals[rowIndex] = cellTotal
+            rowIndex = rowIndex + 1
+
+        row_names = []
+        for i in range(0, height):
+            row_names.append('Object %s' % i)
+
+        cell_names = []
+        for i in range(0, width):
+            cell_names.append('Object %s' % i)
+
+        row_names.append('Total')
+        cell_names.append('Total')
+
+        # создание новой матрицы с Total
+        resultMatrix = np.zeros((height + 1, width + 1))
+
+        # Наполнение значенями из сторой матрицы
+        rowIndex = 0
+        for i in range(0, height):
+            row = confMatrix[i]
+            cellIndex = 0
+
+            for j in range(0, width):
+                cell = row[j]
+                resultMatrix[rowIndex, cellIndex] = cell
+                cellIndex = cellIndex + 1
+            rowIndex = rowIndex + 1
+
+        # Добавление сумм
+        for j in range(0, height):
+            resultMatrix[j][width] = rowTotals[j]
+
+        for i in range(0, width):
+            resultMatrix[height][i] = cellTotals[i]
+
+        resultMatrix[height][width] = sum(cellTotals)
+
+        # Создаем архивы для хранения имен столбцов и колонок
+        rows_names = []
+        for i in range(0, height):
+            rows_names.append('Object %s' % i)
+
+        cell_names = []
+        for i in range(0, width):
+            cell_names.append('Temaple %s' % i)
+
+        row_names.append('Total')
+        cell_names.append('Total')
+
+        # Печать значений
+        row_format = "{:>15}" * (width + 2)
+        print(row_format.format("", *cell_names))
+
+        for name, row in zip(row_names, resultMatrix):
+            print(row_format.format(name, *row))
+
     def getIncorrecClassPixels(self):
         confMatrix = self._confMatrix
         m1 = self._getIncorrectlyClassifiedPixels(confMatrix)
+
+        print('m1 = {0};'.format(m1))
 
         result = sum(m1) / len(m1)
         return result
@@ -360,6 +407,8 @@ class Yasnoff_Moments:
     def getWronglyAssigneToClass(self):
         confMatrix = self._confMatrix
         m2 = self._getWronglyAssignedToClass(confMatrix)
+
+        print('m2 = {0};'.format(m2))
 
         result = sum(m2)
         return result
@@ -371,48 +420,81 @@ class Yasnoff_Moments:
         frag = 1 / 1 + (a * math.fabs((segm_len - templ_len)) ** b)
         return frag
 
+
     def get_m3(self):
+        height = self._segm_len
+        width = self._templ_len
         contMomentMatrix = self._contMomentMatrix
         confMatrix = self._confMatrix
 
-        height = self._segm_len
-        width = self._templ_len
-
-        i_ik = [0] * width
-        i_kk = [0] * height
-        i_ki = [0] * height
-        total = 0
-
+        i_kk_s = []
         for i in range(0, width):
-            cell = []
-            for j in range(0, height):
-                val = contMomentMatrix[j][i]
-                cell.append(val)
-                i_ki[j] = i_ki[j] + val
-                total = total + val
-                if i == j:
-                    i_kk[i] = val
+            val = contMomentMatrix[i][i]
+            i_kk_s.append(val)
 
-            i_ik[i] = sum(cell)
+        def normalize(array):
+            sqr = []
+            for val in array:
+                sqr.append(val ** 2)
 
-        print('i_kk = {0}'.format(i_kk))
+            length = math.sqrt(sum(sqr))
+            result = []
+            for val in array:
+                if length != 0:
+                    result.append(val / length)
+                else:
+                    result.append(val)
 
+            return result
 
+        norm_i_kk_s = normalize(i_kk_s)
+
+        full_i_kk_s = [1] * height
+        for i in range(0, height):
+            if i < len(norm_i_kk_s):
+                full_i_kk_s[i] = (1-norm_i_kk_s[i])
 
         result = []
-        m2 = self._getWronglyAssignedToClass(confMatrix)
+        for i in range(0, height):
 
-        for i_kk_val, i_ik_val, i_ki_val, m2_val in zip(i_kk, i_ik, i_ki, m2):
-            # res_val = i_kk_val / i_ki_val
-            # res_val = i_ki_val
-            res_val = i_kk_val
+            # сумма всех пикселей полученого объекта
+            row = confMatrix[i]
+            c_ki = 0
+            for val in row:
+                c_ki = c_ki + val
+
+            # расчет значения
+            res_val = c_ki * full_i_kk_s[i]
             result.append(res_val)
 
-        # print('i_ki = {0};'.format(i_ki))
-        # print('i_kk = {0};'.format(i_kk))
-        # print('i_ik = {0};'.format(i_ik))
-        #
-        # print('m2 = {0};'.format(m2))
-        # print('m3 = {0};'.format(result))
 
-        return sum(result)
+        print('full_i_kk_s = {0};'.format(full_i_kk_s))
+        print('result = {0};'.format(result))
+
+        # res = []
+        # for i in range(0, height):
+        #     if i < norm_i_kk_s:
+        #         res.append(1-norm_i_kk_s[i])
+        #     else:
+        #         res.append(1)
+        #
+        #
+        #
+        # result = []
+        # for i in range(0, height):
+        #
+        #     # сумма всех пикселей полученого объекта
+        #     row = confMatrix[i]
+        #     c_ki = 0
+        #     for val in row:
+        #         c_ki = c_ki + val
+        #
+        #     res_val = res[i] * c_ki
+        #     result.append(res_val)
+        #
+        # result = []
+        #
+        # print('result = {0};'.format(result))
+        # return (sum(result) / len(result))
+
+

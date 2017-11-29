@@ -72,9 +72,10 @@ def testSrmMod(templatePath, srmREsultDir):
     template = cv2.imread(templatePath, 3)
     images = iml.getNamedImages(srmREsultDir)
 
-    m3s = []
-    # m2s = []
-    # results = []
+    m1s = []
+    m2s = []
+    frags = []
+    results = []
 
     def sortByVal(inp):
         name = inp[0]
@@ -92,27 +93,60 @@ def testSrmMod(templatePath, srmREsultDir):
         # yasn.printMatrix()
         m3 = yasn.get_m3()
 
-        # m1 = yasn.getIncorrecClassPixels()
-        # m2 = yasn.getWronglyAssigneToClass()
-        # frag = yasn.getFrags()
-        # res = (m1 + m2 + frag) / 3
-        #
-        m3s.append([srm_val, m3])
-        # m2s.append([srm_val, m2])
-        # results.append([srm_val, res])
+        m1 = yasn.getIncorrecClassPixels()
+        m2 = yasn.getWronglyAssigneToClass()
+        frag = yasn.getFrags()
+        res = (m2 + frag) / 3
 
-        # print('m2 = {0};'.format(m2))
-        print('m3 = {0};'.format(m3))
+        m1s.append([srm_val, m1])
+        m2s.append([srm_val, m2])
+        frags.append([srm_val, frag])
+        results.append([srm_val, res])
+
+        # print('m1 = {0}; m2 = {1}; frag = {2}; result = {3};'.format(m1, m2, frag, res))
 
 
-    plt.plot(*zip(*m3s), label="m3")
-    # plt.plot(*zip(*m2s), label="m2")
-    # plt.plot(*zip(*results), label="result")
+    plt.plot(*zip(*m1s), label="m1")
+    plt.plot(*zip(*m2s), label="m2")
+    plt.plot(*zip(*frags), label="frags")
+    plt.plot(*zip(*results), label="result")
     plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
     plt.show()
 
     print('------------------')
 
+
+def testSrmMod_m3_plot(templatePath, srmREsultDir):
+    template = cv2.imread(templatePath, 3)
+    images = iml.getNamedImages(srmREsultDir)
+
+    m3s = []
+
+
+    def sortByVal(inp):
+        name = inp[0]
+        return float(name[4:len(name)].replace('_', '.'))
+
+    images.sort(key=sortByVal)
+
+    for img in images:
+        print('name = {0};'.format(img[0]))
+        name = img[0]
+        srm_val = float(name[4:len(name)].replace('_', '.'))
+        image = img[1]
+
+        yasn = Yasnoff_Moments(template, image)
+        m3 = yasn.get_m3()
+        m3s.append([srm_val, m3])
+
+        print('m3 = {0};'.format(m3))
+
+
+    plt.plot(*zip(*m3s), label="m3")
+    plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
+    plt.show()
+
+    print('------------------')
 
 
 def testSrmOneImage(img_path, template_path):
@@ -126,6 +160,9 @@ def testSrmOneImage(img_path, template_path):
 
     yasn = Yasnoff_Moments(template, img)
     yasn.printMatrix()
+    print('---------------------------------------')
+    yasn.printMatrixWithTotal()
+    print('---------------------------------------')
 
     m1 = yasn.getIncorrecClassPixels()
     m2 = yasn.getWronglyAssigneToClass()
@@ -210,6 +247,13 @@ def testThreshold():
 
 project_dir = iml.getParamFromConfig('projectdir')
 
+pearTempl = project_dir + '/resources/pears/template.bmp'
+pearSegmDir = project_dir + '/resources/pears/segmented/java/'
+
+applePearTempl = project_dir + '/resources/applePears/1/template.png'
+applePearSegmDir = project_dir + '/resources/applePears/1/segmented/java/'
+
+
 # tempPath = project_dir + "/resources/applePears/1/template.png"
 # imgPath = project_dir + "/resources/applePears/1/segmented/java/"
 
@@ -218,17 +262,11 @@ project_dir = iml.getParamFromConfig('projectdir')
 #
 # testSrm(tempPath, imgPath)
 
+testSrmOneImage(pearSegmDir + 'val_17_0.png', pearTempl)
 
-imgPath = project_dir + "/resources/applePears/1/segmented/java/val_5_0.png"
-tempPath = project_dir +  "/resources/applePears/1/template.png"
+# testSrmMod(pearTempl, pearSegmDir)
 
-testSrmOneImage(imgPath, tempPath)
-
-
-# imgPath = project_dir + "/resources/applePears/1/segmented/java/"
-# tempPath = project_dir + "/resources/applePears/1/template.png"
-#
-# testSrmMod(tempPath, imgPath)
+# testSrmMod_m3_plot(applePearTempl, applePearSegmDir)
 
 
 
