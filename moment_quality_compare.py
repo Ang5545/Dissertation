@@ -26,10 +26,10 @@ pearAllWhite = project_dir + '/resources/pears/all_white.bmp'
 templImage = cv2.imread(pearTempl, 3)
 templates = colMaks.getMaskFromColors(templImage)
 
-all_white = cv2.imread(pearAllWhite, 0)
+# all_white = cv2.imread(pearAllWhite, 0)
 
-height = all_white.shape[0]
-width = all_white.shape[1]
+height = templImage.shape[0]
+width = templImage.shape[1]
 
 
 

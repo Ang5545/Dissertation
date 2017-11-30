@@ -91,12 +91,12 @@ def testSrmMod(templatePath, srmREsultDir):
 
         yasn = Yasnoff_Moments(template, image)
         # yasn.printMatrix()
-        m3 = yasn.get_m3()
+        # m3 = yasn.get_m3()
 
         m1 = yasn.getIncorrecClassPixels()
         m2 = yasn.getWronglyAssigneToClass()
         frag = yasn.getFrags()
-        res = (m2 + frag) / 3
+        res = (m1 + m2 + frag) / 3
 
         m1s.append([srm_val, m1])
         m2s.append([srm_val, m2])
@@ -104,6 +104,7 @@ def testSrmMod(templatePath, srmREsultDir):
         results.append([srm_val, res])
 
         # print('m1 = {0}; m2 = {1}; frag = {2}; result = {3};'.format(m1, m2, frag, res))
+        print('m1 = {0}; m2 = {1}; frag = {2}; result = {3};'.format(m1, m2, frag, res))
 
 
     plt.plot(*zip(*m1s), label="m1")
@@ -116,12 +117,11 @@ def testSrmMod(templatePath, srmREsultDir):
     print('------------------')
 
 
-def testSrmMod_m3_plot(templatePath, srmREsultDir):
+def testSrmMod_m4_plot(templatePath, srmREsultDir):
     template = cv2.imread(templatePath, 3)
     images = iml.getNamedImages(srmREsultDir)
 
-    m3s = []
-
+    m4s = []
 
     def sortByVal(inp):
         name = inp[0]
@@ -137,12 +137,12 @@ def testSrmMod_m3_plot(templatePath, srmREsultDir):
 
         yasn = Yasnoff_Moments(template, image)
         m3 = yasn.get_m3()
-        m3s.append([srm_val, m3])
+        m4s.append([srm_val, m3])
 
-        print('m3 = {0};'.format(m3))
+        print('!m4 = {0};'.format(m3))
 
 
-    plt.plot(*zip(*m3s), label="m3")
+    plt.plot(*zip(*m4s), label="m4")
     plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
     plt.show()
 
@@ -164,24 +164,13 @@ def testSrmOneImage(img_path, template_path):
     yasn.printMatrixWithTotal()
     print('---------------------------------------')
 
-    m1 = yasn.getIncorrecClassPixels()
-    m2 = yasn.getWronglyAssigneToClass()
-    frag = yasn.getFrags()
-    m3 = yasn.get_m3()
-
-    print('m1 = {0}; m2 = {1}; frag = {2}; m3 = {3}'.format(m1, m2, frag, m3))
-
-    # print(' -- getIncorrecClassPixels --')
     # m1 = yasn.getIncorrecClassPixels()
-    #
-    #
-    # print(' -- getWronglyAssigneToClass --')
-
+    # m2 = yasn.getWronglyAssigneToClass()
     # frag = yasn.getFrags()
-    #
-    # m3 = yasn.get_m3()
+    m4 = yasn.get_m4()
+    print('in the end m4 = {0}'.format(m4))
+    # print('m1 = {0}; m2 = {1}; frag = {2}; m4 = {3}'.format(m1, m2, frag, m4))
 
-    # print('m1 = {0}; m2 = {1}; frag = {2}; m3 = {3};'.format(m1, m2, frag, m3))
 
 
 def testThreshold():
@@ -262,11 +251,11 @@ applePearSegmDir = project_dir + '/resources/applePears/1/segmented/java/'
 #
 # testSrm(tempPath, imgPath)
 
-testSrmOneImage(pearSegmDir + 'val_17_0.png', pearTempl)
+# testSrmOneImage(applePearSegmDir + 'val_5_0.png', applePearTempl)
 
 # testSrmMod(pearTempl, pearSegmDir)
 
-# testSrmMod_m3_plot(applePearTempl, applePearSegmDir)
+testSrmMod_m4_plot(pearTempl, pearSegmDir)
 
 
 
