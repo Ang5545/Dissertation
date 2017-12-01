@@ -10,6 +10,9 @@ from imgUtils import ColorMask as colMaks
 class Yasnoff_Moments:
 
     def __init__(self, template, img):
+        # используются только пространствунный моменты
+        self._used_moments = ['m00', 'm10', 'm01', 'm20', 'm11', 'm02', 'm30', 'm21', 'm12', 'm03']
+
         self._template = template
         self._img = img
 
@@ -99,16 +102,12 @@ class Yasnoff_Moments:
 
 
     def _createMommentsMatrix(self, templObjs, segmObjs):
+        img_height = self._height
+        img_width = self._width
 
         # расчитываем моменты
-        temp_res = self._getMoments(templObjs)
-        segm_res = self._getMoments(segmObjs)
-
-        temp_moments = temp_res[0]
-        segm_moments = segm_res[0]
-
-        # используются только пространствунный моменты
-        used_m_keys = ['m00', 'm10', 'm01', 'm20', 'm11', 'm02', 'm30', 'm21', 'm12', 'm03']
+        temp_moments = self._getMoments(templObjs)
+        segm_moments = self._getMoments(segmObjs)
 
         max_length = max(len(segmObjs), len(templObjs))
         contMomentMatrix = np.zeros((max_length, max_length))
@@ -120,16 +119,21 @@ class Yasnoff_Moments:
 
             for j in range(0, len(segm_moments)):
                 segm_moment = segm_moments[j]
-                segm_count = cv2.countNonZero(segmObjs[j])
+                # segm_count = cv2.countNonZero(segmObjs[j])
 
                 diff_moments = []
-                for m_key in used_m_keys:
+                for m_key in self._used_moments:
                     obj_m = segm_moment[m_key]
                     temp_m = temp_moment[m_key]
 
-                    # diff = abs((1 / temp_m) - (1 / obj_m))  # CV_CONTOURS_MATCH_I1
-                    # diff = abs(temp_m - obj_m)            # CV_CONTOURS_MATCH_I2
-                    diff = abs((temp_m - obj_m) / temp_m) # CV_CONTOURS_MATCH_I3
+                    # # diff = abs((1 / temp_m) - (1 / obj_m))  # CV_CONTOURS_MATCH_I1
+                    # # diff = abs(temp_m - obj_m)            # CV_CONTOURS_MATCH_I2
+                    # diff = abs((temp_m - obj_m) / temp_m) # CV_CONTOURS_MATCH_I3
+
+                    max_m = max(obj_m, obj_m)
+                    min_m = min(temp_m, temp_m)
+
+                    diff = abs((max_m - min_m) / max_m)
 
                     diff_moments.append(diff)
 
@@ -138,15 +142,6 @@ class Yasnoff_Moments:
 
                 contMomentMatrix[j][i] = dss
 
-                # if i == j:
-                #
-                #     print(' num = {0}; contour_diff = {1}; dss = {2}'.format(i, contour_diff, dss))
-                #     temp_cnt_img = temp_res[1][i]
-                #     segm_cnt_img = segm_res[1][i]
-                #
-                #     cv2.imshow("temp_cnt_img", temp_cnt_img)
-                #     cv2.imshow("segm_cnt_img", segm_cnt_img)
-                #     cv2.waitKey()
 
         # # нормализация значений разницы моментов по шаблонам
         # height = self._segm_len
@@ -185,12 +180,10 @@ class Yasnoff_Moments:
 
 
     def _getMoments(self, images):
-        img_height = self._height
-        img_width = self._width
 
         # проходим по всем сегментированным объектам и считаем моменты
         moments = []
-        cnt_imgs = []
+        # cnt_imgs = []
 
         for img in images:
             if img.ndim == 3:  # если изображение не одноканальное
@@ -203,24 +196,51 @@ class Yasnoff_Moments:
                 moment = cv2.moments(cnt)
                 moments.append(moment)
 
-                # рисуем полученые контуры и добавдяем в коллекция (для дальнейшей визуализации)
-                cnt_img = np.zeros((img_height, img_width, 3), np.uint8)
-                cv2.drawContours(cnt_img, [cnt], -1, (0, 255, 0), 1)
-                cnt_imgs.append(cnt_img)
+                # # рисуем полученые контуры и добавдяем в коллекция (для дальнейшей визуализации)
+                # cnt_img = np.zeros((img_height, img_width, 3), np.uint8)
+                # cv2.drawContours(cnt_img, [cnt], -1, (0, 255, 0), 1)
+                # cnt_imgs.append(cnt_img)
 
             else:
                 moments.append(0.0)
 
-                # добавдяем в коллекцию с контурами  (для дальнейшей визуализации)
-                cnt_img = np.zeros((img_height, img_width, 3), np.uint8)
-                cnt_imgs.append(cnt_img)
+                # # добавдяем в коллекцию с контурами  (для дальнейшей визуализации)
+                # cnt_img = np.zeros((img_height, img_width, 3), np.uint8)
+                # cnt_imgs.append(cnt_img)
 
-        res = []
-        res.append(moments)
-        res.append(cnt_imgs)
+        return (moments)
 
-        # return (moments)
-        return res
+
+    # def _getMaxMoments(self):
+    #     img_height = self._height
+    #     img_width = self._width
+    #     blank_img = np.zeros((img_height, img_width, 3), np.uint8)
+    #     blank_img[:] = (255, 255, 255)
+    #     gray_blank_img = cv2.cvtColor(blank_img, cv2.COLOR_BGR2GRAY)
+    #     _, contours, _ = cv2.findContours(gray_blank_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    #     cnt = contours[0]
+    #     moments = cv2.moments(cnt)
+    #     need_moments = []
+    #     for m_key in self._used_moments:
+    #         m = moments[m_key]
+    #         need_moments.append(m)
+    #
+    #     average = (sum(need_moments) / len(need_moments))
+    #     result = average ** (1 / 4)
+    #     return result
+
+    def _getMaxMomentDiff(self):
+         # TODO расчет максимально возможной ошибки
+        return 1
+
+    def _createBlankWhiteImg(self):
+        img_height = self._height
+        img_width = self._width
+
+        blank_img = np.zeros((img_height, img_width, 3), np.uint8)
+        blank_img[:] = (255, 255, 255)
+        gray_blank_img = cv2.cvtColor(blank_img, cv2.COLOR_BGR2GRAY)
+        return gray_blank_img
 
     def _getIncorrectlyClassifiedPixels(self, confMatrix):
         height = self._segm_len
@@ -449,7 +469,16 @@ class Yasnoff_Moments:
             i_kk = contMomentMatrix[i][i]
             result.append(i_kk)
 
-        print('m4s = {0};'.format(result))
+        # так как если найденных объектов меньше чем шаблонов показхатель очень маленький
+        # отсуствие найденного обйекта соотвесвующего шаблона штрафуется по максимуму
+        if height < width:
+            # max_moment_diff = self._getMaxMomentDiff()
+            # for i in range(0, width - height):
+            #     # TODO подобрать коэфициенты
+            #     result.append(height * max_moment_diff)
+            result.append(5)
+
+        print('m3s = {0};'.format(result))
 
         return sum(result) / len(result)
 

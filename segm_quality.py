@@ -121,7 +121,7 @@ def testSrmMod_m4_plot(templatePath, srmREsultDir):
     template = cv2.imread(templatePath, 3)
     images = iml.getNamedImages(srmREsultDir)
 
-    m4s = []
+    m3s = []
 
     def sortByVal(inp):
         name = inp[0]
@@ -137,12 +137,12 @@ def testSrmMod_m4_plot(templatePath, srmREsultDir):
 
         yasn = Yasnoff_Moments(template, image)
         m3 = yasn.get_m3()
-        m4s.append([srm_val, m3])
+        m3s.append([srm_val, m3])
 
-        print('!m4 = {0};'.format(m3))
+        print('!m3 = {0};'.format(m3))
 
 
-    plt.plot(*zip(*m4s), label="m4")
+    plt.plot(*zip(*m3s), label="m3s")
     plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
     plt.show()
 
@@ -167,8 +167,8 @@ def testSrmOneImage(img_path, template_path):
     # m1 = yasn.getIncorrecClassPixels()
     # m2 = yasn.getWronglyAssigneToClass()
     # frag = yasn.getFrags()
-    m4 = yasn.get_m4()
-    print('in the end m4 = {0}'.format(m4))
+    m3 = yasn.get_m3()
+    print('in the end m3 = {0}'.format(m3))
     # print('m1 = {0}; m2 = {1}; frag = {2}; m4 = {3}'.format(m1, m2, frag, m4))
 
 
@@ -233,6 +233,7 @@ def testThreshold():
 
 
 # --------------- MAIN ---------------
+print(' - start work - ')
 
 project_dir = iml.getParamFromConfig('projectdir')
 
@@ -251,14 +252,12 @@ applePearSegmDir = project_dir + '/resources/applePears/1/segmented/java/'
 #
 # testSrm(tempPath, imgPath)
 
-# testSrmOneImage(applePearSegmDir + 'val_5_0.png', applePearTempl)
+# testSrmOneImage(applePearSegmDir + 'val_3_0.png', applePearTempl)
 
 # testSrmMod(pearTempl, pearSegmDir)
 
 testSrmMod_m4_plot(pearTempl, pearSegmDir)
 
 
-
-
-
+print(' - end - ')
 
