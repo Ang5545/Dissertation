@@ -571,7 +571,14 @@
       <option name="project" value="LOCAL" />
       <updated>1511549042681</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="add to ignore">
+      <created>1512383161784</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1512383161784</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -605,7 +612,8 @@
     <MESSAGE value="home commit" />
     <MESSAGE value="work" />
     <MESSAGE value="work commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="work commit" />
+    <MESSAGE value="add to ignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="add to ignore" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
