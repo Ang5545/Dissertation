@@ -1,11 +1,9 @@
+import cv2
+import matplotlib.pyplot as plt
 import imgUtils.ImgLoader as iml
 from segmentationQuality.yasnoff import Yasnoff
-from segmentationQuality.yasnoff_modification import Yasnoff_Modification
-from segmentationQuality.yasnoff_mod_2 import Yasnoff_Mod
-import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
-from segmentation.threshold.threshold import Threshold
-import cv2
+from segmentationQuality.yasnoff_moments import Yasnoff_Moments
+
 
 
 
@@ -15,11 +13,9 @@ def testSrm(templatePath, srmREsultDir):
 
     m1s = []
     m2s = []
-    m3s = []
     frags = []
     results = []
-    tcs = []
-    scs = []
+
 
     minRes = 100
     bestImg = images[0]
@@ -41,13 +37,10 @@ def testSrm(templatePath, srmREsultDir):
         m2 = yasn.getWronglyAssigneToClass()
         frag = yasn.getFrags()
         res = (m1 + m2 + frag) / 3
-        m3 = yasn.get_m3()
-        print('m3 = {0}'.format(m3))
 
         frags.append([srm_val, frag])
         m1s.append([srm_val, m1])
         m2s.append([srm_val, m2])
-        m3s.append([srm_val, m3])
         results.append([srm_val, res])
 
         # tc = yasn.getTemplateComut()
@@ -63,7 +56,6 @@ def testSrm(templatePath, srmREsultDir):
 
     plt.plot(*zip(*m1s), label="m1")
     plt.plot(*zip(*m2s), label="m2")
-    plt.plot(*zip(*m3s), label="m3")
     plt.plot(*zip(*frags), label="frag")
     plt.plot(*zip(*results), label="result")
 
@@ -77,6 +69,55 @@ def testSrm(templatePath, srmREsultDir):
     print('------------------')
 
 def testSrmMod(templatePath, srmREsultDir):
+    template = cv2.imread(templatePath, 3)
+    images = iml.getNamedImages(srmREsultDir)
+
+    m1s = []
+    m2s = []
+    frags = []
+    results = []
+
+    def sortByVal(inp):
+        name = inp[0]
+        return float(name[4:len(name)].replace('_', '.'))
+
+    images.sort(key=sortByVal)
+
+    for img in images:
+        print('name = {0};'.format(img[0]))
+        name = img[0]
+        srm_val = float(name[4:len(name)].replace('_', '.'))
+        image = img[1]
+
+        yasn = Yasnoff_Moments(template, image)
+        # yasn.printMatrix()
+        # m3 = yasn.get_m3()
+
+        m1 = yasn.getIncorrecClassPixels()
+        m2 = yasn.getWronglyAssigneToClass()
+        frag = yasn.getFrags()
+        res = (m1 + m2 + frag) / 3
+
+        m1s.append([srm_val, m1])
+        m2s.append([srm_val, m2])
+        frags.append([srm_val, frag])
+        results.append([srm_val, res])
+
+        # print('m1 = {0}; m2 = {1}; frag = {2}; result = {3};'.format(m1, m2, frag, res))
+        print('m1 = {0}; m2 = {1}; frag = {2}; result = {3};'.format(m1, m2, frag, res))
+
+
+    plt.plot(*zip(*m1s), label="m1")
+    plt.plot(*zip(*m2s), label="m2")
+    plt.plot(*zip(*frags), label="frags")
+    plt.plot(*zip(*results), label="result")
+    plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
+    plt.show()
+
+    print('------------------')
+
+
+def testSrmMod_m4_plot(templatePath, srmREsultDir):
     template = cv2.imread(templatePath, 3)
     images = iml.getNamedImages(srmREsultDir)
 
@@ -94,27 +135,18 @@ def testSrmMod(templatePath, srmREsultDir):
         srm_val = float(name[4:len(name)].replace('_', '.'))
         image = img[1]
 
-        yasn = Yasnoff_Mod(template, image)
-        yasn.printMatrix()
-
+        yasn = Yasnoff_Moments(template, image)
         m3 = yasn.get_m3()
-
-        print('m3 = {0};'.format(m3))
         m3s.append([srm_val, m3])
 
+        print('!m3 = {0};'.format(m3))
 
-    plt.plot(*zip(*m3s), label="m2")
 
-
-    # cv2.imshow("Best Result Image", bestImg)
-    # cv2.imshow("Temlate", template)
-    # cv2.waitKey()
-
+    plt.plot(*zip(*m3s), label="m3s")
     plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
     plt.show()
 
     print('------------------')
-
 
 
 def testSrmOneImage(img_path, template_path):
@@ -126,20 +158,19 @@ def testSrmOneImage(img_path, template_path):
     # cv2.imshow('template', template)
     # cv2.waitKey()
 
-    yasn = Yasnoff_Mod(template, img)
+    yasn = Yasnoff_Moments(template, img)
     yasn.printMatrix()
+    print('---------------------------------------')
+    yasn.printMatrixWithTotal()
+    print('---------------------------------------')
 
-    print(' -- getIncorrecClassPixels --')
-    m1 = yasn.getIncorrecClassPixels()
-
-
-    print(' -- getWronglyAssigneToClass --')
-    m2 = yasn.getWronglyAssigneToClass()
-    frag = yasn.getFrags()
-
+    # m1 = yasn.getIncorrecClassPixels()
+    # m2 = yasn.getWronglyAssigneToClass()
+    # frag = yasn.getFrags()
     m3 = yasn.get_m3()
+    print('in the end m3 = {0}'.format(m3))
+    # print('m1 = {0}; m2 = {1}; frag = {2}; m4 = {3}'.format(m1, m2, frag, m4))
 
-    print('m1 = {0}; m2 = {1}; frag = {2}; m3 = {3};'.format(m1, m2, frag, m3))
 
 
 def testThreshold():
@@ -202,8 +233,16 @@ def testThreshold():
 
 
 # --------------- MAIN ---------------
+print(' - start work - ')
 
 project_dir = iml.getParamFromConfig('projectdir')
+
+pearTempl = project_dir + '/resources/pears/template.bmp'
+pearSegmDir = project_dir + '/resources/pears/segmented/java/'
+
+applePearTempl = project_dir + '/resources/applePears/1/template.png'
+applePearSegmDir = project_dir + '/resources/applePears/1/segmented/java/'
+
 
 # tempPath = project_dir + "/resources/applePears/1/template.png"
 # imgPath = project_dir + "/resources/applePears/1/segmented/java/"
@@ -213,20 +252,12 @@ project_dir = iml.getParamFromConfig('projectdir')
 #
 # testSrm(tempPath, imgPath)
 
+# testSrmOneImage(applePearSegmDir + 'val_3_0.png', applePearTempl)
 
-imgPath = project_dir + "/resources/pears/segmented/java/val_13_0.png"
-tempPath = project_dir + '/resources/pears/template.bmp'
+# testSrmMod(pearTempl, pearSegmDir)
 
-testSrmOneImage(imgPath, tempPath)
-
-
-# imgPath = project_dir + "/resources/pears/segmented/java/"
-# tempPath = project_dir + '/resources/pears/template.bmp'
-#
-# testSrmMod(tempPath, imgPath)
+testSrmMod_m4_plot(applePearTempl, applePearSegmDir)
 
 
-
-
-
+print(' - end - ')
 
