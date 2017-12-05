@@ -2,7 +2,7 @@ import cv2
 import matplotlib.pyplot as plt
 import imgUtils.ImgLoader as iml
 from segmentationQuality.yasnoff import Yasnoff
-from segmentationQuality.yasnoff_moments import Yasnoff_Moments
+from segmentationQuality.yasnoff_moments import YasnoffMoments
 
 
 
@@ -15,7 +15,6 @@ def testSrm(templatePath, srmREsultDir):
     m2s = []
     frags = []
     results = []
-
 
     minRes = 100
     bestImg = images[0]
@@ -68,6 +67,7 @@ def testSrm(templatePath, srmREsultDir):
 
     print('------------------')
 
+
 def testSrmMod(templatePath, srmREsultDir):
     template = cv2.imread(templatePath, 3)
     images = iml.getNamedImages(srmREsultDir)
@@ -89,7 +89,7 @@ def testSrmMod(templatePath, srmREsultDir):
         srm_val = float(name[4:len(name)].replace('_', '.'))
         image = img[1]
 
-        yasn = Yasnoff_Moments(template, image)
+        yasn = YasnoffMoments(template, image)
         # yasn.printMatrix()
         # m3 = yasn.get_m3()
 
@@ -135,11 +135,11 @@ def testSrmMod_m4_plot(templatePath, srmREsultDir):
         srm_val = float(name[4:len(name)].replace('_', '.'))
         image = img[1]
 
-        yasn = Yasnoff_Moments(template, image)
+        yasn = YasnoffMoments(template, image)
         m3 = yasn.get_m3()
         m3s.append([srm_val, m3])
 
-        print('!m3 = {0};'.format(m3))
+        print('m3 = {0};'.format(m3))
 
 
     plt.plot(*zip(*m3s), label="m3s")
@@ -158,7 +158,7 @@ def testSrmOneImage(img_path, template_path):
     # cv2.imshow('template', template)
     # cv2.waitKey()
 
-    yasn = Yasnoff_Moments(template, img)
+    yasn = YasnoffMoments(template, img)
     yasn.printMatrix()
     print('---------------------------------------')
     yasn.printMatrixWithTotal()
@@ -182,7 +182,6 @@ def testThreshold():
     cv2.imshow("img", img)
 
     # print('start')
-
 
     # th = 0
     # step = 10
@@ -256,7 +255,7 @@ applePearSegmDir = project_dir + '/resources/applePears/1/segmented/java/'
 
 # testSrmMod(pearTempl, pearSegmDir)
 
-testSrmMod_m4_plot(applePearTempl, applePearSegmDir)
+testSrmMod_m4_plot(pearTempl, pearSegmDir)
 
 
 print(' - end - ')

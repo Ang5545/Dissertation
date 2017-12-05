@@ -4,12 +4,10 @@ import math
 from imgUtils import ColorMask as colMaks
 
 
-class Yasnoff_Moments:
+class YasnoffMoments:
+
 
     def __init__(self, template, img):
-        # используются только пространствунный моменты
-        self._used_moments = ['m00', 'm10', 'm01', 'm20', 'm11', 'm02', 'm30', 'm21', 'm12', 'm03']
-
         self._template = template
         self._img = img
 
@@ -62,12 +60,10 @@ class Yasnoff_Moments:
             if max_row_idx != -1:
                 row_indexes.append(max_row_idx)
 
-
         # добавляем по порядку все найденные соотвесвующие объекты
         sorted_segmObjs = []
         for idx in row_indexes:
             sorted_segmObjs.append(segmObjs[idx])
-
 
         # добавляем все оставшиеся объекты
         for i in range(0, len(segmObjs)):
@@ -123,46 +119,29 @@ class Yasnoff_Moments:
                 contMomentMatrix[j][i] = moments_diff
 
 
-
         # можно не использовать потому что разница между любым объектом и одним пикселем стремится к 1
-        # if temp_len > segm_len:
-        #     blank_image = np.zeros([img_height, img_width, 3], dtype=np.uint8)
-        #     # blank_image[:] = (255, 255, 255)
-        #     cnt_y = img_width // 2
-        #     cnt_x = img_height // 2
-        #     blank_image[cnt_x, cnt_y] = (255, 255, 255)
-        #
-        #     for h in range(0, 3):
-        #         for w in range(0, 3):
-        #             blank_image[cnt_x+w, cnt_y+h] = (255, 255, 255)
-        #
-        #     cv2.imshow('blank_image', blank_image)
-        #     # cv2.waitKey()
-        #
-        #     if blank_image.ndim == 3:  # если изображение не одноканальное
-        #         blank_image = cv2.cvtColor(blank_image, cv2.COLOR_BGR2GRAY)  # преобразуем в оттенки серого
-        #
-        #
-        #     _, contours, _ = cv2.findContours(blank_image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-        #     cnt = contours[0]
-        #     cnt_img = np.zeros((img_height, img_width, 3), np.uint8)
-        #     cv2.drawContours(cnt_img, [cnt], -1, (0, 255, 0), 1)
-        #
-        #     cv2.imshow("cnt_img", cnt_img)
-        #     cv2.waitKey()
-        #
-        #     blank_moment = self._getMoments(blank_image)
-        #
-        #     for i in range(segm_len, temp_len):
-        #         print('i={0}'.format(i))
-        #         temp_moment = temp_moments[i]
-        #         moments_diff = self._get_moments_diff(blank_moment, temp_moment)
-        #         print('moments_diff = {0};'.format(moments_diff))
+        # ------
+        if temp_len > segm_len:
+            blank_image = np.zeros([img_height, img_width, 3], dtype=np.uint8)
+            cnt_y = img_width // 2
+            cnt_x = img_height // 2
+            blank_image[cnt_x, cnt_y] = (255, 255, 255)
+            blank_image = cv2.cvtColor(blank_image, cv2.COLOR_BGR2GRAY)
+            blank_moment = self._getMoments(blank_image)
+
+            for i in range(segm_len, temp_len):
+                temp_moment = temp_moments[i]
+                moments_diff = self._get_moments_diff(blank_moment, temp_moment)
+                contMomentMatrix[i][i] = moments_diff
+        # ------
 
         return contMomentMatrix
 
 
-    def _get_moments_diff(self, moment1, moment2):
+    def _get_moments_diff(self, moment1, moment2, base = 4):
+        # используются только пространствунный моменты
+        self._used_moments = ['m00', 'm10', 'm01', 'm20', 'm11', 'm02', 'm30', 'm21', 'm12', 'm03']
+
         diff_moments = []
         for m_key in self._used_moments:
             obj_m = moment1[m_key]
@@ -172,13 +151,12 @@ class Yasnoff_Moments:
             min_m = min(obj_m, temp_m)
 
             # # diff = abs((1 / temp_m) - (1 / obj_m))  # CV_CONTOURS_MATCH_I1
-            # # diff = abs(temp_m - obj_m)            # CV_CONTOURS_MATCH_I2
-            diff = abs((max_m - min_m) / max_m) # CV_CONTOURS_MATCH_I3
-
+            # # diff = abs(temp_m - obj_m)              # CV_CONTOURS_MATCH_I2
+            diff = abs((max_m - min_m) / max_m)         # CV_CONTOURS_MATCH_I3
             diff_moments.append(diff)
 
         contour_diff = sum(diff_moments) / len(diff_moments)
-        result = contour_diff ** (1 / 4)
+        result = contour_diff ** (1 / base)
         return result
 
 
@@ -187,23 +165,12 @@ class Yasnoff_Moments:
             img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # преобразуем в оттенки серого
 
         _, contours, _ = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
         if len(contours) > 0:
             cnt = contours[0]
             moment = cv2.moments(cnt)
             return moment
-
-            # # рисуем полученые контуры и добавдяем в коллекция (для дальнейшей визуализации)
-            # cnt_img = np.zeros((img_height, img_width, 3), np.uint8)
-            # cv2.drawContours(cnt_img, [cnt], -1, (0, 255, 0), 1)
-            # cnt_imgs.append(cnt_img)
-
         else:
             return 0.0
-
-            # # добавдяем в коллекцию с контурами  (для дальнейшей визуализации)
-            # cnt_img = np.zeros((img_height, img_width, 3), np.uint8)
-            # cnt_imgs.append(cnt_img)
 
 
     def _getMomentsFromArray(self, images):
@@ -223,6 +190,7 @@ class Yasnoff_Moments:
         blank_img[:] = (255, 255, 255)
         gray_blank_img = cv2.cvtColor(blank_img, cv2.COLOR_BGR2GRAY)
         return gray_blank_img
+
 
     def _getIncorrectlyClassifiedPixels(self, confMatrix):
         height = self._segm_len
@@ -289,7 +257,6 @@ class Yasnoff_Moments:
             result.append(res_val)
 
         return result
-
 
 
 
@@ -413,20 +380,18 @@ class Yasnoff_Moments:
         for name, row in zip(row_names, resultMatrix):
             print(row_format.format(name, *row))
 
+
     def getIncorrecClassPixels(self):
         confMatrix = self._confMatrix
         m1 = self._getIncorrectlyClassifiedPixels(confMatrix)
 
-        # print('m1 = {0};'.format(m1))
-
         result = sum(m1) / len(m1)
         return result
+
 
     def getWronglyAssigneToClass(self):
         confMatrix = self._confMatrix
         m2 = self._getWronglyAssignedToClass(confMatrix)
-
-        # print('m2 = {0};'.format(m2))
 
         result = sum(m2)
         return result
@@ -451,44 +416,18 @@ class Yasnoff_Moments:
             i_kk = contMomentMatrix[i][i]
             result.append(i_kk)
 
-        for i in range(height, width):
-            result.append(1)
+        # показатель даже при минимальном отклонении стремится к 1-це
+        # поэтому для простоты можно просто ставить единицу
+        # -------
+        # for i in range(height, width):
+        #     result.append(1)
 
-        # # так как если найденных объектов меньше чем шаблонов показхатель очень маленький
-        # # отсуствие найденного обйекта соотвесвующего шаблона штрафуется по максимуму
-        # if height < width:
-        #     print('height = {0}; width = {1};'.format(height, width))
-        #     # max_moment_diff = self._getMaxMomentDiff()
-        #     # for i in range(0, width - height):
-        #     #     # TODO подобрать коэфициенты
-        #     #     result.append(height * max_moment_diff)
-        #     result.append(5)
+        # для более точных расчетов
+        for i in range(height, width):
+            val = contMomentMatrix[i][i]
+            result.append(val)
+        # -------
 
         print('m3s = {0};'.format(result))
-
-        return sum(result) / len(result)
-
-    def get_m4(self):
-        height = self._segm_len
-        width = self._templ_len
-        contMomentMatrix = self._contMomentMatrix
-        confMatrix = self._confMatrix
-
-        min_l = min(height, width)
-
-        result = []
-        for i in range(0, min_l):
-            i_kk = contMomentMatrix[i][i]
-
-            # сумма всех пикселей полученого шаблона
-            c_ik = 0
-            for row in confMatrix:
-                if i < len(row):
-                    val = row[i]
-                    c_ik = c_ik + val
-
-            result.append(i_kk * i_kk)
-
-        print('m4s = {0};'.format(result))
 
         return sum(result) / len(result)
