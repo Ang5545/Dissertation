@@ -256,7 +256,7 @@ applePearSegmDir = project_dir + '/resources/applePears/1/segmented/java/'
 
 # testSrmMod(pearTempl, pearSegmDir)
 
-testSrmMod_m4_plot(pearTempl, pearSegmDir)
+testSrmMod_m4_plot(applePearTempl, applePearSegmDir)
 
 
 print(' - end - ')

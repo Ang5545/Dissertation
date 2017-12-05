@@ -1,5 +1,5 @@
 import cv2
-from sympy.solvers.tests.test_diophantine import m3
+# from sympy.solvers.tests.test_diophantine import m3
 
 import imgUtils.ImgLoader as iml
 import numpy as np
@@ -106,18 +106,35 @@ def compare_two_image(img1, img2):
     moments_1 = cv2.moments(cnt_1)
     moments_2 = cv2.moments(cnt_2)
 
+    used_moments = ['m00', 'm10', 'm01', 'm20', 'm11', 'm02', 'm30', 'm21', 'm12', 'm03']
+    diff_moments = []
+    for m_key in used_moments:
+        obj_m = moments_1[m_key]
+        temp_m = moments_2[m_key]
 
-    cv2.waitKey()
+        max_m = max(obj_m, temp_m)
+        min_m = min(obj_m, temp_m)
 
-    diff_1 = count_moment_diff(moments_1, moments_2)
-    diff_2 = count_moment_diff(moments_2, moments_1)
-    diff_3 = count_moment_diff_invar(moments_2, moments_1)
-    diff_4 = count_moment_diff_invar_mm(moments_1, moments_2)
+        diff = abs((max_m - min_m) / max_m)
+        diff_moments.append(diff)
 
-    print('diff_1 = {0};'.format(diff_1))
-    print('diff_2 = {0};'.format(diff_2))
-    print('diff_3 = {0};'.format(diff_3))
-    print('diff_4 = {0};'.format(diff_4))
+    contour_diff = sum(diff_moments) / len(diff_moments)
+    dss = contour_diff ** (1 / 20)
+
+
+    print('dss = {0}'.format(dss))
+
+    # cv2.waitKey()
+    #
+    # diff_1 = count_moment_diff(moments_1, moments_2)
+    # diff_2 = count_moment_diff(moments_2, moments_1)
+    # diff_3 = count_moment_diff_invar(moments_2, moments_1)
+    # diff_4 = count_moment_diff_invar_mm(moments_1, moments_2)
+    #
+    # print('diff_1 = {0};'.format(diff_1))
+    # print('diff_2 = {0};'.format(diff_2))
+    # print('diff_3 = {0};'.format(diff_3))
+    # print('diff_4 = {0};'.format(diff_4))
 
     # cnt_img_1 = np.zeros((height, width, 3), np.uint8)
     # cnt_img_2 = np.zeros((height, width, 3), np.uint8)
@@ -170,7 +187,7 @@ def templ_segm(templ_path, segm_path):
 project_dir = iml.getParamFromConfig('projectdir')
 
 # pearTempl = project_dir + '/resources/pears/template.bmp'
-all_white_path = project_dir + '/resources/pears/all_white.bmp'
+all_white_path = project_dir + '/resources/pears/all_white11.png'
 one_point_path = project_dir + '/resources/pears/one_point_left.bmp'
 
 

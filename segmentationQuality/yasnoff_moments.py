@@ -1,9 +1,6 @@
 import cv2
 import numpy as np
 import math
-
-from sympy.functions.special.polynomials import hermite
-
 from imgUtils import ColorMask as colMaks
 
 
@@ -105,133 +102,118 @@ class Yasnoff_Moments:
         img_height = self._height
         img_width = self._width
 
-        # расчитываем моменты
-        temp_moments = self._getMoments(templObjs)
-        segm_moments = self._getMoments(segmObjs)
+        temp_len = len(templObjs)
+        segm_len = len(segmObjs)
 
-        max_length = max(len(segmObjs), len(templObjs))
+        # расчитываем моменты
+        temp_moments = self._getMomentsFromArray(templObjs)
+        segm_moments = self._getMomentsFromArray(segmObjs)
+
+        max_length = max(temp_len, segm_len)
         contMomentMatrix = np.zeros((max_length, max_length))
 
         # расчитываем разницу моментов
-        for i in range(0, len(temp_moments)):
+        for i in range(0, temp_len):
             temp_moment = temp_moments[i]
-            temp_count = cv2.countNonZero(templObjs[i])
 
-            for j in range(0, len(segm_moments)):
+            for j in range(0, segm_len):
                 segm_moment = segm_moments[j]
-                # segm_count = cv2.countNonZero(segmObjs[j])
 
-                diff_moments = []
-                for m_key in self._used_moments:
-                    obj_m = segm_moment[m_key]
-                    temp_m = temp_moment[m_key]
-
-                    # # diff = abs((1 / temp_m) - (1 / obj_m))  # CV_CONTOURS_MATCH_I1
-                    # # diff = abs(temp_m - obj_m)            # CV_CONTOURS_MATCH_I2
-                    # diff = abs((temp_m - obj_m) / temp_m) # CV_CONTOURS_MATCH_I3
-
-                    max_m = max(obj_m, obj_m)
-                    min_m = min(temp_m, temp_m)
-
-                    diff = abs((max_m - min_m) / max_m)
-
-                    diff_moments.append(diff)
-
-                contour_diff = sum(diff_moments) / len(diff_moments)
-                dss = contour_diff ** (1 / 4)
-
-                contMomentMatrix[j][i] = dss
+                moments_diff = self._get_moments_diff(temp_moment, segm_moment)
+                contMomentMatrix[j][i] = moments_diff
 
 
-        # # нормализация значений разницы моментов по шаблонам
-        # height = self._segm_len
-        # width = self._templ_len
+
+        # можно не использовать потому что разница между любым объектом и одним пикселем стремится к 1
+        # if temp_len > segm_len:
+        #     blank_image = np.zeros([img_height, img_width, 3], dtype=np.uint8)
+        #     # blank_image[:] = (255, 255, 255)
+        #     cnt_y = img_width // 2
+        #     cnt_x = img_height // 2
+        #     blank_image[cnt_x, cnt_y] = (255, 255, 255)
         #
-        # def normalize(array):
-        #     sqr = []
-        #     for val in array:
-        #         sqr.append(val ** 2)
+        #     for h in range(0, 3):
+        #         for w in range(0, 3):
+        #             blank_image[cnt_x+w, cnt_y+h] = (255, 255, 255)
         #
-        #     length = math.sqrt(sum(sqr))
-        #     result = []
-        #     for val in array:
-        #         if length != 0:
-        #             result.append(val / length)
-        #         else:
-        #             result.append(val)
+        #     cv2.imshow('blank_image', blank_image)
+        #     # cv2.waitKey()
         #
-        #     return result
+        #     if blank_image.ndim == 3:  # если изображение не одноканальное
+        #         blank_image = cv2.cvtColor(blank_image, cv2.COLOR_BGR2GRAY)  # преобразуем в оттенки серого
         #
-        # for cell_idx in range(0, width):
-        #     array = []
-        #     for row in contMomentMatrix:
-        #         array.append(row[cell_idx])
         #
-        #     norm_array = normalize(array)
+        #     _, contours, _ = cv2.findContours(blank_image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        #     cnt = contours[0]
+        #     cnt_img = np.zeros((img_height, img_width, 3), np.uint8)
+        #     cv2.drawContours(cnt_img, [cnt], -1, (0, 255, 0), 1)
         #
-        #     for j in range(0, height):
-        #         val = norm_array[j]
-        #         contMomentMatrix[j][cell_idx] = (1 - val)
+        #     cv2.imshow("cnt_img", cnt_img)
+        #     cv2.waitKey()
         #
-        #     # print('norm_array = {0};'.format(norm_array))
+        #     blank_moment = self._getMoments(blank_image)
+        #
+        #     for i in range(segm_len, temp_len):
+        #         print('i={0}'.format(i))
+        #         temp_moment = temp_moments[i]
+        #         moments_diff = self._get_moments_diff(blank_moment, temp_moment)
+        #         print('moments_diff = {0};'.format(moments_diff))
 
         return contMomentMatrix
 
 
+    def _get_moments_diff(self, moment1, moment2):
+        diff_moments = []
+        for m_key in self._used_moments:
+            obj_m = moment1[m_key]
+            temp_m = moment2[m_key]
 
-    def _getMoments(self, images):
+            max_m = max(obj_m, temp_m)
+            min_m = min(obj_m, temp_m)
 
+            # # diff = abs((1 / temp_m) - (1 / obj_m))  # CV_CONTOURS_MATCH_I1
+            # # diff = abs(temp_m - obj_m)            # CV_CONTOURS_MATCH_I2
+            diff = abs((max_m - min_m) / max_m) # CV_CONTOURS_MATCH_I3
+
+            diff_moments.append(diff)
+
+        contour_diff = sum(diff_moments) / len(diff_moments)
+        result = contour_diff ** (1 / 4)
+        return result
+
+
+    def _getMoments(self, img):
+        if img.ndim == 3:  # если изображение не одноканальное
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # преобразуем в оттенки серого
+
+        _, contours, _ = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+        if len(contours) > 0:
+            cnt = contours[0]
+            moment = cv2.moments(cnt)
+            return moment
+
+            # # рисуем полученые контуры и добавдяем в коллекция (для дальнейшей визуализации)
+            # cnt_img = np.zeros((img_height, img_width, 3), np.uint8)
+            # cv2.drawContours(cnt_img, [cnt], -1, (0, 255, 0), 1)
+            # cnt_imgs.append(cnt_img)
+
+        else:
+            return 0.0
+
+            # # добавдяем в коллекцию с контурами  (для дальнейшей визуализации)
+            # cnt_img = np.zeros((img_height, img_width, 3), np.uint8)
+            # cnt_imgs.append(cnt_img)
+
+
+    def _getMomentsFromArray(self, images):
         # проходим по всем сегментированным объектам и считаем моменты
         moments = []
-        # cnt_imgs = []
-
         for img in images:
-            if img.ndim == 3:  # если изображение не одноканальное
-                img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # преобразуем в оттенки серого
-
-            _, contours, _ = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
-            if len(contours) > 0:
-                cnt = contours[0]
-                moment = cv2.moments(cnt)
-                moments.append(moment)
-
-                # # рисуем полученые контуры и добавдяем в коллекция (для дальнейшей визуализации)
-                # cnt_img = np.zeros((img_height, img_width, 3), np.uint8)
-                # cv2.drawContours(cnt_img, [cnt], -1, (0, 255, 0), 1)
-                # cnt_imgs.append(cnt_img)
-
-            else:
-                moments.append(0.0)
-
-                # # добавдяем в коллекцию с контурами  (для дальнейшей визуализации)
-                # cnt_img = np.zeros((img_height, img_width, 3), np.uint8)
-                # cnt_imgs.append(cnt_img)
-
+            m = self._getMoments(img)
+            moments.append(m)
         return (moments)
 
-
-    # def _getMaxMoments(self):
-    #     img_height = self._height
-    #     img_width = self._width
-    #     blank_img = np.zeros((img_height, img_width, 3), np.uint8)
-    #     blank_img[:] = (255, 255, 255)
-    #     gray_blank_img = cv2.cvtColor(blank_img, cv2.COLOR_BGR2GRAY)
-    #     _, contours, _ = cv2.findContours(gray_blank_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    #     cnt = contours[0]
-    #     moments = cv2.moments(cnt)
-    #     need_moments = []
-    #     for m_key in self._used_moments:
-    #         m = moments[m_key]
-    #         need_moments.append(m)
-    #
-    #     average = (sum(need_moments) / len(need_moments))
-    #     result = average ** (1 / 4)
-    #     return result
-
-    def _getMaxMomentDiff(self):
-         # TODO расчет максимально возможной ошибки
-        return 1
 
     def _createBlankWhiteImg(self):
         img_height = self._height
@@ -469,14 +451,18 @@ class Yasnoff_Moments:
             i_kk = contMomentMatrix[i][i]
             result.append(i_kk)
 
-        # так как если найденных объектов меньше чем шаблонов показхатель очень маленький
-        # отсуствие найденного обйекта соотвесвующего шаблона штрафуется по максимуму
-        if height < width:
-            # max_moment_diff = self._getMaxMomentDiff()
-            # for i in range(0, width - height):
-            #     # TODO подобрать коэфициенты
-            #     result.append(height * max_moment_diff)
-            result.append(5)
+        for i in range(height, width):
+            result.append(1)
+
+        # # так как если найденных объектов меньше чем шаблонов показхатель очень маленький
+        # # отсуствие найденного обйекта соотвесвующего шаблона штрафуется по максимуму
+        # if height < width:
+        #     print('height = {0}; width = {1};'.format(height, width))
+        #     # max_moment_diff = self._getMaxMomentDiff()
+        #     # for i in range(0, width - height):
+        #     #     # TODO подобрать коэфициенты
+        #     #     result.append(height * max_moment_diff)
+        #     result.append(5)
 
         print('m3s = {0};'.format(result))
 
