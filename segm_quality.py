@@ -280,6 +280,7 @@ apple_pear_segm_dir = project_dir + '/resources/applePears/1/segmented/java/'
 srm_yasnoff_mom_chart(pear_segm_dir, pear_templ)
 
 
+'''
 # TODO тестировать на другом изображении / проверить почему не работает на минимальном th
 heart_img = project_dir + '/resources/heart/img.JPG'
 heart_templ = project_dir + '/resources/heart/sampleMask.bmp'
@@ -289,6 +290,7 @@ heart_templ = project_dir + '/resources/heart/sampleMask.bmp'
 
 # threshold_yasnoff_mom_one_img(heart_img, heart_templ, 190)
 # threshold_yasnoff_mom_chart(heart_img, heart_templ)
+'''
 
 print(' - end - ')
 
