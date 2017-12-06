@@ -5,25 +5,44 @@ from segmentationQuality.yasnoff import Yasnoff
 from segmentationQuality.yasnoff_moments import YasnoffMoments
 
 
+def sort_by_name(array):
+    def sortByVal(inp):
+        name = inp[0]
+        return float(name[4:len(name)].replace('_', '.'))
+    array.sort(key=sortByVal)
 
 
-def testSrm(templatePath, srmREsultDir):
-    template = cv2.imread(templatePath, 3)
-    images = iml.getNamedImages(srmREsultDir)
+
+def srm_yasnoff_one_img(img_path, template_path):
+    img = cv2.imread(img_path, 3)
+    template = cv2.imread(template_path, 3)
+
+    yasn = Yasnoff(template, img)
+    yasn.printMatrixWithTotal()
+
+    print('---------------------------------------------------------------------------------------')
+    m1 = yasn.getIncorrecClassPixels()
+    m2 = yasn.getWronglyAssigneToClass()
+    frag = yasn.getFrags()
+    print('m1  = {0}; m2 = {1}; frag = {2};'.format(m1, m2, frag))
+
+    cv2.imshow('img', img)
+    cv2.imshow('template', template)
+    cv2.waitKey()
+
+
+
+def srm_yasnoff_chart(img_dir_path, template_path):
+    template = cv2.imread(template_path, 3)
+    images = iml.getNamedImages(img_dir_path)
+    sort_by_name(images)
 
     m1s = []
     m2s = []
     frags = []
     results = []
-
     minRes = 100
     bestImg = images[0]
-
-    def sortByVal(inp):
-        name = inp[0]
-        return float(name[4:len(name)].replace('_', '.'))
-
-    images.sort(key=sortByVal)
 
     for img in images:
         print('name = {0};'.format(img[0]))
@@ -37,97 +56,55 @@ def testSrm(templatePath, srmREsultDir):
         frag = yasn.getFrags()
         res = (m1 + m2 + frag) / 3
 
-        frags.append([srm_val, frag])
         m1s.append([srm_val, m1])
         m2s.append([srm_val, m2])
+        frags.append([srm_val, frag])
         results.append([srm_val, res])
 
-        # tc = yasn.getTemplateComut()
-        # sc = yasn.getSegmentsComut()
-        #
-        # tcs.append([srm_val, tc])
-        # scs.append([srm_val, sc])
+        print('m1  = {0}; m2 = {1}; frag = {2}; res = {3}'.format(m1, m2, frag, res))
 
         if res < minRes:
             minRes = res
             bestImg = image
 
-
     plt.plot(*zip(*m1s), label="m1")
     plt.plot(*zip(*m2s), label="m2")
     plt.plot(*zip(*frags), label="frag")
     plt.plot(*zip(*results), label="result")
+    plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
+    plt.show()
 
     cv2.imshow("Best Result Image", bestImg)
     cv2.imshow("Temlate", template)
     cv2.waitKey()
 
-    plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
-    plt.show()
-
-    print('------------------')
 
 
-def testSrmMod(templatePath, srmREsultDir):
-    template = cv2.imread(templatePath, 3)
-    images = iml.getNamedImages(srmREsultDir)
+def srm_yasnoff_mom_one_img(img_path, template_path):
+    img = cv2.imread(img_path, 3)
+    template = cv2.imread(template_path, 3)
 
-    m1s = []
-    m2s = []
-    frags = []
-    results = []
+    yasn = YasnoffMoments(template, img)
+    yasn.printMatrix()
 
-    def sortByVal(inp):
-        name = inp[0]
-        return float(name[4:len(name)].replace('_', '.'))
+    print('---------------------------------------------------------------------------------------')
+    m3 = yasn.get_m3()
+    print('m3  = {0};'.format(m3))
 
-    images.sort(key=sortByVal)
-
-    for img in images:
-        print('name = {0};'.format(img[0]))
-        name = img[0]
-        srm_val = float(name[4:len(name)].replace('_', '.'))
-        image = img[1]
-
-        yasn = YasnoffMoments(template, image)
-        # yasn.printMatrix()
-        # m3 = yasn.get_m3()
-
-        m1 = yasn.getIncorrecClassPixels()
-        m2 = yasn.getWronglyAssigneToClass()
-        frag = yasn.getFrags()
-        res = (m1 + m2 + frag) / 3
-
-        m1s.append([srm_val, m1])
-        m2s.append([srm_val, m2])
-        frags.append([srm_val, frag])
-        results.append([srm_val, res])
-
-        # print('m1 = {0}; m2 = {1}; frag = {2}; result = {3};'.format(m1, m2, frag, res))
-        print('m1 = {0}; m2 = {1}; frag = {2}; result = {3};'.format(m1, m2, frag, res))
+    cv2.imshow('img', img)
+    cv2.imshow('template', template)
+    cv2.waitKey()
 
 
-    plt.plot(*zip(*m1s), label="m1")
-    plt.plot(*zip(*m2s), label="m2")
-    plt.plot(*zip(*frags), label="frags")
-    plt.plot(*zip(*results), label="result")
-    plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
-    plt.show()
 
-    print('------------------')
-
-
-def testSrmMod_m4_plot(templatePath, srmREsultDir):
-    template = cv2.imread(templatePath, 3)
-    images = iml.getNamedImages(srmREsultDir)
+def srm_yasnoff_mom_chart(img_dir_path, template_path):
+    template = cv2.imread(template_path, 3)
+    images = iml.getNamedImages(img_dir_path)
+    sort_by_name(images)
 
     m3s = []
-
-    def sortByVal(inp):
-        name = inp[0]
-        return float(name[4:len(name)].replace('_', '.'))
-
-    images.sort(key=sortByVal)
+    minRes = 5
+    bestImg = images[0]
 
     for img in images:
         print('name = {0};'.format(img[0]))
@@ -139,96 +116,150 @@ def testSrmMod_m4_plot(templatePath, srmREsultDir):
         m3 = yasn.get_m3()
         m3s.append([srm_val, m3])
 
-        print('m3 = {0};'.format(m3))
+        print('m3  = {0};'.format(m3))
 
+        if m3 < minRes:
+            minRes = m3
+            bestImg = image
 
-    plt.plot(*zip(*m3s), label="m3s")
+    plt.plot(*zip(*m3s), label="m3")
     plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
     plt.show()
 
-    print('------------------')
+    cv2.imshow("Best Result Image", bestImg)
+    cv2.imshow("Temlate", template)
+    cv2.waitKey()
 
 
-def testSrmOneImage(img_path, template_path):
 
-    img = cv2.imread(img_path, 3)
+def threshold_yasnoff_one_img(img_path, template_path, th=200):
     template = cv2.imread(template_path, 3)
+    img = cv2.imread(img_path, 3)
 
-    # cv2.imshow('img', img)
-    # cv2.imshow('template', template)
-    # cv2.waitKey()
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    _, thresh = cv2.threshold(img, th, 255, cv2.THRESH_BINARY)
 
-    yasn = YasnoffMoments(template, img)
-    yasn.printMatrix()
-    print('---------------------------------------')
+    yasn = Yasnoff(template, thresh)
     yasn.printMatrixWithTotal()
-    print('---------------------------------------')
 
-    # m1 = yasn.getIncorrecClassPixels()
-    # m2 = yasn.getWronglyAssigneToClass()
-    # frag = yasn.getFrags()
+    print('---------------------------------------------------------------------------------------')
+    m1 = yasn.getIncorrecClassPixels()
+    m2 = yasn.getWronglyAssigneToClass()
+    frag = yasn.getFrags()
+    print('m1  = {0}; m2 = {1}; frag = {2};'.format(m1, m2, frag))
+
+    cv2.imshow('thresh', thresh)
+    cv2.imshow('template', template)
+    cv2.waitKey()
+
+
+
+def threshold_yasnoff_chart(img_path, template_path):
+    template = cv2.imread(template_path, 3)
+    img = cv2.imread(img_path, 3)
+
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    step = 10
+    th = 40
+
+    bestImg = img
+    m1s = []
+    m2s = []
+    frags = []
+    results = []
+    minRes = 100
+
+    while (th < 255):
+        _, thresh = cv2.threshold(img, th, 255, cv2.THRESH_BINARY)
+        yasn = YasnoffMoments(template, thresh)
+        m1 = yasn.getIncorrecClassPixels()
+        m2 = yasn.getWronglyAssigneToClass()
+        frag = yasn.getFrags()
+        res = (m1 + m2 + frag) / 3
+
+        m1s.append([th, m1])
+        m2s.append([th, m2])
+        frags.append([th, frag])
+        results.append([th, res])
+
+        print('m1  = {0}; m2 = {1}; frag = {2}; res = {3}'.format(m1, m2, frag, res))
+
+        if res < minRes:
+            minRes = res
+            bestImg = thresh
+
+        th = th + step
+
+    plt.plot(*zip(*m1s), label="m1")
+    plt.plot(*zip(*m2s), label="m2")
+    plt.plot(*zip(*frags), label="frag")
+    plt.plot(*zip(*results), label="result")
+    plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
+    plt.show()
+
+    print('best result  = {0};'.format(minRes))
+
+    cv2.imshow("Best Result Image", bestImg)
+    cv2.imshow("Temlate", template)
+    cv2.waitKey()
+
+
+
+def threshold_yasnoff_mom_one_img(img_path, template_path, th=200):
+    template = cv2.imread(template_path, 3)
+    img = cv2.imread(img_path, 3)
+
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    _, thresh = cv2.threshold(img, th, 255, cv2.THRESH_BINARY)
+
+    yasn = YasnoffMoments(template, thresh)
+    yasn.printMatrix()
+
+    print('---------------------------------------------------------------------------------------')
     m3 = yasn.get_m3()
-    print('in the end m3 = {0}'.format(m3))
-    # print('m1 = {0}; m2 = {1}; frag = {2}; m4 = {3}'.format(m1, m2, frag, m4))
+    print('m3  = {0};'.format(m3))
+
+    cv2.imshow('thresh', thresh)
+    cv2.imshow('template', template)
+    cv2.waitKey()
 
 
 
-def testThreshold():
-    # test Threshold
-    template = cv2.imread(project_dir + '/resources/heart/sampleMask.bmp')
-    img = cv2.imread(project_dir + '/resources/heart/img.JPG')
+def threshold_yasnoff_mom_chart(img_path, template_path):
+    template = cv2.imread(template_path, 3)
+    img = cv2.imread(img_path, 3)
 
-    cv2.imshow("template", template)
-    cv2.imshow("img", img)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    step = 10
+    th = 40
 
-    # print('start')
+    bestImg = img
+    minRes = 5
+    m3s = []
 
-    # th = 0
-    # step = 10
-    # m1s = []
-    # m2s = []
-    # frags= []
-    #
-    # while (th < 255):
-    #     th = th + step
-    #     threshold = Threshold(img, th)
-    #     segm = threshold.run()
-    #
-    #     yasn = Yasnoff(template, segm)
-    #
-    #     m1 = yasn.getIncorrecClassPixels()
-    #     m2 = yasn.getWronglyAssigneToClass()
-    #     frag = yasn.getFrags()
-    #
-    #     # frags.append(frag)
-    #     m1s.append(m1)
-    #     m2s.append(m2)
-    #
-    #     print('th = {0}; m1 = {1}; m2 = {2}; frag = {3};'.format(th, m1, m2, frags))
-    #
-    #     # cv2.imshow("Threshold", segm)
-    #     # cv2.waitKey()
-    #
-    # plt.plot(m1s)
-    # plt.plot(m2s)
-    # plt.plot(frags)
-    #
-    # plt.ylabel('some numbers')
-    # plt.show()
+    while (th < 255):
+        _, thresh = cv2.threshold(img, th, 255, cv2.THRESH_BINARY)
+        yasn = YasnoffMoments(template, thresh)
+        m3 = yasn.get_m3()
+        m3s.append([th, m3])
 
-    # th = 190
-    # threshold = Threshold(img, th)
-    # segm = threshold.run()
-    #
-    # yasn = Yasnoff(template, segm)
-    # m1 = yasn.getIncorrecClassPixels()
-    # m2 = yasn.getWronglyAssigneToClass()
-    # frag = yasn.getFrags()
-    #
-    # yasn.printConfMatrix()
-    # print('m1 = {0}; m2 = {1}; frag = {2};'.format(m1, m2, frag))
-    #
-    # print('end')
+        print('m3  = {0};'.format(m3))
+
+        if m3 < minRes:
+            minRes = m3
+            bestImg = thresh
+
+        th = th + step
+
+    plt.plot(*zip(*m3s), label="m3")
+    plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
+    plt.show()
+
+    cv2.imshow("Best Result Image", bestImg)
+    cv2.imshow("Temlate", template)
+    cv2.waitKey()
+
+
 
 
 # --------------- MAIN ---------------
@@ -236,27 +267,28 @@ print(' - start work - ')
 
 project_dir = iml.getParamFromConfig('projectdir')
 
-pearTempl = project_dir + '/resources/pears/template.bmp'
-pearSegmDir = project_dir + '/resources/pears/segmented/java/'
+pear_templ = project_dir + '/resources/pears/template.bmp'
+pear_segm_dir = project_dir + '/resources/pears/segmented/java/'
 
-applePearTempl = project_dir + '/resources/applePears/1/template.png'
-applePearSegmDir = project_dir + '/resources/applePears/1/segmented/java/'
+apple_pear_templ = project_dir + '/resources/applePears/1/template.png'
+apple_pear_segm_dir = project_dir + '/resources/applePears/1/segmented/java/'
+
+# srm_yasnoff_one_img(apple_pear_segm_dir + 'val_20_0.png', apple_pear_templ)
+# srm_yasnoff_chart(apple_pear_segm_dir, apple_pear_templ)
+
+# srm_yasnoff_mom_one_img(apple_pear_segm_dir + 'val_20_0.png', apple_pear_templ)
+srm_yasnoff_mom_chart(pear_segm_dir, pear_templ)
 
 
-# tempPath = project_dir + "/resources/applePears/1/template.png"
-# imgPath = project_dir + "/resources/applePears/1/segmented/java/"
+# TODO тестировать на другом изображении / проверить почему не работает на минимальном th
+heart_img = project_dir + '/resources/heart/img.JPG'
+heart_templ = project_dir + '/resources/heart/sampleMask.bmp'
 
-# imgPath = project_dir + "/resources/pears/segmented/java/"
-# tempPath = project_dir + '/resources/pears/template.bmp'
-#
-# testSrm(tempPath, imgPath)
+# threshold_yasnoff_one_img(heart_img, heart_templ, 190)
+# threshold_yasnoff_chart(heart_img, heart_templ)
 
-# testSrmOneImage(applePearSegmDir + 'val_3_0.png', applePearTempl)
-
-# testSrmMod(pearTempl, pearSegmDir)
-
-testSrmMod_m4_plot(pearTempl, pearSegmDir)
-
+# threshold_yasnoff_mom_one_img(heart_img, heart_templ, 190)
+# threshold_yasnoff_mom_chart(heart_img, heart_templ)
 
 print(' - end - ')
 

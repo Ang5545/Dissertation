@@ -7,6 +7,7 @@ from imgUtils import ColorMask as colMaks
 
 class Yasnoff:
 
+
     def __init__(self, template, img):
         self._template = template
         self._img = img
@@ -53,7 +54,7 @@ class Yasnoff:
                 row = diff_matrix[j]
                 val = row[cell_idx]
 
-                if val > max_row_val:
+                if val > max_row_val and j not in row_indexes:
                     max_row_val = val
                     max_row_idx = j
 
@@ -74,27 +75,95 @@ class Yasnoff:
 
 
     def _createDiffMatrix(self, templObjs, segmObjs):
+
         # заполняем двумерный массив пиксельной разницей
-        diff_matrix = []
-        for segm in segmObjs:
-            row = []
+        max_length = max(len(segmObjs), len(templObjs))
+        diff_matrix = np.zeros((max_length, max_length))
+
+        for i in range(0, len(segmObjs)):
+            segm = segmObjs[i]
 
             if segm.ndim == 3:  # если изображение не одноканальное
                 segm = cv2.cvtColor(segm, cv2.COLOR_BGR2GRAY)  # преобразуем в оттенки серого
 
-            for templ in templObjs:
+            for j in range(0, len(templObjs)):
+                templ = templObjs[j]
                 intersec = cv2.bitwise_and(templ, segm)
                 ptCount = cv2.countNonZero(intersec)
-                row.append(ptCount)
+                diff_matrix[i][j] = ptCount
 
-
-
-            diff_matrix.append(row)
         return diff_matrix
 
 
+    def _getIncorrectlyClassifiedPixels(self, confMatrix):
+        height = self._segm_len
+        width = self._templ_len
 
-    def printMatrix(self):
+        result = []
+        for i in range(0, len(confMatrix)):
+
+            # правильно класифицированные пиксели
+            c_kk = 0
+            if i < width and i < height:
+                c_kk = confMatrix[i][i]
+
+            # сумма всех пикселей полученого шаблона
+            c_ik = 0
+            for row in confMatrix:
+                if i < len(row):
+                    val = row[i]
+                    c_ik = c_ik + val
+
+            # расчет значения
+            if c_ik != 0:
+                res_val = ((c_ik - c_kk) / c_ik) * 100
+                result.append(res_val)
+            else:
+                result.append(0)
+
+        return result
+
+
+    def _getWronglyAssignedToClass(self, confMatrix):
+        height = self._segm_len
+        width = self._templ_len
+
+        result = []
+        for i in range(0, len(confMatrix)):
+
+            # правильно класифицированные пиксели
+            c_kk = 0
+            if i < width and i < height:
+                c_kk = confMatrix[i][i]
+
+            # сумма всех пикселей полученого шаблона
+            c_ik = 0
+            for row in confMatrix:
+                if i < len(row):
+                    val = row[i]
+                    c_ik = c_ik + val
+
+            # сумма всех пикселей полученого объекта
+            c_ki = 0
+            if i < height:
+                row = confMatrix[i]
+                for val in row:
+                    c_ki = c_ki + val
+
+            # общая сумма
+            total = 0
+            for row in confMatrix:
+                total = total + sum(row)
+
+            # расчет значения
+            res_val = ((c_ki - c_kk) / (total - c_ik)) * 100
+            result.append(res_val)
+
+        return result
+
+
+
+    def printMatrixWithTotal(self):
         confMatrix = self._confMatrix
 
         # получаем количество шаблонов и объектов
@@ -174,74 +243,6 @@ class Yasnoff:
         for name, row in zip(row_names, resultMatrix):
             print(row_format.format(name, *row))
 
-    def _getIncorrectlyClassifiedPixels(self, confMatrix):
-        result = [0] * len(confMatrix)
-        c_kk = [0] * len(confMatrix)
-        c_ik = [0] * len(confMatrix)
-
-        rowIndex = 0
-        for row in confMatrix:
-
-            cellIndex = 0
-            for cell in row:
-
-                c_ik[cellIndex] = c_ik[cellIndex] + cell
-                if rowIndex == cellIndex:
-                    c_kk[rowIndex] = cell
-
-                cellIndex = cellIndex + 1
-
-            rowIndex = rowIndex + 1
-
-        index = 0
-        while index < len(confMatrix):
-
-            c_ik_val = c_ik[index]
-            c_kk_val = c_kk[index]
-
-            if c_ik[index] != 0:
-                res_val = ((c_ik_val - c_kk_val) / c_ik_val) * 100
-                result[index] = res_val
-
-            index = index + 1
-
-        return result
-
-    def _getWronglyAssignedToClass(self, confMatrix):
-        result = [0] * len(confMatrix)
-        c_kk = [0] * len(confMatrix)
-        c_ik = [0] * len(confMatrix)
-        c_ki = [0] * len(confMatrix)
-        total = 0
-
-        rowIndex = 0
-        for row in confMatrix:
-
-            cellIndex = 0
-            for cell in row:
-                c_ki[rowIndex] = c_ki[rowIndex] + cell
-                c_ik[cellIndex] = c_ik[cellIndex] + cell
-                total = total + cell
-                if rowIndex == cellIndex:
-                    c_kk[rowIndex] = cell
-
-                cellIndex = cellIndex + 1
-
-            rowIndex = rowIndex + 1
-
-        index = 0
-        while index < len(confMatrix):
-            c_ik_val = c_ik[index]
-            c_kk_val = c_kk[index]
-            c_ki_val = c_ki[index]
-
-            res_val = ((c_ki_val - c_kk_val) / (total - c_ik_val)) * 100
-            result[index] = res_val
-
-            index = index + 1
-
-        return result
-
 
     def getIncorrecClassPixels(self):
         confMatrix = self._confMatrix
@@ -249,6 +250,7 @@ class Yasnoff:
 
         result = sum(m1) / len(m1)
         return result
+
 
     def getWronglyAssigneToClass(self):
         confMatrix = self._confMatrix

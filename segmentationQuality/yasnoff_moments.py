@@ -182,14 +182,6 @@ class YasnoffMoments:
         return (moments)
 
 
-    def _createBlankWhiteImg(self):
-        img_height = self._height
-        img_width = self._width
-
-        blank_img = np.zeros((img_height, img_width, 3), np.uint8)
-        blank_img[:] = (255, 255, 255)
-        gray_blank_img = cv2.cvtColor(blank_img, cv2.COLOR_BGR2GRAY)
-        return gray_blank_img
 
 
     def _getIncorrectlyClassifiedPixels(self, confMatrix):
@@ -428,6 +420,5 @@ class YasnoffMoments:
             result.append(val)
         # -------
 
-        print('m3s = {0};'.format(result))
-
+        print('m3 array = {0};'.format(result))
         return sum(result) / len(result)
