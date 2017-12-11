@@ -25,14 +25,19 @@ def test_one_th(path):
 # --------------- MAIN ---------------
 print(' - start work - ')
 
-# path = '/Users/fedormurashko/Desktop/orange.jpg'
+project_dir = iml.getParamFromConfig('projectdir')
 
-path = '/Users/fedormurashko/Desktop/pear-seeds.jpg'
+path = project_dir + '/resources/one_green_apple/original.bmp'
 img = cv2.imread(path, 0)
 cv2.imshow('img', img)
 
 
-step = 30
+
+
+
+
+
+step = 10
 th_1 = 0
 th_2 = 0
 th_3 = 0
