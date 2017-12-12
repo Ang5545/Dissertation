@@ -292,5 +292,10 @@ heart_templ = project_dir + '/resources/heart/sampleMask.bmp'
 # threshold_yasnoff_mom_chart(heart_img, heart_templ)
 '''
 
+
+
+
+
+
 print(' - end - ')
 

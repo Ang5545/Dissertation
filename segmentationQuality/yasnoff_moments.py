@@ -8,6 +8,10 @@ class YasnoffMoments:
 
 
     def __init__(self, template, img):
+
+        # используются только пространствунный моменты
+        self._used_moments = ['m00', 'm10', 'm01', 'm20', 'm11', 'm02', 'm30', 'm21', 'm12', 'm03']
+
         self._template = template
         self._img = img
 
@@ -114,7 +118,6 @@ class YasnoffMoments:
 
             for j in range(0, segm_len):
                 segm_moment = segm_moments[j]
-
                 moments_diff = self._get_moments_diff(temp_moment, segm_moment)
                 contMomentMatrix[j][i] = moments_diff
 
@@ -139,9 +142,6 @@ class YasnoffMoments:
 
 
     def _get_moments_diff(self, moment1, moment2, base = 4):
-        # используются только пространствунный моменты
-        self._used_moments = ['m00', 'm10', 'm01', 'm20', 'm11', 'm02', 'm30', 'm21', 'm12', 'm03']
-
         diff_moments = []
         for m_key in self._used_moments:
             obj_m = moment1[m_key]
@@ -165,12 +165,34 @@ class YasnoffMoments:
             img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # преобразуем в оттенки серого
 
         _, contours, _ = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-        if len(contours) > 0:
-            cnt = contours[0]
-            moment = cv2.moments(cnt)
-            return moment
-        else:
-            return 0.0
+        moment = {'mu21': 0.0, 'nu20': 0.0, 'm30': 0.0, 'nu11': 0.0, 'm02': 0.0, 'nu03': 0.0, 'm20': 0.0,
+                  'm11': 0.0, 'mu02': 0.0, 'mu20': 0.0, 'nu21': 0.0, 'nu12': 0.0 - 18, 'nu30': 0.0, 'm10': 0.0,
+                  'm03': 0.0, 'mu11': 0.0, 'mu03': 0.0, 'mu12': 0.0, 'm01': 0.0, 'mu30': 0.0, 'm12': 0.0,
+                  'm00': 0.0, 'm21': 0.0, 'nu02': 0.0}
+
+        for cnt in contours:
+            m = cv2.moments(cnt)
+            for key in moment.keys():
+                moment[key] = moment[key] + m[key]
+        return moment
+        # print('len(contours) = {0}'.format(len(contours)))
+        #
+        # if len(contours) > 0:
+        #     cnt = contours[0]
+        #     moment = cv2.moments(cnt)
+        #
+        #     # for i in range(1, len(contours)):
+        #     #     cur_cnt = contours[i]
+        #     #     for m_key in self._used_moments:
+        #     #
+        #     #         # moment[m_key] = (moment[m_key] + cur_cnt[m_key])
+        #
+        #     return moment
+        # else:
+        #     return {'mu21': 0.0, 'nu20': 0.0, 'm30': 0.0, 'nu11': 0.0, 'm02': 0.0, 'nu03': 0.0, 'm20': 0.0,
+        #             'm11': 0.0, 'mu02': 0.0, 'mu20': 0.0, 'nu21': 0.0, 'nu12': 0.0-18, 'nu30': 0.0, 'm10': 0.0,
+        #             'm03': 0.0, 'mu11': 0.0, 'mu03': 0.0, 'mu12': 0.0, 'm01': 0.0, 'mu30': 0.0, 'm12': 0.0,
+        #             'm00': 0.0, 'm21': 0.0, 'nu02': 0.0}
 
 
     def _getMomentsFromArray(self, images):
