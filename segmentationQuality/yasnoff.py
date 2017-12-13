@@ -2,13 +2,15 @@ import cv2
 import numpy as np
 import math
 
+from sympy.functions.special.polynomials import hermite
+
 from imgUtils import ColorMask as colMaks
 
 
 class Yasnoff:
 
 
-    def __init__(self, template, img):
+    def __init__(self, template, img, pixelDistError=False):
         self._template = template
         self._img = img
 
@@ -25,6 +27,12 @@ class Yasnoff:
         sortSegmObjs = self._sortByBitwise(sortTemplObjs, segmObjs)
 
         self._confMatrix = self._createDiffMatrix(sortTemplObjs, sortSegmObjs)
+
+        if (pixelDistError):
+            self._pixelDistError = self._createPixelDistError(sortTemplObjs, sortSegmObjs)
+        else:
+            self._pixelDistError = None
+
 
 
 
@@ -93,6 +101,57 @@ class Yasnoff:
                 diff_matrix[i][j] = ptCount
 
         return diff_matrix
+
+
+    def _createPixelDistError(self, templObjs, segmObjs):
+        height = self._height
+        width = self._width
+
+        max_length = max(len(segmObjs), len(templObjs))
+        pixelDistError = np.zeros((max_length, max_length))
+
+        for i in range(0, len(segmObjs)):
+            segm = segmObjs[i]
+
+            if segm.ndim == 3:  # если изображение не одноканальное
+                segm = cv2.cvtColor(segm, cv2.COLOR_BGR2GRAY)  # преобразуем в оттенки серого
+
+            for j in range(0, len(templObjs)):
+
+                if i != j: # ошибочно квалифицированне пиксели
+                    templ = templObjs[j]
+
+                    # находим контуры шаблона
+                    _, contours, _ = cv2.findContours(templ, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+                    cnt = contours[0]
+
+                    # нахоим неправлиьно классифицированные пиксели (белым)
+                    errorPt = cv2.bitwise_and(templ, segm)
+                    dists = []
+
+                    # проходимся по всем пикселям
+                    for y in range(0, height):
+                        for x in range(0, width):
+                            pt = errorPt[y, x]
+                            if pt > 0: # неправлиьно класифированный пикседь
+
+                                # считаем расстоние от пикселя до контура шаблона
+                                dist = cv2.pointPolygonTest(cnt, (x, y), True)
+
+                                # если пиксель не лежит контуре добаляем к массиву
+                                if dist > 0:
+                                    dists.append(dist ** 2)
+
+                    summ = sum(dists)
+                    sqrt = math.sqrt(summ)
+                    a = height * width
+
+                    # TODO убрать 25
+                    result = (sqrt / a * 100 * 25)
+                    pixelDistError[i][j] = result
+
+        return pixelDistError
+
 
 
     def _getIncorrectlyClassifiedPixels(self, confMatrix):
@@ -249,6 +308,7 @@ class Yasnoff:
         m1 = self._getIncorrectlyClassifiedPixels(confMatrix)
 
         result = sum(m1) / len(m1)
+        print('m1 array = {0}'.format(m1))
         return result
 
 
@@ -257,6 +317,7 @@ class Yasnoff:
         m2 = self._getWronglyAssignedToClass(confMatrix)
 
         result = sum(m2)
+        print('m2 array = {0}'.format(m2))
         return result
 
     def getFrags(self, a=0.16, b=2):
@@ -265,3 +326,47 @@ class Yasnoff:
 
         frag = 1 / 1 + (a * math.fabs((segm_len - templ_len)) ** b)
         return frag
+
+    def printPixelDistError(self):
+        pixelDistError = self._pixelDistError
+
+        if pixelDistError is not None:
+
+            # получаем количество шаблонов и объектов
+            height = self._segm_len
+            width = self._templ_len
+
+            row_names = []
+            for i in range(0, height):
+                row_names.append('Object %s' % i)
+
+            cell_names = []
+            for i in range(0, width):
+                cell_names.append('Object %s' % i)
+
+            # Создаем архивы для хранения имен столбцов и колонок
+            rows_names = []
+            for i in range(0, height):
+                rows_names.append('Object %s' % i)
+
+            cell_names = []
+            for i in range(0, width):
+                cell_names.append('Template %s' % i)
+
+            # Печать значений
+            row_format = "{:>22}" * (width + 1)
+            print(row_format.format("", *cell_names))
+
+            for name, row in zip(row_names, pixelDistError):
+                print(row_format.format(name, *row))
+
+
+    def getPixelDistError(self):
+        pixelDistError = self._pixelDistError
+        errors = []
+        for row in pixelDistError:
+            row_average = sum(row) / len(row)
+            errors.append(row_average)
+        result = sum(errors)
+        print('pixelDistError array = {0}'.format(errors))
+        return result

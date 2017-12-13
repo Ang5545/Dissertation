@@ -17,14 +17,21 @@ def srm_yasnoff_one_img(img_path, template_path):
     img = cv2.imread(img_path, 3)
     template = cv2.imread(template_path, 3)
 
-    yasn = Yasnoff(template, img)
+    yasn = Yasnoff(template, img, True)
+
+    print('---------------------------------------------------------------------------------------')
     yasn.printMatrixWithTotal()
+
+    print('---------------------------------------------------------------------------------------')
+    yasn.printPixelDistError()
 
     print('---------------------------------------------------------------------------------------')
     m1 = yasn.getIncorrecClassPixels()
     m2 = yasn.getWronglyAssigneToClass()
+    distErr = yasn.getPixelDistError()
+
     frag = yasn.getFrags()
-    print('m1  = {0}; m2 = {1}; frag = {2};'.format(m1, m2, frag))
+    print('m1  = {0}; m2 = {1}; frag = {2}; distErr = {3}'.format(m1, m2, frag, distErr))
 
     cv2.imshow('img', img)
     cv2.imshow('template', template)
@@ -273,11 +280,11 @@ pear_segm_dir = project_dir + '/resources/pears/segmented/java/'
 apple_pear_templ = project_dir + '/resources/applePears/1/template.png'
 apple_pear_segm_dir = project_dir + '/resources/applePears/1/segmented/java/'
 
-# srm_yasnoff_one_img(apple_pear_segm_dir + 'val_20_0.png', apple_pear_templ)
+srm_yasnoff_one_img(apple_pear_segm_dir + 'val_20_0.png', apple_pear_templ)
 # srm_yasnoff_chart(apple_pear_segm_dir, apple_pear_templ)
 
 # srm_yasnoff_mom_one_img(apple_pear_segm_dir + 'val_20_0.png', apple_pear_templ)
-srm_yasnoff_mom_chart(pear_segm_dir, pear_templ)
+# srm_yasnoff_mom_chart(pear_segm_dir, pear_templ)
 
 
 '''
