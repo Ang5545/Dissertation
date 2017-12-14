@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 import matplotlib.pyplot as plt
 import imgUtils.ImgLoader as iml
 from segmentationQuality.yasnoff import Yasnoff
@@ -268,6 +269,81 @@ def threshold_yasnoff_mom_chart(img_path, template_path):
 
 
 
+def srm_compare_yasnoff_charts(img_dir_path, template_path):
+    template = cv2.imread(template_path, 3)
+    images = iml.getNamedImages(img_dir_path)
+    sort_by_name(images)
+
+    m1s = []
+    m2s = []
+    frags = []
+    pxDistErrs = []
+
+    m3s = []
+
+    for img in images:
+    # for i in range(0, 30):
+    #     img = images[i]
+
+        name = img[0]
+        print('name = {0};'.format(name))
+
+        image = img[1]
+
+        yasn = Yasnoff(template, image, True)
+        m1 = yasn.getIncorrecClassPixels()
+        m2 = yasn.getWronglyAssigneToClass()
+        pxDistErr = yasn.getPixelDistError()
+        frag = yasn.getFrags()
+
+        m1s.append(m1)
+        m2s.append(m2)
+        pxDistErrs.append(pxDistErr)
+        frags.append(frag)
+
+        yasn_m = YasnoffMoments(template, image)
+        m3 = yasn_m.get_m3()
+        m3s.append(m3)
+
+        print('m1 = {0}; m2 = {1}; m3 = {2}; frag = {3};'.format(m1, m2, m3, frag))
+
+    # нормализация вектров
+    def normalize(v):
+        norm = np.linalg.norm(v)
+        if norm == 0:
+            return v
+        return v / norm
+
+    m1s_norm = normalize(m1s)
+    m2s_norm = normalize(m2s)
+    pxDistErr_norm = normalize(pxDistErrs)
+    frag_norm = normalize(frags)
+
+    results = []
+    for m1, m2, frag, pxDistErr in zip(m1s_norm, m2s_norm, frag_norm, pxDistErr_norm):
+        res =  (m1 + frag + pxDistErr) / 3
+        results.append(res)
+
+    m3s_norm = normalize(m3s)
+
+    plt.figure(1)
+    plt.subplot(211)
+    plt.plot(m1s_norm, label="m1")
+    plt.plot(m2s_norm, label="m2")
+    plt.plot(frag_norm, label="frags")
+    plt.plot(pxDistErr_norm, label="pxDistErr")
+
+    plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=2, mode="expand", borderaxespad=0.)
+
+    plt.subplot(212)
+    plt.plot(results, label="result")
+    plt.plot(m3s_norm, label="m3s")
+
+    plt.show()
+
+
+
+
 
 # --------------- MAIN ---------------
 print(' - start work - ')
@@ -280,12 +356,14 @@ pear_segm_dir = project_dir + '/resources/pears/segmented/java/'
 apple_pear_templ = project_dir + '/resources/applePears/1/template.png'
 apple_pear_segm_dir = project_dir + '/resources/applePears/1/segmented/java/'
 
-srm_yasnoff_one_img(apple_pear_segm_dir + 'val_20_0.png', apple_pear_templ)
+# srm_yasnoff_one_img(apple_pear_segm_dir + 'val_20_0.png', apple_pear_templ)
 # srm_yasnoff_chart(apple_pear_segm_dir, apple_pear_templ)
 
 # srm_yasnoff_mom_one_img(apple_pear_segm_dir + 'val_20_0.png', apple_pear_templ)
 # srm_yasnoff_mom_chart(pear_segm_dir, pear_templ)
 
+
+srm_compare_yasnoff_charts(apple_pear_segm_dir, apple_pear_templ)
 
 '''
 # TODO тестировать на другом изображении / проверить почему не работает на минимальном th

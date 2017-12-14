@@ -129,25 +129,19 @@ class Yasnoff:
                     errorPt = cv2.bitwise_and(templ, segm)
                     dists = []
 
-                    # проходимся по всем пикселям
-                    for y in range(0, height):
-                        for x in range(0, width):
-                            pt = errorPt[y, x]
-                            if pt > 0: # неправлиьно класифированный пикседь
+                    y_s, x_s = (errorPt > 0).nonzero()
+                    for x, y in zip(x_s, y_s):
+                        dist = cv2.pointPolygonTest(cnt, (x, y), True)
 
-                                # считаем расстоние от пикселя до контура шаблона
-                                dist = cv2.pointPolygonTest(cnt, (x, y), True)
-
-                                # если пиксель не лежит контуре добаляем к массиву
-                                if dist > 0:
-                                    dists.append(dist ** 2)
+                        # если пиксель не лежит контуре добаляем к массиву
+                        if dist > 0:
+                            dists.append(dist ** 2)
 
                     summ = sum(dists)
                     sqrt = math.sqrt(summ)
                     a = height * width
 
-                    # TODO убрать 25
-                    result = (sqrt / a * 100 * 25)
+                    result = (sqrt / a * 100)
                     pixelDistError[i][j] = result
 
         return pixelDistError
@@ -308,7 +302,6 @@ class Yasnoff:
         m1 = self._getIncorrectlyClassifiedPixels(confMatrix)
 
         result = sum(m1) / len(m1)
-        print('m1 array = {0}'.format(m1))
         return result
 
 
@@ -317,7 +310,6 @@ class Yasnoff:
         m2 = self._getWronglyAssignedToClass(confMatrix)
 
         result = sum(m2)
-        print('m2 array = {0}'.format(m2))
         return result
 
     def getFrags(self, a=0.16, b=2):
@@ -368,5 +360,4 @@ class Yasnoff:
             row_average = sum(row) / len(row)
             errors.append(row_average)
         result = sum(errors)
-        print('pixelDistError array = {0}'.format(errors))
         return result

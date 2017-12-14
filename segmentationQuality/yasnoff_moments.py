@@ -442,5 +442,4 @@ class YasnoffMoments:
             result.append(val)
         # -------
 
-        print('m3 array = {0};'.format(result))
         return sum(result) / len(result)

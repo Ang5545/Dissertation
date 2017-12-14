@@ -19,8 +19,9 @@ gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 _, contours, _ = cv2.findContours(gray, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 cnt = contours[0]
 
-for y in range(0, height):
-    for x in range(0, width):
+for x in range(0, width):
+    for y in range(0, height):
+
         dist = cv2.pointPolygonTest(cnt, (x, y), True)
         if dist > 0:
             img[y, x] = (dist, 0, 0)

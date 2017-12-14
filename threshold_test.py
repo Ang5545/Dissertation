@@ -182,7 +182,6 @@ print('best_yasn_idx = {0}; best_yasn_m_idx = {1}'.format(best_yasn_idx, best_ya
 
 
 # нормализация вектров
-
 def normalize(v):
     norm = np.linalg.norm(v)
     if norm == 0:
@@ -212,8 +211,6 @@ plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=2, mode="expand", bo
 
 plt.subplot(212)
 plt.plot(m3s_norm, label="m1s")
-
-
 
 plt.show()
 
