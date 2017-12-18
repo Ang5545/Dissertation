@@ -37,44 +37,138 @@ def get_thresholded(img, step = 10, init_th = 0):
     return results
 
 
-def get_two_thresholded(img):
-    height = img.shape[0]
-    width = img.shape[1]
+def get_two_thresholded(img, step = 10, init_th = 0):
 
-    step = 10
-    th_1 = 100
-    th_2 = 100
+    idx = 0
+    th_upper = 255
     results = []
 
-    while th_1 < 250:
-        th_2 = th_1
-        while th_2 < 250:
+    # i = 0
+    # while i < 255:
+    #     th_upper = 255 - i
+    #     th_lower = 0
+    #
+    #     while th_lower < th_upper:
+    #         print('idx = {0}; th_upper = {1}; th_lower = {2}'.format(idx, th_upper, th_lower))
+    #
+    #         _, lower_threshold = cv2.threshold(img, th_lower, 150, cv2.THRESH_BINARY)
+    #         _, upper_threshold = cv2.threshold(img, th_upper, 255, cv2.THRESH_BINARY)
+    #
+    #         result = lower_threshold
+    #         white_px = np.argwhere(upper_threshold == 255)
+    #
+    #         for px in white_px:
+    #             y = px[0]
+    #             x = px[1]
+    #             result[y, x] = 255
+    #         results.append(result)
+    #
+    #         idx = idx + 1
+    #         th_lower = th_lower + step
+    #
+    #     i = i + step
 
-            print('th_1 = {0}; th_2 = {1};'.format(th_1, th_2))
 
-            _, main_img = cv2.threshold(img, th_1, 255, cv2.THRESH_BINARY)
-            _, thresh = cv2.threshold(img, th_2, 255, cv2.THRESH_BINARY_INV)
 
-            object = cv2.bitwise_and(main_img, thresh)
-            _, object_gray = cv2.threshold(object, 250, 150, cv2.THRESH_BINARY)
+    # while th_upper > init_th:
+    #
+    #     th_lower = init_th
+    #     while th_lower < th_upper:
+    #         print('idx = {0}; th_upper = {1}; th_lower = {2}'.format(idx, th_upper, th_lower))
+    #
+    #         _, lower_threshold = cv2.threshold(img, th_lower, 150, cv2.THRESH_BINARY)
+    #         _, upper_threshold = cv2.threshold(img, th_upper, 255, cv2.THRESH_BINARY)
+    #
+    #         result = lower_threshold
+    #         white_px = np.argwhere(upper_threshold == 255)
+    #
+    #         for px in white_px:
+    #             y = px[0]
+    #             x = px[1]
+    #             result[y, x] = 255
+    #         results.append(result)
+    #
+    #         idx = idx + 1
+    #
+    #         th_lower = th_lower + step
+    #     th_upper = th_upper - step
 
-            result = np.zeros([height, width, 1], dtype=np.uint8)
-            for y in range(0, height):
-                for x in range(0, width):
-                    main_val = main_img[y, x]
-                    if main_val == 255:
-                        obj_val = object[y, x]
-                        if obj_val == 255:
-                            result[y, x] = 100
-                        else:
-                            result[y, x] = 0
-                    else:
-                        result[y, x] = 200
+    # results = []
+    # dist = 0
+    # while dist < 255:
+    #     print('dist = {0}'.format(dist))
+    #     i = 0
+    #     while i < 255:
+    #         th_upper = 255 - i
+    #         th_lower = th_upper - dist
+    #
+    #         if th_upper > 0 and th_lower > 0:
+    #             print('th_upper = {0}; th_lower = {1}'.format(th_upper, th_lower))
+    #
+    #             _, lower_threshold = cv2.threshold(img, th_lower, 150, cv2.THRESH_BINARY)
+    #             _, upper_threshold = cv2.threshold(img, th_upper, 255, cv2.THRESH_BINARY)
+    #
+    #             result = lower_threshold
+    #             white_px = np.argwhere(upper_threshold == 255)
+    #
+    #             for px in white_px:
+    #                 y = px[0]
+    #                 x = px[1]
+    #                 result[y, x] = 255
+    #             results.append(result)
+    #
+    #         i = i + step
+    #     dist = dist + step
 
+
+
+    # while dist < 255:
+    #     dist = dist + step
+    #
+    #     while i < 255:
+    #         th_upper = 255 - i
+    #         th_lower = th_upper - dist
+    #
+    #         if th_upper > 0 and th_lower > 0:
+    #             print('th_upper = {0}; th_lower = {1}'.format(th_upper, th_lower))
+    #
+    #             _, lower_threshold = cv2.threshold(img, th_lower, 150, cv2.THRESH_BINARY)
+    #             _, upper_threshold = cv2.threshold(img, th_upper, 255, cv2.THRESH_BINARY)
+    #
+    #             result = lower_threshold
+    #             white_px = np.argwhere(upper_threshold == 255)
+    #
+    #             for px in white_px:
+    #                 y = px[0]
+    #                 x = px[1]
+    #                 result[y, x] = 255
+    #             results.append(result)
+    #
+    #         dist = dist + step
+    #     i = i + step
+
+    th_upper = init_th
+
+    while th_upper < 255:
+        th_lower = 0
+
+        while th_lower < th_upper:
+            print('th_upper = {0}; th_lower = {1}'.format(th_upper, th_lower))
+
+            _, lower_threshold = cv2.threshold(img, th_lower, 150, cv2.THRESH_BINARY)
+            _, upper_threshold = cv2.threshold(img, th_upper, 255, cv2.THRESH_BINARY)
+
+            result = lower_threshold
+            white_px = np.argwhere(upper_threshold == 255)
+
+            for px in white_px:
+                y = px[0]
+                x = px[1]
+                result[y, x] = 255
             results.append(result)
-            th_2 = th_2 + step
 
-        th_1 = th_1 + step
+            th_lower = th_lower + step
+        th_upper = th_upper + step
 
     return results
 
@@ -105,11 +199,15 @@ print(' - start work - ')
 
 project_dir = iml.getParamFromConfig('projectdir')
 
-img_path = project_dir + '/resources/orange/original.png'
+img_path = project_dir + '/resources/lime/new_color.png'
 temp_path = project_dir + '/resources/orange/template.png'
 img = cv2.imread(img_path, 0)
 template = cv2.imread(temp_path, 3)
 
+height = img.shape[0]
+width = img.shape[1]
+
+blank = np.zeros([height, width, 3], dtype=np.uint8)
 
 # threses = get_range_thresholded(img) # get_two_thresholded(img)
 
@@ -128,95 +226,107 @@ print('m3 = {0}'.format(m3))
 
 
 
-threses = get_thresholded(img, 1) # get_two_thresholded(img)
+threses = get_two_thresholded(img, 10, 0) # get_two_thresholded(img)
 
-m1s = []
-m2s = []
-m3s = []
-pxDistErrs = []
-
-best_yasn_res = 255
-best_yasn_thres = threses[0]
-best_yasn_idx = 0
-
-best_yasn_m_res = 255
-best_yasn_m_thres = threses[0]
-best_yasn_m_idx = 0
 
 for idx in range(0, len(threses)):
-    print('idx = {0}'.format(idx))
-
-    thres = threses[idx]
-
-    yasn = Yasnoff(template, thres, True)
-    m1 = yasn.getIncorrecClassPixels()
-    m2 = yasn.getWronglyAssigneToClass()
-    pxDistErr = yasn.getPixelDistError()
-    frag = yasn.getFrags()
-
-    # res = (m1 + m2 + frag) / 3
-    res = (m1 + m2 + pxDistErr) / 3
-    m1s.append(m1)
-    m2s.append(m2)
-    pxDistErrs.append(pxDistErr)
+    thres  = threses[idx]
+    name = 'val_{0}_0.png'.format(idx)
+    path = project_dir + '/resources/lime/segmented/' + name
+    print('save iamge {0}'.format(path))
+    cv2.imwrite(path, thres)
+    print(' -- end -- ')
+    print(' --------- ')
 
 
-    if pxDistErr < best_yasn_res:
-        best_yasn_res = pxDistErr
-        best_yasn_thres = thres
-        best_yasn_idx = idx
-
-    yasn_m = YasnoffMoments(template, thres)
-    m3 = yasn_m.get_m3()
-    m3s.append(m3)
-
-    if m3 < best_yasn_m_res:
-        best_yasn_m_res = m3
-        best_yasn_m_thres = thres
-        best_yasn_m_idx = idx
-
-    print('-------------------------------------------')
-
-print('best_yasn_res = {0}; best_yasn_m_res = {1}'.format(best_yasn_res,best_yasn_m_res ))
-print('best_yasn_idx = {0}; best_yasn_m_idx = {1}'.format(best_yasn_idx, best_yasn_m_idx))
-
-
-# нормализация вектров
-def normalize(v):
-    norm = np.linalg.norm(v)
-    if norm == 0:
-       return v
-    return v / norm
-
-m1s_norm = normalize(m1s)
-m2s_norm = normalize(m2s)
-pxDistErrs_norm = normalize(pxDistErrs)
-
-results = []
-for m1, pxDistErr in zip(m1s_norm, pxDistErrs_norm):
-    val = ((m1 + pxDistErr) / 2)
-    results.append(val)
-
-
-m3s_norm = normalize(m3s)
-
-plt.figure(1)
-plt.subplot(211)
-plt.plot(m1s_norm, label="m1")
-plt.plot(m2s_norm, label="m2")
-plt.plot(pxDistErrs_norm, label="pxDistErr")
-plt.plot(results, label="result")
-
-plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=2, mode="expand", borderaxespad=0.)
-
-plt.subplot(212)
-plt.plot(m3s_norm, label="m1s")
-
-plt.show()
-
-cv2.imshow("best_yasn_thres", best_yasn_thres)
-cv2.imshow("best_yasn_m_thres", best_yasn_m_thres)
-cv2.waitKey()
-
-
-print(' - end - ')
+#
+# m1s = []
+# m2s = []
+# m3s = []
+# pxDistErrs = []
+#
+# best_yasn_res = 255
+# best_yasn_thres = blank
+# best_yasn_idx = 0
+#
+# best_yasn_m_res = 255
+# best_yasn_m_thres = blank
+# best_yasn_m_idx = 0
+#
+# for idx in range(0, len(threses)):
+#     print('idx = {0}'.format(idx))
+#
+#     thres = threses[idx]
+#
+#     yasn = Yasnoff(template, thres, True)
+#     m1 = yasn.getIncorrecClassPixels()
+#     m2 = yasn.getWronglyAssigneToClass()
+#     pxDistErr = yasn.getPixelDistError()
+#     frag = yasn.getFrags()
+#
+#     # res = (m1 + m2 + frag) / 3
+#     res = (m1 + m2 + pxDistErr) / 3
+#     m1s.append(m1)
+#     m2s.append(m2)
+#     pxDistErrs.append(pxDistErr)
+#
+#
+#     if pxDistErr < best_yasn_res:
+#         best_yasn_res = pxDistErr
+#         best_yasn_thres = thres
+#         best_yasn_idx = idx
+#
+#     yasn_m = YasnoffMoments(template, thres)
+#     m3 = yasn_m.get_m3()
+#     m3s.append(m3)
+#
+#     if m3 < best_yasn_m_res:
+#         best_yasn_m_res = m3
+#         best_yasn_m_thres = thres
+#         best_yasn_m_idx = idx
+#
+#     print('-------------------------------------------')
+#
+# print('best_yasn_res = {0}; best_yasn_m_res = {1}'.format(best_yasn_res,best_yasn_m_res ))
+# print('best_yasn_idx = {0}; best_yasn_m_idx = {1}'.format(best_yasn_idx, best_yasn_m_idx))
+#
+#
+# # нормализация вектров
+# def normalize(v):
+#     norm = np.linalg.norm(v)
+#     if norm == 0:
+#        return v
+#     return v / norm
+#
+# m1s_norm = normalize(m1s)
+# m2s_norm = normalize(m2s)
+# pxDistErrs_norm = normalize(pxDistErrs)
+#
+# results = []
+# for m1, pxDistErr in zip(m1s_norm, pxDistErrs_norm):
+#     val = ((m1 + pxDistErr) / 2)
+#     results.append(val)
+#
+#
+# m3s_norm = normalize(m3s)
+#
+# plt.figure(1)
+# plt.subplot(211)
+# plt.plot(m1s_norm, label="m1")
+# plt.plot(m2s_norm, label="m2")
+# plt.plot(pxDistErrs_norm, label="pxDistErr")
+# plt.plot(results, label="result")
+#
+# plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=2, mode="expand", borderaxespad=0.)
+#
+# plt.subplot(212)
+# plt.plot(m3s_norm, label="m1s")
+#
+# plt.show()
+#
+# cv2.imshow("best_yasn_thres", best_yasn_thres)
+# cv2.imshow("best_yasn_m_thres", best_yasn_m_thres)
+# cv2.waitKey()
+#
+#
+# print(' - end - ')

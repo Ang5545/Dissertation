@@ -124,6 +124,7 @@ class YasnoffMoments:
 
         # можно не использовать потому что разница между любым объектом и одним пикселем стремится к 1
         # ------
+        '''
         if temp_len > segm_len:
             blank_image = np.zeros([img_height, img_width, 3], dtype=np.uint8)
             cnt_y = img_width // 2
@@ -136,6 +137,7 @@ class YasnoffMoments:
                 temp_moment = temp_moments[i]
                 moments_diff = self._get_moments_diff(blank_moment, temp_moment)
                 contMomentMatrix[i][i] = moments_diff
+        '''
         # ------
 
         return contMomentMatrix
@@ -433,13 +435,15 @@ class YasnoffMoments:
         # показатель даже при минимальном отклонении стремится к 1-це
         # поэтому для простоты можно просто ставить единицу
         # -------
-        # for i in range(height, width):
-        #     result.append(1)
+        for i in range(height, width):
+            result.append(1)
 
         # для более точных расчетов
+        '''
         for i in range(height, width):
             val = contMomentMatrix[i][i]
             result.append(val)
+        '''
         # -------
 
         return sum(result) / len(result)

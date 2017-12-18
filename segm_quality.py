@@ -278,7 +278,6 @@ def srm_compare_yasnoff_charts(img_dir_path, template_path):
     m2s = []
     frags = []
     pxDistErrs = []
-
     m3s = []
 
     for img in images:
@@ -341,6 +340,21 @@ def srm_compare_yasnoff_charts(img_dir_path, template_path):
 
     plt.show()
 
+    best_yasn_idx = np.argmin(results)
+    best_mom_idx = np.argmin(m3s_norm)
+
+    best_yasn_img = images[best_yasn_idx][1]
+    best_mom_img = images[best_mom_idx][1]
+
+    best_yasn_name = images[best_yasn_idx][0]
+    best_mom_name = images[best_mom_idx][0]
+
+    print('best_yasn = {0}; best_mom = {1};'.format(results[best_yasn_idx], m3s_norm[best_mom_idx]))
+    print('best_yasn img = {0}; best_mom img = {1};'.format(best_yasn_name, best_mom_name))
+
+    cv2.imshow("best_yasn", best_yasn_img)
+    cv2.imshow("best_mom", best_mom_img)
+    cv2.waitKey()
 
 
 
@@ -356,14 +370,31 @@ pear_segm_dir = project_dir + '/resources/pears/segmented/java/'
 apple_pear_templ = project_dir + '/resources/applePears/1/template.png'
 apple_pear_segm_dir = project_dir + '/resources/applePears/1/segmented/java/'
 
-# srm_yasnoff_one_img(apple_pear_segm_dir + 'val_20_0.png', apple_pear_templ)
+
+lime_templ = project_dir + '/resources/lime/template.png'
+lime_segm_dir = project_dir + '/resources/lime/segmented/'
+
+
+
+
+# Only yasnoff
+
+
+
+# Only moments
+
+
+
+# Compare  moments
+
+# srm_yasnoff_one_img(lime_segm_dir + 'thres_303.png', lime_templ)
 # srm_yasnoff_chart(apple_pear_segm_dir, apple_pear_templ)
 
 # srm_yasnoff_mom_one_img(apple_pear_segm_dir + 'val_20_0.png', apple_pear_templ)
 # srm_yasnoff_mom_chart(pear_segm_dir, pear_templ)
 
 
-srm_compare_yasnoff_charts(apple_pear_segm_dir, apple_pear_templ)
+srm_compare_yasnoff_charts(lime_segm_dir, lime_templ)
 
 '''
 # TODO тестировать на другом изображении / проверить почему не работает на минимальном th
