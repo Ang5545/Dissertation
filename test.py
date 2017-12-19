@@ -1,7 +1,5 @@
-import cv2
-import matplotlib.pyplot as plt
-import imgUtils.ImgLoader as iml
 
+import numpy as np
 
 # project_dir = iml.getParamFromConfig('projectdir')
 # img_path = project_dir + '/resources/paint_test_3/template.png'
@@ -23,3 +21,8 @@ import imgUtils.ImgLoader as iml
 #     for key in moment.keys():
 #         moment[key] = moment[key] + m[key]
 
+
+arr = [10,10,9,10,10, 7, -1]
+min_idx = np.argmin(arr)
+
+print('min_idx = {0}'.format(min_idx))

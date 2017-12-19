@@ -83,7 +83,6 @@ class Yasnoff:
 
 
     def _createDiffMatrix(self, templObjs, segmObjs):
-
         # заполняем двумерный массив пиксельной разницей
         max_length = max(len(segmObjs), len(templObjs))
         diff_matrix = np.zeros((max_length, max_length))

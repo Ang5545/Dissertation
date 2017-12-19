@@ -10,7 +10,10 @@ class YasnoffMoments:
     def __init__(self, template, img):
 
         # используются только пространствунный моменты
-        self._used_moments = ['m00', 'm10', 'm01', 'm20', 'm11', 'm02', 'm30', 'm21', 'm12', 'm03']
+        # self._used_moments = ['m00', 'm10', 'm01', 'm20', 'm11', 'm02', 'm30', 'm21', 'm12', 'm03']
+        # self._used_moments = ['mu20', 'mu11', 'mu02', 'mu30', 'mu21', 'mu12', 'mu03']
+        self._used_moments = ['m00', 'm10', 'm01', 'm20', 'm11', 'm02', 'm30', 'm21', 'm12', 'm03',
+                              'mu20']
 
         self._template = template
         self._img = img
@@ -124,7 +127,7 @@ class YasnoffMoments:
 
         # можно не использовать потому что разница между любым объектом и одним пикселем стремится к 1
         # ------
-        '''
+
         if temp_len > segm_len:
             blank_image = np.zeros([img_height, img_width, 3], dtype=np.uint8)
             cnt_y = img_width // 2
@@ -137,7 +140,7 @@ class YasnoffMoments:
                 temp_moment = temp_moments[i]
                 moments_diff = self._get_moments_diff(blank_moment, temp_moment)
                 contMomentMatrix[i][i] = moments_diff
-        '''
+
         # ------
 
         return contMomentMatrix
@@ -152,10 +155,13 @@ class YasnoffMoments:
             max_m = max(obj_m, temp_m)
             min_m = min(obj_m, temp_m)
 
-            # # diff = abs((1 / temp_m) - (1 / obj_m))  # CV_CONTOURS_MATCH_I1
-            # # diff = abs(temp_m - obj_m)              # CV_CONTOURS_MATCH_I2
-            diff = abs((max_m - min_m) / max_m)         # CV_CONTOURS_MATCH_I3
-            diff_moments.append(diff)
+            if max_m != 0:
+                # # diff = abs((1 / temp_m) - (1 / obj_m))  # CV_CONTOURS_MATCH_I1
+                # # diff = abs(temp_m - obj_m)              # CV_CONTOURS_MATCH_I2
+                diff = abs((max_m - min_m) / max_m)         # CV_CONTOURS_MATCH_I3
+                diff_moments.append(diff)
+            else:
+                diff_moments.append(0)
 
         contour_diff = sum(diff_moments) / len(diff_moments)
         result = contour_diff ** (1 / base)
@@ -434,16 +440,15 @@ class YasnoffMoments:
 
         # показатель даже при минимальном отклонении стремится к 1-це
         # поэтому для простоты можно просто ставить единицу
-        # -------
+        '''
         for i in range(height, width):
             result.append(1)
-
-        # для более точных расчетов
         '''
+        # -------
+        # для более точных расчетов
         for i in range(height, width):
             val = contMomentMatrix[i][i]
             result.append(val)
-        '''
         # -------
 
         return sum(result) / len(result)
