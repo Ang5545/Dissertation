@@ -9,11 +9,19 @@ class YasnoffMoments:
 
     def __init__(self, template, img):
 
-        # используются только пространствунный моменты
+
+        # пространственные моменты
         # self._used_moments = ['m00', 'm10', 'm01', 'm20', 'm11', 'm02', 'm30', 'm21', 'm12', 'm03']
+
+        # центральные моменты
         # self._used_moments = ['mu20', 'mu11', 'mu02', 'mu30', 'mu21', 'mu12', 'mu03']
+
+        # наиболее "удачная" подборка
         self._used_moments = ['m00', 'm10', 'm01', 'm20', 'm11', 'm02', 'm30', 'm21', 'm12', 'm03',
-                              'mu20']
+                              'mu20', 'mu02', 'mu03']
+
+
+
 
         self._template = template
         self._img = img
@@ -183,24 +191,6 @@ class YasnoffMoments:
             for key in moment.keys():
                 moment[key] = moment[key] + m[key]
         return moment
-        # print('len(contours) = {0}'.format(len(contours)))
-        #
-        # if len(contours) > 0:
-        #     cnt = contours[0]
-        #     moment = cv2.moments(cnt)
-        #
-        #     # for i in range(1, len(contours)):
-        #     #     cur_cnt = contours[i]
-        #     #     for m_key in self._used_moments:
-        #     #
-        #     #         # moment[m_key] = (moment[m_key] + cur_cnt[m_key])
-        #
-        #     return moment
-        # else:
-        #     return {'mu21': 0.0, 'nu20': 0.0, 'm30': 0.0, 'nu11': 0.0, 'm02': 0.0, 'nu03': 0.0, 'm20': 0.0,
-        #             'm11': 0.0, 'mu02': 0.0, 'mu20': 0.0, 'nu21': 0.0, 'nu12': 0.0-18, 'nu30': 0.0, 'm10': 0.0,
-        #             'm03': 0.0, 'mu11': 0.0, 'mu03': 0.0, 'mu12': 0.0, 'm01': 0.0, 'mu30': 0.0, 'm12': 0.0,
-        #             'm00': 0.0, 'm21': 0.0, 'nu02': 0.0}
 
 
     def _getMomentsFromArray(self, images):

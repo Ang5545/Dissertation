@@ -246,7 +246,8 @@ def get_thresholded(img, step = 10, init_th = 240, init_th_lower = 0, limit = -1
     while (limit == -1 and th_upper <= 255) or (limit >  0 and i < limit):
         th_lower = init_th_lower
 
-        while (limit == -1 and th_lower <= th_upper) or (limit > 0 and i < limit):
+        # while (limit == -1 and th_lower <= th_upper) or (limit > 0 and i < limit):
+        while th_lower <= th_upper:
 
             name = 'i = {2}: th_upper = {0}; th_lower = {1}'.format(th_upper, th_lower, i)
             print(name)
@@ -304,7 +305,7 @@ images = getSortImages(segm_dir_path)
 
 # -- Only yasnoff --
 # yasnoff_one_img(images[0][1], template)
-yasnoff_chart(images, template, 30)
+# yasnoff_chart(images, template, 30)
 
 
 # -- Only moments --
@@ -313,7 +314,7 @@ yasnoff_chart(images, template, 30)
 
 
 #  -- Compare  moments --
-# compare_yasnoff_charts(images, template, 50)
+compare_yasnoff_charts(images, template, 30)
 '''
 
 
@@ -333,11 +334,10 @@ template = cv2.imread(template_path, 3)
 img = cv2.imread(lime_img, 0)
 
 # threses = get_thresholded(img)
-threses = get_thresholded(img, 10, 240, 0, -1)
+threses = get_thresholded(img, 10, 200, 0, -1)
 
 
 print('----------------------------------------')
-
 
 # -- Only yasnoff --
 # yasnoff_one_img(threses[0][1], template)
@@ -346,31 +346,11 @@ print('----------------------------------------')
 
 # -- Only moments --
 # yasnoff_mom_one_img(images[20][1], template)
-yasnoff_mom_chart(threses, template, -1)
-
+# yasnoff_mom_chart(threses, template, -1)
 
 
 #  -- Compare  moments --
-# compare_yasnoff_charts(threses, template, -1, False)
-
-
-
-
-'''
-# TODO тестировать на другом изображении / проверить почему не работает на минимальном th
-heart_img = project_dir + '/resources/heart/img.JPG'
-heart_templ = project_dir + '/resources/heart/sampleMask.bmp'
-
-# threshold_yasnoff_one_img(heart_img, heart_templ, 190)
-# threshold_yasnoff_chart(heart_img, heart_templ)
-
-# threshold_yasnoff_mom_one_img(heart_img, heart_templ, 190)
-# threshold_yasnoff_mom_chart(heart_img, heart_templ)
-'''
-
-
-
-
+compare_yasnoff_charts(threses, template, -1, False)
 
 
 print(' - end - ')
