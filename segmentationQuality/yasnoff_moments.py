@@ -17,7 +17,7 @@ class YasnoffMoments:
         # self._used_moments = ['mu20', 'mu11', 'mu02', 'mu30', 'mu21', 'mu12', 'mu03']
 
         # наиболее "удачная" подборка
-        self._used_moments = ['m00', 'm10', 'm01', 'm20', 'm11', 'm02', 'm30', 'm21', 'm12', 'm03',
+        self._used_moments = ['mu20', 'mu11', 'mu02', 'mu30', 'mu21', 'mu12', 'mu03',
                               'mu20', 'mu02', 'mu03']
 
 

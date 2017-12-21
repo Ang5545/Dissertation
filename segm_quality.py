@@ -296,8 +296,8 @@ apple_pear_templ = project_dir + '/resources/applePears/1/template.png'
 apple_pear_segm_dir = project_dir + '/resources/applePears/1/segmented/java/'
 
 # -- used paths --
-template_path = apple_pear_templ
-segm_dir_path = apple_pear_segm_dir
+template_path = pear_templ
+segm_dir_path = pear_segm_dir
 
 template = cv2.imread(template_path, 3)
 images = getSortImages(segm_dir_path)
@@ -351,6 +351,8 @@ print('----------------------------------------')
 
 #  -- Compare  moments --
 compare_yasnoff_charts(threses, template, -1, False)
+
+
 
 
 print(' - end - ')
