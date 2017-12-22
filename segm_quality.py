@@ -246,8 +246,7 @@ def get_thresholded(img, step = 10, init_th = 240, init_th_lower = 0, limit = -1
     while (limit == -1 and th_upper <= 255) or (limit >  0 and i < limit):
         th_lower = init_th_lower
 
-        # while (limit == -1 and th_lower <= th_upper) or (limit > 0 and i < limit):
-        while th_lower <= th_upper:
+        while th_lower <= th_upper and (limit == -1 or i < limit):
 
             name = 'i = {2}: th_upper = {0}; th_lower = {1}'.format(th_upper, th_lower, i)
             print(name)
@@ -287,7 +286,6 @@ project_dir = iml.getParamFromConfig('projectdir')
 # ======== SRM ========
 # =====================
 
-'''
 # -- all experiment data paths --
 pear_templ = project_dir + '/resources/pears/template.bmp'
 pear_segm_dir = project_dir + '/resources/pears/segmented/java/'
@@ -315,12 +313,12 @@ images = getSortImages(segm_dir_path)
 
 #  -- Compare  moments --
 compare_yasnoff_charts(images, template, 30)
-'''
+
 
 
 
 # ===== TRESHOLD =====
-
+'''
 # -- all experiment data paths --
 lime_templ = project_dir + '/resources/lime/template.png'
 lime_img = project_dir + '/resources/lime/new_color_2.png'
@@ -345,13 +343,13 @@ print('----------------------------------------')
 
 
 # -- Only moments --
-# yasnoff_mom_one_img(images[20][1], template)
+# yasnoff_mom_one_img(threses[0][1], template)
 # yasnoff_mom_chart(threses, template, -1)
 
 
 #  -- Compare  moments --
-compare_yasnoff_charts(threses, template, -1, False)
-
+# compare_yasnoff_charts(threses, template, -1, False)
+'''
 
 
 

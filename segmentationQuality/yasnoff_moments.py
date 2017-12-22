@@ -11,15 +11,21 @@ class YasnoffMoments:
 
 
         # пространственные моменты
-        # self._used_moments = ['m00', 'm10', 'm01', 'm20', 'm11', 'm02', 'm30', 'm21', 'm12', 'm03']
+        self._used_moments = ['m00', 'm10', 'm01', 'm20', 'm11', 'm02', 'm30', 'm21', 'm12', 'm03']
 
         # центральные моменты
         # self._used_moments = ['mu20', 'mu11', 'mu02', 'mu30', 'mu21', 'mu12', 'mu03']
 
-        # наиболее "удачная" подборка
-        self._used_moments = ['mu20', 'mu11', 'mu02', 'mu30', 'mu21', 'mu12', 'mu03',
-                              'mu20', 'mu02', 'mu03']
+        # n
+        # self._used_moments = ['nu11', 'nu20', 'nu12', 'nu02', 'nu21', 'nu03', 'nu30']
 
+        # all
+        # self._used_moments = ['m20', 'mu02', 'mu30', 'm02', 'mu20', 'm03', 'mu12', 'm11', 'nu11', 'nu20',
+        #                       'mu03', 'nu12', 'm01', 'm21', 'm30', 'm00', 'm10', 'nu02', 'mu21', 'nu21',
+        #                       'nu03', 'nu30', 'mu11', 'm12']
+
+        # # наиболее "удачная" подборка
+        # self._used_moments = ['m00', 'm10', 'm12', 'mu12']
 
 
 
@@ -182,7 +188,7 @@ class YasnoffMoments:
 
         _, contours, _ = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         moment = {'mu21': 0.0, 'nu20': 0.0, 'm30': 0.0, 'nu11': 0.0, 'm02': 0.0, 'nu03': 0.0, 'm20': 0.0,
-                  'm11': 0.0, 'mu02': 0.0, 'mu20': 0.0, 'nu21': 0.0, 'nu12': 0.0 - 18, 'nu30': 0.0, 'm10': 0.0,
+                  'm11': 0.0, 'mu02': 0.0, 'mu20': 0.0, 'nu21': 0.0, 'nu12': 0.0, 'nu30': 0.0, 'm10': 0.0,
                   'm03': 0.0, 'mu11': 0.0, 'mu03': 0.0, 'mu12': 0.0, 'm01': 0.0, 'mu30': 0.0, 'm12': 0.0,
                   'm00': 0.0, 'm21': 0.0, 'nu02': 0.0}
 
