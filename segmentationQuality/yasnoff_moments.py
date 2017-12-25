@@ -138,6 +138,28 @@ class YasnoffMoments:
                 moments_diff = self._get_moments_diff(temp_moment, segm_moment)
                 contMomentMatrix[j][i] = moments_diff
 
+                # if i == 3 and j == 3:
+                #     # print('temp_moment = {0}'.format(temp_moment))
+                #     # print('segm_moment = {0}'.format(segm_moment))
+                #     print('moments_diff = {0}'.format(moments_diff))
+                #
+                #
+                #     print(' -- template moments -- ')
+                #     tt_mom = self._getMoments_test(templObjs[3])
+                #
+                #     print(' -- segm moments -- ')
+                #     to_mom = self._getMoments_test(segmObjs[3])
+                #
+                #     t_diff = self._get_moments_diff_test(tt_mom, to_mom)
+                #     print('moments_diff = {0}'.format(moments_diff))
+                #     print('t_diff = {0}'.format(t_diff))
+                #
+                #     print('------------------------')
+                #
+                #     cv2.imshow("templObj", templObjs[3])
+                #     cv2.imshow("segmObj", segmObjs[3])
+                #     cv2.waitKey()
+
 
         # можно не использовать потому что разница между любым объектом и одним пикселем стремится к 1
         # ------
@@ -156,6 +178,10 @@ class YasnoffMoments:
                 contMomentMatrix[i][i] = moments_diff
 
         # ------
+
+        # # -- test --
+        # templObjs[3]
+        # segmObjs[3]
 
         return contMomentMatrix
 
@@ -414,6 +440,7 @@ class YasnoffMoments:
         result = sum(m2)
         return result
 
+
     def getFrags(self, a=0.16, b=2):
         templ_len = self._templ_len
         segm_len = self._segm_len
@@ -433,6 +460,10 @@ class YasnoffMoments:
         for i in range(0, min_l):
             i_kk = contMomentMatrix[i][i]
             result.append(i_kk)
+            if i == 3:
+                print('i = {0}'.format(i))
+                print('i_kk = {0}'.format(i_kk))
+                print('-------------------')
 
         # показатель даже при минимальном отклонении стремится к 1-це
         # поэтому для простоты можно просто ставить единицу
@@ -447,4 +478,103 @@ class YasnoffMoments:
             result.append(val)
         # -------
 
+        print('result = {0}'.format(result))
+
         return sum(result) / len(result)
+
+
+    def get_m4(self):
+        height = self._segm_len
+        width = self._templ_len
+        contMomentMatrix = self._contMomentMatrix
+        length = width #len(contMomentMatrix)
+        result = []
+
+
+        for i in range (0, length):
+
+            # то что лежит на диагонали
+            m_kk = contMomentMatrix[i][i]
+
+            m_ik = 0
+            for row in contMomentMatrix:
+                val = row[i]
+                m_ik = m_ik + val
+
+            m_ki = 0
+            row = contMomentMatrix[i]
+            for val in row:
+                m_ki = m_ki + val
+
+            # общая сумма
+            total = 0
+            for row in contMomentMatrix:
+                total = total + sum(row)
+
+        #     print('m_kk - {0}'.format(m_kk))
+        #     print('m_ik - {0}'.format(m_ik))
+        #     print('m_ki - {0}'.format(m_ki))
+        #     print('-------------------------')
+        #
+        # print('height = {0}'.format(height))
+        # print('width = {0}'.format(width))
+        # print('len(contMomentMatrix) = {0}'.format(len(contMomentMatrix)))
+
+        res_val = ((m_ki - m_kk) / (total - m_ik))
+        result.append(res_val)
+
+        return sum(result)
+
+    # ------------
+    # --- test ---
+    # ------------
+    def _get_moments_diff_test(self, moment1, moment2, base = 4):
+        diff_moments = []
+        for m_key in self._used_moments:
+            obj_m = moment1[m_key]
+            temp_m = moment2[m_key]
+
+            max_m = max(obj_m, temp_m)
+            min_m = min(obj_m, temp_m)
+
+            if max_m != 0:
+                # # diff = abs((1 / temp_m) - (1 / obj_m))  # CV_CONTOURS_MATCH_I1
+                # # diff = abs(temp_m - obj_m)              # CV_CONTOURS_MATCH_I2
+                diff = abs((max_m - min_m) / max_m)         # CV_CONTOURS_MATCH_I3
+                diff_moments.append(diff)
+            else:
+                diff_moments.append(0)
+
+        contour_diff = sum(diff_moments) / len(diff_moments)
+        result = contour_diff ** (1 / base)
+        return result
+
+
+    def _getMoments_test(self, img):
+        if img.ndim == 3:  # если изображение не одноканальное
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # преобразуем в оттенки серого
+
+        _, contours, _ = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        moment = {'mu21': 0.0, 'nu20': 0.0, 'm30': 0.0, 'nu11': 0.0, 'm02': 0.0, 'nu03': 0.0, 'm20': 0.0,
+                  'm11': 0.0, 'mu02': 0.0, 'mu20': 0.0, 'nu21': 0.0, 'nu12': 0.0, 'nu30': 0.0, 'm10': 0.0,
+                  'm03': 0.0, 'mu11': 0.0, 'mu03': 0.0, 'mu12': 0.0, 'm01': 0.0, 'mu30': 0.0, 'm12': 0.0,
+                  'm00': 0.0, 'm21': 0.0, 'nu02': 0.0}
+
+        for cnt in contours:
+            m = cv2.moments(cnt)
+            for key in moment.keys():
+                moment[key] = moment[key] + m[key]
+
+            # test_m = {}
+            # for key in self._used_moments:
+            #     test_m.update([(key,  moment[key])])
+            #
+            # print('1moment = {0}'.format(test_m))
+            # img_height = self._height
+            # img_width = self._width
+            # cnt_image = np.zeros([img_height, img_width, 3], dtype=np.uint8)
+            # cv2.drawContours(cnt_image, cnt, -1, (0, 255, 0), 1)
+            # cv2.imshow("cnt", cnt_image)
+            # cv2.waitKey()
+
+        return moment

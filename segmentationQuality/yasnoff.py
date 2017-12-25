@@ -355,8 +355,11 @@ class Yasnoff:
     def getPixelDistError(self):
         pixelDistError = self._pixelDistError
         errors = []
-        for row in pixelDistError:
-            row_average = sum(row) / len(row)
-            errors.append(row_average)
-        result = sum(errors)
-        return result
+        if pixelDistError is not None:
+            for row in pixelDistError:
+                row_average = sum(row) / len(row)
+                errors.append(row_average)
+            result = sum(errors)
+            return result
+        else:
+            return 0

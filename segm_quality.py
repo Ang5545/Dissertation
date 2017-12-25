@@ -101,6 +101,9 @@ def yasnoff_mom_one_img(img, template):
     m3 = yasn.get_m3()
     print('m3  = {0};'.format(m3))
 
+    m4 = yasn.get_m4()
+    print('m4  = {0};'.format(m4))
+
     cv2.imshow('img', img)
     cv2.imshow('template', template)
     cv2.waitKey()
@@ -120,7 +123,7 @@ def yasnoff_mom_chart(images, template, limit = -1):
         image = img[1]
 
         yasn = YasnoffMoments(template, image)
-        m3 = yasn.get_m3()
+        m3 = yasn.get_m4()
         m3s.append(m3)
 
         if m3 < minRes:
@@ -147,6 +150,7 @@ def compare_yasnoff_charts(images, template, limit = -1, frg = True):
     frags = []
     pxDistErrs = []
     m3s = []
+    m4s = []
 
     i = 1
     while i < len(images) and (limit == -1 or i <= limit):
@@ -168,6 +172,10 @@ def compare_yasnoff_charts(images, template, limit = -1, frg = True):
         yasn_m = YasnoffMoments(template, image)
         m3 = yasn_m.get_m3()
         m3s.append(m3)
+
+        m4 = yasn_m.get_m4()
+        m4s.append(m4)
+
 
         print('name = {0};'.format(name))
         print('m1 = {0}; m2 = {1}; m3 = {2}; frag = {3};'.format(m1, m2, m3, frag))
@@ -197,6 +205,11 @@ def compare_yasnoff_charts(images, template, limit = -1, frg = True):
             results.append(res)
 
     m3s_norm = normalize(m3s)
+    m4s_norm = normalize(m4s)
+
+    m4s_norm_test = []
+    for val in m4s_norm:
+        m4s_norm_test.append(1-val)
 
     plt.figure(1)
     plt.subplot(211)
@@ -211,7 +224,7 @@ def compare_yasnoff_charts(images, template, limit = -1, frg = True):
 
     plt.subplot(212)
     plt.plot(results, label="yasnoff")
-    plt.plot(m3s_norm, label="yasnoff moments")
+    plt.plot(m4s_norm_test, label="m4s_norm_test")
     plt.legend(loc="upper right")
 
     plt.show()
@@ -294,8 +307,8 @@ apple_pear_templ = project_dir + '/resources/applePears/1/template.png'
 apple_pear_segm_dir = project_dir + '/resources/applePears/1/segmented/java/'
 
 # -- used paths --
-template_path = pear_templ
-segm_dir_path = pear_segm_dir
+template_path = apple_pear_templ
+segm_dir_path = apple_pear_segm_dir
 
 template = cv2.imread(template_path, 3)
 images = getSortImages(segm_dir_path)
@@ -308,7 +321,7 @@ images = getSortImages(segm_dir_path)
 
 # -- Only moments --
 # yasnoff_mom_one_img(images[20][1], template)
-# yasnoff_mom_chart(images, template, 5)
+# yasnoff_mom_chart(images, template, 30)
 
 
 #  -- Compare  moments --
